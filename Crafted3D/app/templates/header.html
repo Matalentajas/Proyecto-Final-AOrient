@@ -1,0 +1,125 @@
+<!-- Header -->
+<header>
+    <!-- Top Section -->
+    <section class="flex items-center justify-between p-4">
+        <!-- Currency Selector -->
+        <!-- Currency Selector -->
+    <div class="relative flex items-center flex-1">
+        <button id="dropdownButton" class="cursor-pointer flex items-center text-gray-600 hover:text-gray-800 px-6 py-3 text-lg">
+            <img src="/Crafted3D/app/static/css/images/Banderas/BANDERA - EU.png" alt="Bandera UE" class="h-[40px] w-[70px] mr-3">
+            <span>EU</span>
+            <i class="fa-solid fa-square-caret-down ml-3 text-xl"></i>
+        </button>
+        <div id="dropdownMenu" class="absolute left-0 top-full w-40 bg-white hidden">
+            <!-- Dropdown Options -->
+            <a href="#" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg">
+                <img src="/Crafted3D/app/static/css/images/Banderas/BANDERA - USA.png" alt="Bandera USA" class="h-[40px] w-[70px] mr-3"> US
+            </a>
+            <a href="#" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg">
+                <img src="/Crafted3D/app/static/css/images/Banderas/BANDERA - EU.png" alt="Bandera EU" class="h-[40px] w-[70px] mr-3"> EU
+            </a>
+            <a href="#" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg">
+                <img src="/Crafted3D/app/static/css/images/Banderas/BANDERA - CH.png" alt="Bandera CH" class="h-[40px] w-[70px] mr-3"> CH
+            </a>
+            <a href="#" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg">
+                <img src="/Crafted3D/app/static/css/images/Banderas/BANDERA - UK.png" alt="Bandera UK" class="h-[40px] w-[70px] mr-3"> UK
+            </a>
+            <a href="#" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg">
+                <img src="/Crafted3D/app/static/css/images/Banderas/BANDERA - JP.png" alt="Bandera JP" class="h-[40px] w-[70px] mr-3"> JP
+            </a>
+        </div>
+    </div>
+
+        <!-- Logo -->
+        <div class="flex items-center justify-center flex-1">
+            <img src="/Crafted3D/app/static/css/images/Logo.webp" alt="Logo Crafted3D" class="h-[100px]">
+        </div>
+        
+        <!-- User, Search, and Cart -->
+        <div class="flex items-center justify-end flex-1 gap-5 mr-[20px]">
+            <h2 class="text-2xl">Arturo</h2>
+            <button id="searchToggleButton">
+                <i class="fa-solid fa-magnifying-glass hover:text-[#39CB60] text-2xl cursor-pointer"></i>
+            </button>
+            <button>
+                <i class="fa-solid fa-cart-shopping hover:text-[#39CB60] text-2xl cursor-pointer"></i>
+            </button>
+        </div>
+    </section>
+    
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="container mx-auto">
+            <ul class="flex justify-center gap-[100px] py-3">
+                <li><a href="/" class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Inicio</a></li>
+                <li><a href="/escayolas3D" class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Escayolas3D</a></li>
+                <li><a href="/almacenaje" class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Almacenaje</a></li>
+                <li><a href="/herramientas" class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Herramientas</a></li>
+                <li><a href="/gadgets" class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Gadgets</a></li>
+                <li><a href="/juguetes" class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Juguetes</a></li>
+                <li><a href="/decoracion" class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Decoración</a></li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<!-- Search Section -->
+<div id="searchContainer" class="container mx-auto mt-2 px-4 hidden">
+    <div class="flex justify-between items-center border-t border-gray-200 p-4">
+        <div class="flex items-center gap-4">
+            <i class="fa-solid fa-magnifying-glass text-2xl"></i>
+            <input type="text" placeholder="Búsqueda..." class="w-[150vh] px-3 py-2">
+        </div>
+        <button id="closeSearchButton"></button>
+            <i class="fa-solid fa-x hover:text-[#39CB60] text-2xl cursor-pointer"></i>
+        </button>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script>
+    // Currency Selector
+    const dropdownButton = document.getElementById('dropdownButton');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+    dropdownButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dropdownMenu.classList.toggle('hidden');
+    });
+    const options = dropdownMenu.querySelectorAll('a');
+    options.forEach(option => {
+        option.addEventListener('click', (e) => {
+            e.preventDefault();
+            const newImgSrc = option.querySelector('img').getAttribute('src');
+            const newAlt = option.querySelector('img').getAttribute('alt');
+            const newText = option.textContent.trim();
+            const mainImg = dropdownButton.querySelector('img');
+            mainImg.setAttribute('src', newImgSrc);
+            mainImg.setAttribute('alt', newAlt);
+            dropdownButton.querySelector('span').textContent = newText;
+            dropdownMenu.classList.add('hidden');
+        });
+    });
+    document.addEventListener('click', (e) => {
+        if (!dropdownButton.contains(e.target) && !dropdownMenu.contains(e.target)) {
+            dropdownMenu.classList.add('hidden');
+        }
+    });
+
+    // Search Section
+    const searchToggleButton = document.getElementById('searchToggleButton');
+    const searchContainer = document.getElementById('searchContainer');
+    const closeSearchButton = document.getElementById('closeSearchButton');
+    searchToggleButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        searchContainer.classList.toggle('hidden');
+    });
+    closeSearchButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        searchContainer.classList.add('hidden');
+    });
+    document.addEventListener('click', (e) => {
+        if (!searchToggleButton.contains(e.target) && !searchContainer.contains(e.target)) {
+            searchContainer.classList.add('hidden');
+        }
+    });
+</script>
