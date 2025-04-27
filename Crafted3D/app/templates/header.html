@@ -3,36 +3,35 @@
     <!-- Top Section -->
     <section class="flex items-center justify-between p-4">
         <!-- Currency Selector -->
-        <!-- Currency Selector -->
-    <div class="relative flex items-center flex-1">
-        <button id="dropdownButton" class="cursor-pointer flex items-center text-gray-600 hover:text-gray-800 px-6 py-3 text-lg">
-            <img src="/Crafted3D/app/static/css/images/Banderas/BANDERA - EU.png" alt="Bandera UE" class="h-[40px] w-[70px] mr-3">
-            <span>EU</span>
-            <i class="fa-solid fa-square-caret-down ml-3 text-xl"></i>
-        </button>
-        <div id="dropdownMenu" class="absolute left-0 top-full w-40 bg-white hidden">
-            <!-- Dropdown Options -->
-            <a href="#" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg">
-                <img src="/Crafted3D/app/static/css/images/Banderas/BANDERA - USA.png" alt="Bandera USA" class="h-[40px] w-[70px] mr-3"> US
-            </a>
-            <a href="#" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg">
-                <img src="/Crafted3D/app/static/css/images/Banderas/BANDERA - EU.png" alt="Bandera EU" class="h-[40px] w-[70px] mr-3"> EU
-            </a>
-            <a href="#" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg">
-                <img src="/Crafted3D/app/static/css/images/Banderas/BANDERA - CH.png" alt="Bandera CH" class="h-[40px] w-[70px] mr-3"> CH
-            </a>
-            <a href="#" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg">
-                <img src="/Crafted3D/app/static/css/images/Banderas/BANDERA - UK.png" alt="Bandera UK" class="h-[40px] w-[70px] mr-3"> UK
-            </a>
-            <a href="#" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg">
-                <img src="/Crafted3D/app/static/css/images/Banderas/BANDERA - JP.png" alt="Bandera JP" class="h-[40px] w-[70px] mr-3"> JP
-            </a>
+        <div class="relative flex items-center flex-1">
+            <button id="dropdownButton" class="cursor-pointer flex items-center text-gray-600 hover:text-gray-800 px-6 py-3 text-lg">
+                <img src="{{ url_for('static', filename='css/images/Banderas/BANDERA - EU.png') }}" alt="Bandera UE" class="h-[40px] w-[70px] mr-3">
+                <span>EU</span>
+                <i class="fa-solid fa-square-caret-down ml-3 text-xl"></i>
+            </button>
+            <div id="dropdownMenu" class="absolute left-0 top-full w-40 bg-white hidden">
+                <!-- Dropdown Options -->
+                <a href="#" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg">
+                    <img src="{{ url_for('static', filename='css/images/Banderas/BANDERA - USA.png') }}" alt="Bandera USA" class="h-[40px] w-[70px] mr-3"> US
+                </a>
+                <a href="#" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg">
+                    <img src="{{ url_for('static', filename='css/images/Banderas/BANDERA - EU.png') }}" alt="Bandera EU" class="h-[40px] w-[70px] mr-3"> EU
+                </a>
+                <a href="#" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg">
+                    <img src="{{ url_for('static', filename='css/images/Banderas/BANDERA - CH.png') }}" alt="Bandera CH" class="h-[40px] w-[70px] mr-3"> CH
+                </a>
+                <a href="#" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg">
+                    <img src="{{ url_for('static', filename='css/images/Banderas/BANDERA - UK.png') }}" alt="Bandera UK" class="h-[40px] w-[70px] mr-3"> UK
+                </a>
+                <a href="#" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg">
+                    <img src="{{ url_for('static', filename='css/images/Banderas/BANDERA - JP.png') }}" alt="Bandera JP" class="h-[40px] w-[70px] mr-3"> JP
+                </a>
+            </div>
         </div>
-    </div>
 
         <!-- Logo -->
         <div class="flex items-center justify-center flex-1">
-            <img src="/Crafted3D/app/static/css/images/Logo.webp" alt="Logo Crafted3D" class="h-[100px]">
+            <img src="{{ url_for('static', filename='css/images/Logo.webp') }}" alt="Logo Crafted3D" class="h-[100px]">
         </div>
         
         <!-- User, Search, and Cart -->
@@ -70,7 +69,7 @@
             <i class="fa-solid fa-magnifying-glass text-2xl"></i>
             <input type="text" placeholder="Búsqueda..." class="w-[150vh] px-3 py-2">
         </div>
-        <button id="closeSearchButton"></button>
+        <button id="closeSearchButton">
             <i class="fa-solid fa-x hover:text-[#39CB60] text-2xl cursor-pointer"></i>
         </button>
     </div>
