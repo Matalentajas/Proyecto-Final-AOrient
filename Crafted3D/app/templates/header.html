@@ -4,61 +4,98 @@
     <section class="flex items-center justify-between p-4">
         <!-- Currency Selector -->
         <div class="relative flex items-center flex-1">
-            <button id="dropdownButton" class="cursor-pointer flex items-center text-gray-600 hover:text-gray-800 px-6 py-3 text-lg">
-                <img src="{{ url_for('static', filename='css/images/Banderas/BANDERA - EU.png') }}" alt="Bandera UE" class="h-[40px] w-[70px] mr-3">
-                <span>EU</span>
-                <i class="fa-solid fa-square-caret-down ml-3 text-xl"></i>
+            <button id="dropdownButton"
+            class="cursor-pointer flex items-center text-gray-600 hover:text-gray-800 px-6 py-3 text-lg">
+            <img src="{{ url_for('static', filename='css/images/Banderas/BANDERA - EU.png') }}" alt="Bandera UE"
+                class="h-[40px] w-[70px] mr-3">
+            <span>EU</span>
+            <i class="fa-solid fa-square-caret-down ml-3 text-xl"></i>
             </button>
             <div id="dropdownMenu" class="absolute left-0 top-full w-40 bg-white hidden">
-                <!-- Dropdown Options -->
-                <a href="#" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg">
-                    <img src="{{ url_for('static', filename='css/images/Banderas/BANDERA - USA.png') }}" alt="Bandera USA" class="h-[40px] w-[70px] mr-3"> US
-                </a>
-                <a href="#" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg">
-                    <img src="{{ url_for('static', filename='css/images/Banderas/BANDERA - EU.png') }}" alt="Bandera EU" class="h-[40px] w-[70px] mr-3"> EU
-                </a>
-                <a href="#" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg">
-                    <img src="{{ url_for('static', filename='css/images/Banderas/BANDERA - CH.png') }}" alt="Bandera CH" class="h-[40px] w-[70px] mr-3"> CH
-                </a>
-                <a href="#" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg">
-                    <img src="{{ url_for('static', filename='css/images/Banderas/BANDERA - UK.png') }}" alt="Bandera UK" class="h-[40px] w-[70px] mr-3"> UK
-                </a>
-                <a href="#" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg">
-                    <img src="{{ url_for('static', filename='css/images/Banderas/BANDERA - JP.png') }}" alt="Bandera JP" class="h-[40px] w-[70px] mr-3"> JP
-                </a>
+            <!-- Dropdown Options -->
+            <a href="#" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg">
+                <img src="{{ url_for('static', filename='css/images/Banderas/BANDERA - USA.png') }}"
+                alt="Bandera USA" class="h-[40px] w-[70px] mr-3"> US
+            </a>
+            <a href="#" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg">
+                <img src="{{ url_for('static', filename='css/images/Banderas/BANDERA - EU.png') }}" alt="Bandera EU"
+                class="h-[40px] w-[70px] mr-3"> EU
+            </a>
+            <a href="#" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg">
+                <img src="{{ url_for('static', filename='css/images/Banderas/BANDERA - CH.png') }}"
+                alt="Bandera China" class="h-[40px] w-[70px] mr-3"> CH
+            </a>
+            <a href="#" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg">
+                <img src="{{ url_for('static', filename='css/images/Banderas/BANDERA - JP.png') }}"
+                alt="Bandera Japón" class="h-[40px] w-[70px] mr-3"> JP
+            </a>
+            <a href="#" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg">
+                <img src="{{ url_for('static', filename='css/images/Banderas/BANDERA - UK.png') }}"
+                alt="Bandera UK" class="h-[40px] w-[70px] mr-3"> UK
+            </a>
             </div>
         </div>
 
         <!-- Logo -->
         <div class="flex items-center justify-center flex-1">
             <a href="{{ url_for('index') }}">
-            <img src="{{ url_for('static', filename='css/images/Logo.webp') }}" alt="Logo Crafted3D" class="h-[100px]">
+                <img src="{{ url_for('static', filename='css/images/Logo.webp') }}" alt="Logo Crafted3D"
+                    class="h-[100px]">
             </a>
         </div>
-        
+
         <!-- User, Search, and Cart -->
         <div class="flex items-center justify-end flex-1 gap-5 mr-[20px]">
             <h2 class="text-2xl">Arturo</h2>
             <button id="searchToggleButton">
                 <i class="fa-solid fa-magnifying-glass hover:text-[#39CB60] text-2xl cursor-pointer"></i>
             </button>
-            <button>
-                <i class="fa-solid fa-cart-shopping hover:text-[#39CB60] text-2xl cursor-pointer"></i>
-            </button>
+
+            <!-- Carrito de Compras -->
+            <div class="relative">
+                <button id="cartButton" onclick="toggleCart()" class="relative">
+                    <i class="fa-solid fa-cart-shopping hover:text-[#39CB60] text-2xl cursor-pointer"></i>
+                    <span id="cart-count" class="bg-red-500 text-white rounded-full px-2 py-1 text-sm hidden">0</span>
+                </button>
+                <!-- Dropdown del carrito con tamaño ajustado -->
+                <div id="cart-dropdown"
+                    class="absolute right-0 top-16 w-[60vh] h-[90vh] bg-white shadow-lg rounded hidden overflow-y-auto p-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-bold">Carrito</h3>
+                        <button onclick="toggleCart()" class="text-gray-500 hover:text-gray-800">
+                            <i class="fa-solid fa-x text-xl cursor-pointer hover:text-[#39CB60]"></i>
+                        </button>
+                    </div>
+                    <hr class="my-2">
+                    <div id="cart-empty" class="flex items-center justify-center text-gray-500 text-center mt-4 h-full">
+                        Tu carrito está vacío
+                    </div>
+                    <ul id="cart-items" class="hidden"></ul>
+                </div>
+            </div>
+
         </div>
     </section>
-    
+
     <!-- Navigation Bar -->
     <nav>
         <div class="container mx-auto">
             <ul class="flex justify-center gap-[100px] py-3">
-                <li><a href="/" class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Inicio</a></li>
-                <li><a href="/productos/escayolas3D" class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Escayolas3D</a></li>
-                <li><a href="/productos/almacenaje" class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Almacenaje</a></li>
-                <li><a href="/productos/herramientas" class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Herramientas</a></li>
-                <li><a href="/productos/gadgets" class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Gadgets</a></li>
-                <li><a href="/productos/juguetes" class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Juguetes</a></li>
-                <li><a href="/productos/decoracion" class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Decoración</a></li>
+                <li><a href="/" class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Inicio</a>
+                </li>
+                <li><a href="/productos/escayolas3D"
+                        class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Escayolas3D</a></li>
+                <li><a href="/productos/almacenaje"
+                        class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Almacenaje</a></li>
+                <li><a href="/productos/herramientas"
+                        class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Herramientas</a>
+                </li>
+                <li><a href="/productos/gadgets"
+                        class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Gadgets</a></li>
+                <li><a href="/productos/juguetes"
+                        class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Juguetes</a></li>
+                <li><a href="/productos/decoracion"
+                        class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Decoración</a></li>
             </ul>
         </div>
     </nav>
@@ -77,50 +114,86 @@
     </div>
 </div>
 
-<!-- Scripts -->
 <script>
-    // Currency Selector
+    // 🛒 Carrito de Compras
+    function toggleCart() {
+        const cartDropdown = document.getElementById("cart-dropdown");
+        cartDropdown.classList.toggle("hidden");
+    }
+
+    function addToCart(productName, price) {
+        const cartCount = document.getElementById("cart-count");
+        const cartEmpty = document.getElementById("cart-empty");
+        const cartItems = document.getElementById("cart-items");
+
+        // Ocultar mensaje vacío y mostrar la lista de productos
+        cartEmpty.classList.add("hidden");
+        cartItems.classList.remove("hidden");
+
+        // Agregar el producto al carrito
+        const item = document.createElement("li");
+        item.textContent = `${productName} - ${price} €`;
+        cartItems.appendChild(item);
+
+        // Actualizar contador del carrito
+        let currentCount = parseInt(cartCount.textContent) || 0;
+        cartCount.textContent = currentCount + 1;
+        cartCount.classList.remove("hidden");
+    }
+
+    // 🌍 Selector de País
     const dropdownButton = document.getElementById('dropdownButton');
     const dropdownMenu = document.getElementById('dropdownMenu');
+    const options = dropdownMenu.querySelectorAll('a');
+
     dropdownButton.addEventListener('click', (e) => {
         e.stopPropagation();
         dropdownMenu.classList.toggle('hidden');
     });
-    const options = dropdownMenu.querySelectorAll('a');
+
     options.forEach(option => {
         option.addEventListener('click', (e) => {
-            e.preventDefault();
+            e.preventDefault(); // Evitar recarga de página
             const newImgSrc = option.querySelector('img').getAttribute('src');
             const newAlt = option.querySelector('img').getAttribute('alt');
             const newText = option.textContent.trim();
+
+            // Actualizar el botón principal con la nueva bandera y texto
             const mainImg = dropdownButton.querySelector('img');
             mainImg.setAttribute('src', newImgSrc);
             mainImg.setAttribute('alt', newAlt);
             dropdownButton.querySelector('span').textContent = newText;
-            dropdownMenu.classList.add('hidden');
+
+            dropdownMenu.classList.add('hidden'); // Cerrar el menú después de seleccionar
         });
     });
+
+    // Cerrar el menú si el usuario hace clic fuera
     document.addEventListener('click', (e) => {
         if (!dropdownButton.contains(e.target) && !dropdownMenu.contains(e.target)) {
             dropdownMenu.classList.add('hidden');
         }
     });
 
-    // Search Section
+    // 🔍 Buscador
     const searchToggleButton = document.getElementById('searchToggleButton');
     const searchContainer = document.getElementById('searchContainer');
     const closeSearchButton = document.getElementById('closeSearchButton');
+
     searchToggleButton.addEventListener('click', (e) => {
         e.stopPropagation();
-        searchContainer.classList.toggle('hidden');
+        searchContainer.classList.toggle("hidden");
     });
+
     closeSearchButton.addEventListener('click', (e) => {
         e.stopPropagation();
-        searchContainer.classList.add('hidden');
+        searchContainer.classList.add("hidden");
     });
+
+    // Cerrar el buscador si el usuario hace clic fuera
     document.addEventListener('click', (e) => {
         if (!searchToggleButton.contains(e.target) && !searchContainer.contains(e.target)) {
-            searchContainer.classList.add('hidden');
+            searchContainer.classList.add("hidden");
         }
     });
 </script>
