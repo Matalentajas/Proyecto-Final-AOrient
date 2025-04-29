@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}
+{% if categoria %}Productos - {{ categoria|capitalize }}{% else %}{{ producto.nombre }}{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto py-8">
+  
+  {% if categoria %}
+  <h1 class="text-3xl font-bold text-center mb-8">{{ categoria|capitalize }}</h1>
+
+  {% if productos|length > 0 %}
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+    {% for producto in productos %}
+    <div class="border rounded-lg shadow hover:shadow-lg transition-shadow">
+      <img src="{{ url_for('static', filename='css/images/' + producto.imagen) }}" alt="{{ producto.nombre }}" class="w-full h-48 object-cover">
+      <div class="p-4">
+        <h3 class="text-xl font-bold">{{ producto.nombre }}</h3>
+        <p id="priceDisplay" class="text-xl text-gray-700 mb-4" data-price="{{ producto.precio|replace('€', '')|replace(',', '.') }}">{{ producto.precio }}</p>
+        <a href="{{ url_for('producto', producto_id=producto.id) }}" class="mt-4 bg-[#39CB60] text-white px-4 py-2 rounded hover:bg-green-600 block text-center">
+          Ver Producto
+        </a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="text-center text-gray-600 mt-6">Actualmente no hay productos disponibles en esta categoría.</p>
+  {% endif %}
+  
+  {% else %}
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div class="text-center">
+          <img src="{{ url_for('static', filename='css/images/' + producto.imagen) }}" alt="{{ producto.nombre }}" class="bg-[#EEEEEE] w-full h-[400px] object-cover">
+      </div>
+      <div>
+          <h1 class="text-3xl font-bold mb-4">{{ producto.nombre }}</h1>
+          <p id="priceDisplay" class="text-xl text-gray-700 mb-4" data-price="{{ producto.precio|replace('€', '')|replace(',', '.') }}">{{ producto.precio }}</p>
+          <p class="text-lg text-gray-600 mb-6">{{ producto.descripcion }}</p>
+
+          <div class="flex items-center gap-4 mb-6">
+              <button onclick="updateQuantity(-1)" class="bg-gray-300 px-3 py-2 rounded cursor-pointer hover:bg-gray-400">-</button>
+              <input id="quantity" type="number" value="1" min="1" class="w-16 text-center border rounded py-2" onchange="updatePrice()">
+              <button onclick="updateQuantity(1)" class="bg-gray-300 px-3 py-2 rounded cursor-pointer hover:bg-gray-400">+</button>
+          </div>
+
+          <button class="bg-[#39CB60] text-white font-bold px-6 py-3 rounded hover:bg-green-600 cursor-pointer">
+              Añadir a la cesta
+          </button>
+      </div>
+  </div>
+  {% endif %}
+</div>
+
+
+<script>
+    function updateQuantity(change) {
+        const quantityInput = document.getElementById('quantity');
+        let currentValue = parseInt(quantityInput.value);
+        currentValue = isNaN(currentValue) ? 1 : currentValue;
+        const newValue = currentValue + change;
+
+        if (newValue >= 1) {
+            quantityInput.value = newValue;
+            updatePrice(); // Llama a la función de actualización de precio
+        }
+    }
+
+    function updatePrice() {
+        const quantity = parseInt(document.getElementById('quantity').value);
+        const priceElement = document.getElementById('priceDisplay');
+        const unitPrice = parseFloat(priceElement.dataset.price);
+
+        if (!isNaN(unitPrice)) {
+            const totalPrice = (unitPrice * quantity).toFixed(2);
+            priceElement.textContent = `${totalPrice} €`;
+        }
+    }
+</script>
+
+{% endblock %}
