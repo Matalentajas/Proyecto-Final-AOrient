@@ -1,3 +1,43 @@
+<!-- 
+Este archivo define el encabezado de una página web, incluyendo varias secciones interactivas y elementos de navegación. A continuación, se detalla cada parte del código:
+
+1. **Encabezado Principal (`<header>`)**:
+   - Contiene tres secciones principales:
+     - **Selector de Moneda**: Un menú desplegable que permite al usuario seleccionar una moneda (EU, US, CH, JP, UK). Al seleccionar una opción, se actualiza el botón principal con la bandera y el texto correspondientes.
+     - **Logo**: Un enlace al inicio de la página con el logo de la empresa.
+     - **Usuario, Buscador y Carrito**:
+       - Muestra el nombre del usuario ("Arturo").
+       - Incluye un botón para abrir un buscador.
+       - Contiene un carrito de compras interactivo que muestra los productos añadidos y un contador de elementos.
+
+2. **Barra de Navegación (`<nav>`)**:
+   - Una lista de enlaces a diferentes secciones del sitio web (Inicio, Escayolas3D, Almacenaje, Herramientas, Gadgets, Juguetes, Decoración).
+
+3. **Sección de Búsqueda (`#searchContainer`)**:
+   - Un contenedor oculto que se muestra al activar el buscador. Permite al usuario realizar búsquedas con un campo de entrada.
+
+4. **Scripts Interactivos**:
+   - **Carrito de Compras**:
+     - Función `toggleCart`: Muestra u oculta el menú del carrito.
+     - Función `addToCart`: Añade productos al carrito, actualiza el contador y muestra la lista de productos.
+   - **Selector de País**:
+     - Muestra un menú desplegable con opciones de países.
+     - Al seleccionar un país, actualiza el botón principal con la bandera y el texto del país seleccionado.
+     - Cierra el menú si el usuario hace clic fuera del área del menú.
+   - **Buscador**:
+     - Muestra u oculta el contenedor de búsqueda.
+     - Cierra el buscador si el usuario hace clic fuera del área del buscador.
+
+5. **Estilos y Clases**:
+   - Se utilizan clases de Tailwind CSS para el diseño responsivo y estilización de los elementos.
+   - Clases como `hidden` se usan para mostrar u ocultar elementos dinámicamente.
+
+6. **Imágenes y Recursos**:
+   - Las imágenes de banderas y el logo se cargan dinámicamente usando `url_for` de Flask para garantizar rutas correctas en el servidor.
+
+En resumen, este archivo combina HTML, CSS (Tailwind) y JavaScript para crear un encabezado interactivo y funcional que mejora la experiencia del usuario en la página web.
+-->
+
 <!-- Header -->
 <header>
     <!-- Top Section -->
