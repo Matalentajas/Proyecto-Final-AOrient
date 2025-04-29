@@ -31,7 +31,9 @@
 
         <!-- Logo -->
         <div class="flex items-center justify-center flex-1">
+            <a href="{{ url_for('index') }}">
             <img src="{{ url_for('static', filename='css/images/Logo.webp') }}" alt="Logo Crafted3D" class="h-[100px]">
+            </a>
         </div>
         
         <!-- User, Search, and Cart -->
@@ -51,12 +53,12 @@
         <div class="container mx-auto">
             <ul class="flex justify-center gap-[100px] py-3">
                 <li><a href="/" class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Inicio</a></li>
-                <li><a href="/escayolas3D" class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Escayolas3D</a></li>
-                <li><a href="/almacenaje" class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Almacenaje</a></li>
-                <li><a href="/herramientas" class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Herramientas</a></li>
-                <li><a href="/gadgets" class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Gadgets</a></li>
-                <li><a href="/juguetes" class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Juguetes</a></li>
-                <li><a href="/decoracion" class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Decoración</a></li>
+                <li><a href="/productos/escayolas3D" class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Escayolas3D</a></li>
+                <li><a href="/productos/almacenaje" class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Almacenaje</a></li>
+                <li><a href="/productos/herramientas" class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Herramientas</a></li>
+                <li><a href="/productos/gadgets" class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Gadgets</a></li>
+                <li><a href="/productos/juguetes" class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Juguetes</a></li>
+                <li><a href="/productos/decoracion" class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Decoración</a></li>
             </ul>
         </div>
     </nav>
