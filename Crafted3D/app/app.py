@@ -14,6 +14,65 @@ productos_por_categoria = {
     ],
 }
 
+# Datos simulados de usuario
+usuario = {
+    "nombre": "Arturo",
+    "direccion": "Calle Mayor 12, Valencia",
+    "codigo_postal": "46001",
+    "ciudad": "Valencia",
+    "pais": "España"
+}
+
+# Historial de pedidos simulados
+pedidos = [
+    {
+        "numero": "ES516QJK",
+        "fecha": "09/04/2025",
+        "estado_pago": "Pagado",
+        "estado": "Enviado",
+        "total": "9,99"
+    },
+    {
+        "numero": "ES021QJK",
+        "fecha": "01/04/2025",
+        "estado_pago": "Pagado",
+        "estado": "Completado",
+        "total": "19,99"
+    },
+        {
+        "numero": "ES516QJK",
+        "fecha": "09/04/2025",
+        "estado_pago": "Pagado",
+        "estado": "Enviado",
+        "total": "9,99"
+    },
+    {
+        "numero": "ES021QJK",
+        "fecha": "01/04/2025",
+        "estado_pago": "Cancelado",
+        "estado": "Cancelado",
+        "total": "19,99"
+    },
+    {
+        "numero": "ES516QJK",
+        "fecha": "09/04/2025",
+        "estado_pago": "Procesando",
+        "estado": "Enviado",
+        "total": "9,99"
+    },
+    {
+        "numero": "ES021QJK",
+        "fecha": "01/04/2025",
+        "estado_pago": "Pagado",
+        "estado": "Enviado",
+        "total": "19,99"
+    }
+]
+
+@app.route("/perfil")
+def perfil():
+    return render_template("perfil.html", usuario=usuario, pedidos=pedidos)
+
 @app.route("/")
 def index():
     return render_template("index.html")
