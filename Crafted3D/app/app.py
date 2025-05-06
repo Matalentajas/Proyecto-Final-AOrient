@@ -114,7 +114,7 @@ def producto(producto_id):
 
 
 # Configuración de los formularios
-from forms.user_forms import RegistroUsuarioForm, LoginForm, ModificarContraseñaForm, CambiarContraseñaForm  
+from forms.user_forms import RegistroUsuarioForm, LoginForm, ModificarContraseñaForm, CambiarContraseñaForm, EditarDireccionForm, EditarPerfilForm  
 
 @app.route('/registro', methods=['GET', 'POST'])
 def registro():
@@ -151,6 +151,23 @@ def cambiar_contraseña():
 
     return render_template("cambiar_contraseña.html", form=form)
 
+@app.route("/editar_direccion", methods=['GET', 'POST'])
+def editar_direccion():
+    form = EditarDireccionForm()
+    if request.method == 'POST' and form.validate_on_submit():
+        flash("Dirección actualizada correctamente!", "success")
+        return redirect(url_for('perfil'))
+
+    return render_template("editar_direccion.html", form=form)
+
+@app.route("/editar_perfil", methods=['GET', 'POST'])
+def editar_perfil():
+    form = EditarPerfilForm()
+    if request.method == 'POST' and form.validate_on_submit():
+        flash("Perfil actualizado correctamente!", "success")
+        return redirect(url_for('perfil'))
+
+    return render_template("editar_perfil.html", form=form)
 
 
 
