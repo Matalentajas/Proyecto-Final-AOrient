@@ -114,14 +114,14 @@ def producto(producto_id):
 
 
 # Configuración de los formularios
-from forms.user_forms import RegistroUsuarioForm, LoginForm  
+from forms.user_forms import RegistroUsuarioForm, LoginForm, ModificarContraseñaForm, CambiarContraseñaForm  
 
 @app.route('/registro', methods=['GET', 'POST'])
 def registro():
     form = RegistroUsuarioForm()
     if request.method == 'POST' and form.validate_on_submit():
         flash("Registro exitoso. ¡Bienvenido!", "success")
-        return redirect(url_for('inicio'))  # Redirigir a otra página después del registro
+        return redirect(url_for('inicio'))
     return render_template('registro.html', form=form)
 
 @app.route("/login", methods=['GET', 'POST'])
@@ -129,9 +129,27 @@ def login():
     form = LoginForm()
     if request.method == 'POST' and form.validate_on_submit():
         flash("Inicio de sesión exitoso!", "success")
-        return redirect(url_for('perfil'))  # Redirigir al perfil después de login
+        return redirect(url_for('perfil'))
 
     return render_template("login.html", form=form)
+
+@app.route("/modificar_contraseña_1", methods=['GET', 'POST'])
+def modificar_contraseña():
+    form = ModificarContraseñaForm()
+    if request.method == 'POST' and form.validate_on_submit():
+        flash("Correo de recuperación enviado!", "success")
+        return redirect(url_for('login'))
+
+    return render_template("modificar_contraseña.html", form=form)
+
+@app.route("/cambiar_contraseña", methods=['GET', 'POST'])
+def cambiar_contraseña():
+    form = CambiarContraseñaForm()
+    if request.method == 'POST' and form.validate_on_submit():
+        flash("Tu contraseña ha sido modificada!", "success")
+        return redirect(url_for('login'))
+
+    return render_template("cambiar_contraseña.html", form=form)
 
 
 

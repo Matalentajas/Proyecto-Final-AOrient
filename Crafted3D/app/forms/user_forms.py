@@ -26,3 +26,14 @@ class LoginForm(FlaskForm):
     contraseña = PasswordField('Contraseña', validators=[DataRequired(), Length(min=6)])
     recordar_sesion = BooleanField('Recordar sesión')
     submit = SubmitField('Iniciar Sesión')
+
+# Formulario de Recuperar Contraseña 1
+class ModificarContraseñaForm(FlaskForm):
+    email = EmailField('Dirección de email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Enviar Correo')
+
+# Formulario de Recuperar Contraseña 2
+class CambiarContraseñaForm(FlaskForm):
+    nueva_contraseña = PasswordField('Nueva Contraseña', validators=[DataRequired(), Length(min=6)])
+    submit = SubmitField('Cambiar Contraseña')
+

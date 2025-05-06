@@ -14,7 +14,7 @@
                 </a>
             </div>
 
-            <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-center mt-3 mb-4">Iniciar Sesión</h2>
+            <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-center mt-3 mb-4">Modificar Contraseña</h2>
             {{ form.hidden_tag() }}
 
             <div class="space-y-3">
@@ -27,27 +27,17 @@
                     {% endfor %}
                 </div>
 
-                <!-- Contraseña -->
-                <div>
-                    {{ form.contraseña.label(class="block text-gray-700 text-xs sm:text-sm") }}
-                    {{ form.contraseña(class="w-full border-b-2 border-gray-300 focus:border-black focus:outline-none py-1 sm:py-2 text-xs sm:text-sm") }}
-                    {% for error in form.contraseña.errors %}
-                        <p class="text-red-500 text-xs mt-1">{{ error }}</p>
-                    {% endfor %}
-                </div>
+                <!-- Mensaje informativo -->
+                <p class="text-gray-500 text-xs sm:text-sm">
+                    Al darle al botón se le enviará un correo a la dirección indicada.
+                </p>
             </div>
 
-            <!-- Botón de inicio de sesión -->
+            <!-- Botón para enviar correo -->
             <div class="flex justify-center mt-4">
                 <button type="submit" class="w-[80%] text-xs sm:text-sm bg-green-500 text-white font-semibold px-3 sm:px-4 py-2 rounded-lg hover:bg-green-600 transition-all">
-                    {{ form.submit }}
+                    Enviar Correo
                 </button>
-            </div>
-            
-            <div class="flex items-center justify-center mt-3 mb-4">
-                <a class="text-[#39CB60] font-bold text-xs sm:text-sm" href="{{ url_for('modificar_contraseña') }}">¿Olvidaste tu contraseña?</a>
-                <p class="mx-2 text-xs sm:text-sm">|</p>
-                <a class="text-[#39CB60] font-bold text-xs sm:text-sm" href="{{ url_for('registro') }}">Regístrate</a>
             </div>
         </form>
     </div>
