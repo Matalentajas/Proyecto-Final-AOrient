@@ -1,0 +1,64 @@
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#D4D4D4] min-h-screen flex items-center justify-center">
+    <div class="w-full h-screen flex items-center justify-center">
+        <form method="POST" class="w-full max-w-sm sm:max-w-md md:max-w-lg border-[2px] border-black bg-white rounded-b-lg shadow-xl p-6">
+
+            <!-- Logo -->
+            <div class="border-b-[2px] border-black flex items-center justify-center pb-4">
+                <a href="{{ url_for('index') }}">
+                    <img src="{{ url_for('static', filename='css/images/Logo.webp') }}" alt="Logo Crafted3D"
+                        class="h-[50px] sm:h-[60px]">
+                </a>
+            </div>
+
+            <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-center mt-3 mb-4">Registrarse</h2>
+            {{ form.hidden_tag() }}
+
+            <div class="space-y-3">
+                <!-- Inputs generales -->
+                {% for field in [form.nombre, form.email, form.contraseña, form.confirmar_contraseña, form.direccion] %}
+                <div>
+                    {{ field.label(class="block text-gray-700 text-xs sm:text-sm") }}
+                    {{ field(class="w-full border-b-2 border-gray-300 focus:border-black focus:outline-none py-1 sm:py-2 text-xs sm:text-sm") }}
+                    {% for error in field.errors %}
+                        <p class="text-red-500 text-xs mt-1">{{ error }}</p>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+
+                <!-- Ciudad y Código Postal -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4">
+                    <div>
+                        {{ form.ciudad.label(class="block text-gray-700 text-xs sm:text-sm") }}
+                        {{ form.ciudad(class="w-full border-b-2 border-gray-300 focus:border-black focus:outline-none py-1 sm:py-2 text-xs sm:text-sm") }}
+                        {% for error in form.ciudad.errors %}
+                            <p class="text-red-500 text-xs mt-1">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    <div>
+                        {{ form.codigo_postal.label(class="block text-gray-700 text-xs sm:text-sm") }}
+                        {{ form.codigo_postal(class="w-full border-b-2 border-gray-300 focus:border-black focus:outline-none py-1 sm:py-2 text-xs sm:text-sm") }}
+                        {% for error in form.codigo_postal.errors %}
+                            <p class="text-red-500 text-xs mt-1">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botón de registro -->
+            <div class="flex justify-center mt-4">
+                <button type="submit" class="w-[80%] text-xs sm:text-sm bg-green-500 text-white font-semibold px-3 sm:px-4 py-2 rounded-lg hover:bg-green-600 transition-all">
+                    {{ form.submit }}
+                </button>
+            </div>
+            
+            <div class="flex items-center justify-center mt-3 mb-4">
+                <p class="mr-2 text-xs sm:text-sm">¿Ya tienes cuenta?</p>
+                <a class="text-[#39CB60] font-bold text-xs sm:text-sm" href="#">Inicia Sesión</a>
+            </div>
+
+        </form>
+    </div>
+</body>

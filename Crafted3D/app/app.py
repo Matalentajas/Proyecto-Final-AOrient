@@ -1,6 +1,18 @@
-from flask import Flask, render_template
+import os
+from flask import Flask, render_template, request, redirect, url_for, flash
+from flask_wtf.csrf import CSRFProtect
+from dotenv import load_dotenv
+
+# Cargar variables desde .env
+load_dotenv()
 
 app = Flask(__name__)
+
+# Configurar la clave secreta desde .env
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+
+# Proteger los formularios contra ataques CSRF
+csrf = CSRFProtect(app)
 
 # Datos unificados: Productos dentro de sus categorías
 productos_por_categoria = {
@@ -98,6 +110,28 @@ def producto(producto_id):
     if not producto:
         return "<h1>Producto no encontrado</h1>", 404
     return render_template("producto.html", producto=producto)
+
+
+
+# Configuración de los formularios
+from forms.user_forms import RegistroUsuarioForm
+
+@app.route('/registro', methods=['GET', 'POST'])
+def registro():
+    form = RegistroUsuarioForm()
+    if request.method == 'POST' and form.validate_on_submit():
+        flash("Registro exitoso. ¡Bienvenido!", "success")
+        return redirect(url_for('inicio'))  # Redirigir a otra página después del registro
+    return render_template('registro.html', form=form)
+
+
+
+
+
+
+
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
