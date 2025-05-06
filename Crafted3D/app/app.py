@@ -114,7 +114,7 @@ def producto(producto_id):
 
 
 # Configuración de los formularios
-from forms.user_forms import RegistroUsuarioForm
+from forms.user_forms import RegistroUsuarioForm, LoginForm  
 
 @app.route('/registro', methods=['GET', 'POST'])
 def registro():
@@ -123,6 +123,15 @@ def registro():
         flash("Registro exitoso. ¡Bienvenido!", "success")
         return redirect(url_for('inicio'))  # Redirigir a otra página después del registro
     return render_template('registro.html', form=form)
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if request.method == 'POST' and form.validate_on_submit():
+        flash("Inicio de sesión exitoso!", "success")
+        return redirect(url_for('perfil'))  # Redirigir al perfil después de login
+
+    return render_template("login.html", form=form)
 
 
 
