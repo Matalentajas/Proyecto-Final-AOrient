@@ -7,10 +7,17 @@ productos_por_categoria = {
     'escayolas3D': [
         {'id': 'escayola3D_01', 'nombre': 'Escayola 3D Modelo A', 'precio': '19,99 €', 'imagen': 'producto-generico.jpg', 'descripcion': 'Una escayola 3D innovadora que transforma cualquier espacio con su diseño único.'},
         {'id': 'escayola3D_02', 'nombre': 'Escayola 3D Modelo B', 'precio': '24,99 €', 'imagen': 'producto-generico.jpg', 'descripcion': 'Escayola 3D de alta calidad, ideal para proyectos de decoración modernos.'},
+        {'id': 'escayola3D_03', 'nombre': 'Escayola 3D Modelo C', 'precio': '60,99 €', 'imagen': 'producto-generico.jpg', 'descripcion': 'Escayola 3D de alta calidad, ideal para proyectos de decoración modernos.'},
+
     ],
     'almacenaje': [
         {'id': 'almacenaje_01', 'nombre': 'Caja Organizadora', 'precio': '12,99 €', 'imagen': 'producto-generico.jpg', 'descripcion': 'Caja de almacenaje versátil y resistente, perfecta para organizar tu hogar.'},
         {'id': 'almacenaje_02', 'nombre': 'Sistema Modular', 'precio': '18,99 €', 'imagen': 'producto-generico.jpg', 'descripcion': 'Sistema de almacenaje modular que se adapta a tus necesidades.'},
+    ],
+
+    'herramientas': [
+        {'id': 'herramientas_01', 'nombre': 'Caja Organizadora', 'precio': '12,99 €', 'imagen': 'producto-generico.jpg', 'descripcion': 'Caja de almacenaje versátil y resistente, perfecta para organizar tu hogar.'},
+        {'id': 'herramientas_02', 'nombre': 'Sistema Modular', 'precio': '18,99 €', 'imagen': 'producto-generico.jpg', 'descripcion': 'Sistema de almacenaje modular que se adapta a tus necesidades.'},
     ],
 }
 
