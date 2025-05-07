@@ -3,18 +3,12 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_wtf.csrf import CSRFProtect
 from dotenv import load_dotenv
 from config import Config
-from models import db
 
 # Cargar variables desde .env
 load_dotenv()
 
 app = Flask(__name__)
 app.config.from_object(Config)
-
-db.init_app(app)
-
-with app.app_context():
-    db.create_all()
 
 # Configurar la clave secreta desde .env
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
