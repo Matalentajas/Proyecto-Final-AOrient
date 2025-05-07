@@ -49,44 +49,59 @@ pedidos = [
         "fecha": "09/04/2025",
         "estado_pago": "Pagado",
         "estado": "Enviado",
-        "total": "9,99"
+        "total": "29,99",
+        "productos": [
+            {"nombre": "Escayola 3D Modelo A", "cantidad": 2, "precio": "9,99 €"},
+            {"nombre": "Caja Organizadora", "cantidad": 1, "precio": "10,00 €"}
+        ]
     },
     {
-        "numero": "ES021QJK",
-        "fecha": "01/04/2025",
+        "numero": "ES789XYZ",
+        "fecha": "15/03/2025",
         "estado_pago": "Pagado",
         "estado": "Completado",
-        "total": "19,99"
+        "total": "45,50",
+        "productos": [
+            {"nombre": "Escayola 3D Modelo B", "cantidad": 1, "precio": "24,99 €"},
+            {"nombre": "Sistema Modular", "cantidad": 1, "precio": "18,99 €"}
+        ]
     },
-        {
-        "numero": "ES516QJK",
-        "fecha": "09/04/2025",
+    {
+        "numero": "ES123ABC",
+        "fecha": "20/02/2025",
         "estado_pago": "Pagado",
-        "estado": "Enviado",
-        "total": "9,99"
+        "estado": "Completado",
+        "total": "60,99",
+        "productos": [
+            {"nombre": "Escayola 3D Modelo C", "cantidad": 1, "precio": "60,99 €"}
+        ]
     },
     {
-        "numero": "ES021QJK",
-        "fecha": "01/04/2025",
-        "estado_pago": "Cancelado",
-        "estado": "Cancelado",
-        "total": "19,99"
-    },
-    {
-        "numero": "ES516QJK",
-        "fecha": "09/04/2025",
-        "estado_pago": "Procesando",
-        "estado": "Enviado",
-        "total": "9,99"
-    },
-    {
-        "numero": "ES021QJK",
-        "fecha": "01/04/2025",
+        "numero": "ES456DEF",
+        "fecha": "01/01/2025",
         "estado_pago": "Pagado",
-        "estado": "Enviado",
-        "total": "19,99"
+        "estado": "Completado",
+        "total": "31,98",
+        "productos": [
+            {"nombre": "Caja Organizadora", "cantidad": 2, "precio": "12,99 €"},
+            {"nombre": "Escayola 3D Modelo A", "cantidad": 1, "precio": "5,99 €"}
+        ]
     }
 ]
+
+pedido_actual = {
+    "numero": "ES999XYZ",
+    "fecha": "12/05/2025",
+    "estado_pago": "Pendiente",
+    "subtotal": "29,99",
+    "envio": "5,00",
+    "iva": "6,30",
+    "total": "41,29",
+    "productos": [
+        {"nombre": "Escayola 3D Modelo A", "cantidad": 2, "precio": "9,99 €", "imagen": "producto-generico.jpg"},
+        {"nombre": "Caja Organizadora", "cantidad": 1, "precio": "10,00 €", "imagen": "producto-generico.jpg"}
+    ]
+}
 
 @app.route("/perfil")
 def perfil():
@@ -110,6 +125,25 @@ def producto(producto_id):
     if not producto:
         return "<h1>Producto no encontrado</h1>", 404
     return render_template("producto.html", producto=producto)
+
+@app.route("/pedido/<numero>")
+def pedido(numero):
+    pedido = next((p for p in pedidos if p["numero"] == numero), None)
+
+    if not pedido:
+        flash("Pedido no encontrado.", "danger")
+        return redirect(url_for("perfil"))
+
+    return render_template("pedido.html", pedido=pedido)
+
+@app.route("/confirmar_pedido", methods=['GET', 'POST'])
+def confirmar_pedido():
+    if request.method == 'POST':
+        flash("Pedido confirmado con éxito!", "success")
+        return redirect(url_for('pedido', numero=pedido_actual["numero"]))
+    
+    return render_template("confirmar_pedido.html", pedido=pedido_actual, usuario=usuario)
+
 
 
 
