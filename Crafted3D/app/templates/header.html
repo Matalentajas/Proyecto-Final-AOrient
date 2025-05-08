@@ -86,7 +86,11 @@ En resumen, este archivo combina HTML, CSS (Tailwind) y JavaScript para crear un
 
         <!-- User, Search, and Cart -->
         <div class="flex items-center justify-end flex-1 gap-5 mr-[20px]">
-            <a href="{{ url_for('usuario.login') }}" class="text-2xl">Iniciar Sesión</a>
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('usuario.perfil') }}" class="text-2xl text-bold text-[#39CB60]">{{ current_user.nombre_completo }}</a>
+            {% else %}
+                <a href="{{ url_for('usuario.login') }}" class="text-2xl">Iniciar Sesión</a>
+            {% endif %}
             <button id="searchToggleButton">
                 <i class="fa-solid fa-magnifying-glass hover:text-[#39CB60] text-2xl cursor-pointer"></i>
             </button>

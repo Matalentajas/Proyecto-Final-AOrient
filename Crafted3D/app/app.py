@@ -26,6 +26,7 @@ app.config["MYSQL_PASSWORD"] = Config.MYSQL_PASSWORD
 app.config["MYSQL_DB"] = Config.MYSQL_DB
 
 mysql = MySQL(app)
+app.mysql = mysql
 
 # Inicializar Flask-Login
 login_manager = LoginManager()

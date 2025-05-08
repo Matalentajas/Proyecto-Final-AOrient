@@ -26,9 +26,9 @@
             <div class="space-y-3">
                 <!-- Dirección -->
                 <div>
-                    {{ form.direccion.label(class="block text-gray-700 text-xs sm:text-sm") }}
-                    {{ form.direccion(class="w-full border-b-2 border-gray-300 focus:border-black focus:outline-none py-1 sm:py-2 text-xs sm:text-sm") }}
-                    {% for error in form.direccion.errors %}
+                    {{ form.direccion_completa.label(class="block text-gray-700 text-xs sm:text-sm") }}
+                    {{ form.direccion_completa(value=current_user.direccion_completa, class="w-full border-b-2 border-gray-300 focus:border-black focus:outline-none py-1 sm:py-2 text-xs sm:text-sm") }}
+                    {% for error in form.direccion_completa.errors %}
                         <p class="text-red-500 text-xs mt-1">{{ error }}</p>
                     {% endfor %}
                 </div>
@@ -36,7 +36,7 @@
                 <!-- Código Postal -->
                 <div>
                     {{ form.codigo_postal.label(class="block text-gray-700 text-xs sm:text-sm") }}
-                    {{ form.codigo_postal(class="w-full border-b-2 border-gray-300 focus:border-black focus:outline-none py-1 sm:py-2 text-xs sm:text-sm") }}
+                    {{ form.codigo_postal(value=current_user.codigo_postal, class="w-full border-b-2 border-gray-300 focus:border-black focus:outline-none py-1 sm:py-2 text-xs sm:text-sm") }}
                     {% for error in form.codigo_postal.errors %}
                         <p class="text-red-500 text-xs mt-1">{{ error }}</p>
                     {% endfor %}
@@ -45,20 +45,12 @@
                 <!-- Ciudad -->
                 <div>
                     {{ form.ciudad.label(class="block text-gray-700 text-xs sm:text-sm") }}
-                    {{ form.ciudad(class="w-full border-b-2 border-gray-300 focus:border-black focus:outline-none py-1 sm:py-2 text-xs sm:text-sm") }}
+                    {{ form.ciudad(value=current_user.ciudad, class="w-full border-b-2 border-gray-300 focus:border-black focus:outline-none py-1 sm:py-2 text-xs sm:text-sm") }}
                     {% for error in form.ciudad.errors %}
                         <p class="text-red-500 text-xs mt-1">{{ error }}</p>
                     {% endfor %}
                 </div>
 
-                <!-- País -->
-                <div>
-                    {{ form.pais.label(class="block text-gray-700 text-xs sm:text-sm") }}
-                    {{ form.pais(class="w-full border-b-2 border-gray-300 focus:border-black focus:outline-none py-1 sm:py-2 text-xs sm:text-sm") }}
-                    {% for error in form.pais.errors %}
-                        <p class="text-red-500 text-xs mt-1">{{ error }}</p>
-                    {% endfor %}
-                </div>
             </div>
 
             <!-- Botón para cambiar dirección -->

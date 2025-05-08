@@ -39,10 +39,9 @@ class CambiarContraseñaForm(FlaskForm):
 
 # Formulario de Editar Dirección
 class EditarDireccionForm(FlaskForm):
-    direccion = StringField('Dirección (Calle)*', validators=[DataRequired(), Length(min=5, max=100)])
+    direccion_completa = StringField('Dirección Completa*', validators=[DataRequired(), Length(min=5, max=100)])
     codigo_postal = StringField('CP*', validators=[DataRequired(), Length(min=4, max=10)])
     ciudad = StringField('Ciudad*', validators=[DataRequired(), Length(min=2, max=50)])
-    pais = StringField('País*', validators=[DataRequired(), Length(min=2, max=50)])
     submit = SubmitField('Cambiar Dirección')
 
 # Formulario de Editar Perfil

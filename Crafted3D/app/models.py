@@ -8,7 +8,7 @@ class Usuario(UserMixin):
         self.email = email
 
 def load_user(user_id):
-    cursor = current_app.mysql.connection.cursor()  # ✅ Usar `current_app.mysql` en vez de importación directa
+    cursor = current_app.mysql.connection.cursor()
     cursor.execute("SELECT id, nombre_completo, email FROM usuarios WHERE id = %s", (user_id,))
     user_data = cursor.fetchone()
     cursor.close()
