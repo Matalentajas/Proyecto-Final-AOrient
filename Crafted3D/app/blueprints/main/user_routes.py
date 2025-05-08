@@ -1,6 +1,10 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from app.forms.user_forms import RegistroUsuarioForm, LoginForm, ModificarContraseñaForm, CambiarContraseñaForm, EditarDireccionForm, EditarPerfilForm  
+from datetime import datetime
+from werkzeug.security import generate_password_hash
+from flask_mysqldb import MySQL
 
+mysql = MySQL() 
 
 usuario = {
     "nombre": "Juan Pérez",
@@ -37,17 +41,46 @@ pedidos = [
 
 usuario_bp = Blueprint("usuario", __name__)
 
+#Vista del Perfil del usuario
 @usuario_bp.route("/perfil")
 def perfil():
     return render_template("perfil.html", usuario=usuario, pedidos=pedidos)
 
+
+#Vista del formulario de registro
 @usuario_bp.route('/registro', methods=['GET', 'POST'])
 def registro():
     form = RegistroUsuarioForm()
+
     if request.method == 'POST' and form.validate_on_submit():
+        nombre_completo = form.nombre_completo.data
+        email = form.email.data
+        contraseña = generate_password_hash(form.contraseña.data)
+        direccion_completa = form.direccion_completa.data
+        ciudad = form.ciudad.data
+        codigo_postal = form.codigo_postal.data
+        
+        fecha_registro = datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # Guardamos la fecha para en el futuro usar un sistema de descuentos dependiendo de la antiguedad del cliente.
+
+        cursor = mysql.connection.cursor()
+        cursor.execute("""
+            INSERT INTO usuarios (nombre_completo, email, contraseña, direccion_completa, ciudad, codigo_postal, fecha_registro) 
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
+        """, (nombre_completo, email, contraseña, direccion_completa, ciudad, codigo_postal, fecha_registro))
+        mysql.connection.commit()
+        cursor.close()
+
         flash("Registro exitoso. ¡Bienvenido!", "success")
-        return redirect(url_for('usuario.perfil'))
+        return redirect(url_for('usuario.login'))
+
     return render_template('registro.html', form=form)
+
+
+
+
+
+
+
 
 @usuario_bp.route("/login", methods=['GET', 'POST'])
 def login():
