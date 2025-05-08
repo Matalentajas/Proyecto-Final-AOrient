@@ -12,7 +12,7 @@
 
         <!-- Enlaces de acción -->
         <div class="flex gap-8 mt-5 mb-6">  
-            <a href="{{ url_for('editar_perfil') }}" class="text-green-500 hover:text-green-700 text-sm font-medium">Editar Perfil</a>
+            <a href="{{ url_for('usuario.editar_perfil') }}" class="text-green-500 hover:text-green-700 text-sm font-medium">Editar Perfil</a>
             <a href="#" class="text-red-500 hover:text-red-700 text-sm font-medium">Cerrar Sesión</a>
         </div>
     </div>
@@ -36,7 +36,7 @@
                         {% for pedido in pedidos %}
                         <tr class="border-t border-gray-300">
                             <td class="p-3">
-                                <a href="{{ url_for('pedido', numero=pedido.numero) }}" class="text-green-500 hover:text-green-700 font-medium">{{ pedido.numero }}</a>
+                                <a href="{{ url_for('order.pedido', numero=pedido.numero) }}" class="text-green-500 hover:text-green-700 font-medium">{{ pedido.numero }}</a>
                             </td>
                             <td class="p-3">{{ pedido.fecha }}</td>
                             <td class="p-3">
@@ -77,7 +77,7 @@
                 </div>
             </li>
             <li>
-                <a href="{{ url_for('editar_direccion') }}" class="bg-green-500 text-white font-semibold px-6 py-3 rounded-lg hover:bg-green-600 transition-all w-[60%] text-center block">
+                <a href="{{ url_for('usuario.editar_direccion') }}" class="bg-green-500 text-white font-semibold px-6 py-3 rounded-lg hover:bg-green-600 transition-all w-[60%] text-center block">
                     Editar Dirección
                 </a>
             </li>
