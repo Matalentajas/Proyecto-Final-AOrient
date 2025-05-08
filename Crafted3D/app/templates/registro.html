@@ -23,7 +23,7 @@
             {{ form.hidden_tag() }}
 
             <div class="space-y-3">
-                {% for field in [form.nombre, form.email, form.contraseña, form.confirmar_contraseña, form.direccion] %}
+                {% for field in [form.nombre_completo, form.email, form.contraseña, form.confirmar_contraseña, form.direccion_completa] %}
                 <div>
                     {{ field.label(class="block text-gray-700 text-xs sm:text-sm") }}
                     {{ field(class="w-full border-b-2 border-gray-300 focus:border-black focus:outline-none py-1 sm:py-2 text-xs sm:text-sm") }}
@@ -61,7 +61,7 @@
             
             <div class="flex items-center justify-center mt-3 mb-4">
                 <p class="mr-2 text-xs sm:text-sm">¿Ya tienes cuenta?</p>
-                <a class="text-[#39CB60] font-bold text-xs sm:text-sm" href="{{ url_for('login') }}">Inicia Sesión</a>
+                <a class="text-[#39CB60] font-bold text-xs sm:text-sm" href="{{ url_for('usuario.login') }}">Inicia Sesión</a>
             </div>
 
         </form>

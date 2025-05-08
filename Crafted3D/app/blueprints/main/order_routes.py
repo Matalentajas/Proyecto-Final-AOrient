@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, flash, redirect, url_for, request
+from flask_login import login_required
 
 order_bp = Blueprint("order", __name__)
 
@@ -38,6 +39,7 @@ pedidos = [
 pedido_actual = {"numero": "ES999XYZ", "fecha": "12/05/2025", "estado_pago": "Pendiente", "total": "41,29"}
 
 @order_bp.route("/pedido/<numero>")
+@login_required
 def pedido(numero):
     pedido = next((p for p in pedidos if p["numero"] == numero), None)
     if not pedido:
@@ -46,6 +48,7 @@ def pedido(numero):
     return render_template("pedido.html", pedido=pedido)
 
 @order_bp.route("/confirmar_pedido", methods=["GET", "POST"])
+@login_required
 def confirmar_pedido():
     if request.method == "POST":
         flash("Pedido confirmado!", "success")
