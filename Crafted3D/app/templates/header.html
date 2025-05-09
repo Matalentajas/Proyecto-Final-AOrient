@@ -148,15 +148,17 @@ En resumen, este archivo combina HTML, CSS (Tailwind) y JavaScript para crear un
 <!-- Search Section -->
 <div id="searchContainer" class="container mx-auto mt-2 px-4 hidden">
     <div class="flex justify-between items-center border-t border-gray-200 p-4">
-        <div class="flex items-center gap-4">
+        <form action="{{ url_for('product.buscar') }}" method="GET" class="flex items-center gap-4 w-full">
             <i class="fa-solid fa-magnifying-glass text-2xl"></i>
-            <input type="text" placeholder="Búsqueda..." class="w-[150vh] px-3 py-2">
-        </div>
+            <input type="text" name="q" placeholder="Búsqueda..." class="w-[150vh] px-3 py-2">
+            <button type="submit" class="bg-[#39CB60] text-white px-4 py-2 rounded hover:bg-green-600">Buscar</button>
+        </form>
         <button id="closeSearchButton">
             <i class="fa-solid fa-x hover:text-[#39CB60] text-2xl cursor-pointer"></i>
         </button>
     </div>
 </div>
+
 
 <script>
     // 🛒 Carrito de Compras
@@ -197,7 +199,7 @@ En resumen, este archivo combina HTML, CSS (Tailwind) y JavaScript para crear un
 
     options.forEach(option => {
         option.addEventListener('click', (e) => {
-            e.preventDefault(); // Evitar recarga de página
+            e.preventDefault();
             const newImgSrc = option.querySelector('img').getAttribute('src');
             const newAlt = option.querySelector('img').getAttribute('alt');
             const newText = option.textContent.trim();
@@ -223,6 +225,12 @@ En resumen, este archivo combina HTML, CSS (Tailwind) y JavaScript para crear un
     const searchToggleButton = document.getElementById('searchToggleButton');
     const searchContainer = document.getElementById('searchContainer');
     const closeSearchButton = document.getElementById('closeSearchButton');
+
+    document.addEventListener('click', (e) => {
+    if (!searchToggleButton.contains(e.target) && !searchContainer.contains(e.target) && e.target.tagName !== "INPUT") {
+        searchContainer.classList.add("hidden");
+    }
+});
 
     searchToggleButton.addEventListener('click', (e) => {
         e.stopPropagation();

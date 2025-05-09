@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request
 from MySQLdb.cursors import DictCursor
 from app.db import conectar
 
@@ -62,5 +62,29 @@ def productos_destacados():
     db.close()
 
     return render_template("index.html", productos_destacados=productos)
+
+@product_bp.route("/buscar", methods=["GET"])
+def buscar():
+    query = request.args.get("q").strip()
+    if len(query) < 4:
+        return render_template("buscar.html", resultados=[], query=query)
+
+    db = conectar()
+    cursor = db.cursor(DictCursor)
+
+    cursor.execute("""
+        SELECT id, nombre_producto AS nombre, descripcion, precio, imagenes AS imagen 
+        FROM productos 
+        WHERE nombre_producto LIKE %s OR descripcion LIKE %s
+        ORDER BY CHAR_LENGTH(nombre_producto) ASC  -- ✅ Prioriza nombres más cortos y exactos
+    """, (f"%{query}%", f"%{query}%"))
+    
+    resultados = cursor.fetchall()
+    
+    cursor.close()
+    db.close()
+
+    return render_template("buscar.html", resultados=resultados, query=query)
+
 
 
