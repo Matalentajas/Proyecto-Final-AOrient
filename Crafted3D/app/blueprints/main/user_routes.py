@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, current_app
 from app.forms.user_forms import RegistroUsuarioForm, LoginForm, ModificarContraseñaForm, CambiarContraseñaForm, EditarDireccionForm, EditarPerfilForm  
-from datetime import datetime
+from app.email_sender import enviar_correo_bienvenida, enviar_correo_actualizacion, enviar_correo_actualizacion_direccion
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 from app.models import Usuario
@@ -14,10 +14,10 @@ pedidos = [
     {"numero": "PED12347", "fecha": "2025-05-05", "estado_pago": "Pendiente", "estado": "Cancelado", "total": 200.00}
 ]
 
-# Vista del perfil del usuario
 
+# Vista del perfil del usuario
 @usuario_bp.route("/perfil")
-@login_required  # ✅ Solo usuarios autenticados pueden ver su perfil
+@login_required
 def perfil():
     cursor = current_app.mysql.connection.cursor()
     cursor.execute("SELECT nombre_completo, email, direccion_completa, ciudad, codigo_postal FROM usuarios WHERE id = %s", (current_user.id,))
@@ -33,7 +33,7 @@ def perfil():
             "codigo_postal": user_data[4],
         }
     else:
-        usuario_info = None  # Si no se encuentra el usuario en la BD
+        usuario_info = None
 
     return render_template("perfil.html", usuario=usuario_info)
 
@@ -69,7 +69,7 @@ def registro():
             user = Usuario(user_id, nombre_completo, email)
             login_user(user)
 
-        flash("Registro exitoso. ¡Bienvenido!", "success")
+        enviar_correo_bienvenida(email, nombre_completo)
         return redirect(url_for("usuario.perfil"))
 
     return render_template("registro.html", form=form)
@@ -139,7 +139,7 @@ def editar_direccion():
         current_app.mysql.connection.commit()
         cursor.close()
 
-        flash("Dirección actualizada correctamente!", "success")
+        enviar_correo_actualizacion_direccion(current_user.email, direccion_completa, ciudad, codigo_postal)
         return redirect(url_for("usuario.perfil"))
 
     return render_template("editar_direccion.html", form=form)
@@ -165,7 +165,7 @@ def editar_perfil():
         current_app.mysql.connection.commit()
         cursor.close()
 
-        flash("Perfil actualizado correctamente!", "success")
+        enviar_correo_actualizacion(current_user.email, nombre_completo)
         return redirect(url_for("usuario.perfil"))
 
     return render_template("editar_perfil.html", form=form)
