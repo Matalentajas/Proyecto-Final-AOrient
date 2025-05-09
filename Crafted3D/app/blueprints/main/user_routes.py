@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, current_app
 from app.forms.user_forms import RegistroUsuarioForm, LoginForm, ModificarContraseñaForm, CambiarContraseñaForm, EditarDireccionForm, EditarPerfilForm  
-from app.email_sender import enviar_correo_bienvenida
+from app.email_sender import enviar_correo_bienvenida, enviar_correo_actualizacion, enviar_correo_actualizacion_direccion
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 from app.models import Usuario
@@ -139,7 +139,7 @@ def editar_direccion():
         current_app.mysql.connection.commit()
         cursor.close()
 
-        flash("Dirección actualizada correctamente!", "success")
+        enviar_correo_actualizacion_direccion(current_user.email, direccion_completa, ciudad, codigo_postal)
         return redirect(url_for("usuario.perfil"))
 
     return render_template("editar_direccion.html", form=form)
@@ -165,7 +165,7 @@ def editar_perfil():
         current_app.mysql.connection.commit()
         cursor.close()
 
-        flash("Perfil actualizado correctamente!", "success")
+        enviar_correo_actualizacion(current_user.email, nombre_completo)
         return redirect(url_for("usuario.perfil"))
 
     return render_template("editar_perfil.html", form=form)
