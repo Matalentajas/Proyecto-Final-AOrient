@@ -1,22 +1,66 @@
 from flask import Blueprint, render_template
+from MySQLdb.cursors import DictCursor
+from app.db import conectar
 
 product_bp = Blueprint("product", __name__)
 
-productos_por_categoria = {
-    'escayolas3D': [
-        {'id': 'escayola3D_01', 'nombre': 'Escayola 3D Modelo A', 'precio': '19,99 €', 'imagen': 'producto-generico.jpg', 'descripcion': 'Transforma cualquier espacio con su diseño único.'},
-        {'id': 'escayola3D_02', 'nombre': 'Escayola 3D Modelo B', 'precio': '24,99 €', 'imagen': 'producto-generico.jpg', 'descripcion': 'Escayola 3D de alta calidad.'},
-    ]
-}
+@product_bp.route("/productos/<categoria_nombre>")
+def productos_categoria(categoria_nombre):
+    db = conectar()
+    cursor = db.cursor(DictCursor)
 
-@product_bp.route("/productos/<categoria>")
-def productos_categoria(categoria):
-    productos_list = productos_por_categoria.get(categoria, [])
-    return render_template("producto.html", categoria=categoria, productos=productos_list)
+    cursor.execute("SELECT id FROM categorias WHERE nombre = %s", (categoria_nombre,))
+    categoria = cursor.fetchone()
 
-@product_bp.route("/producto/<producto_id>")
+    if not categoria:
+        return "<h1>Categoría no encontrada</h1>", 404
+
+    cursor.execute("SELECT id, nombre_producto AS nombre, descripcion, precio, imagenes AS imagen FROM productos WHERE categoria_id = %s", (categoria["id"],))
+    productos = cursor.fetchall()
+    
+    cursor.close()
+    db.close()
+
+    return render_template("producto.html", categoria=categoria_nombre, productos=productos)
+
+
+
+
+
+@product_bp.route("/producto/<int:producto_id>")
 def producto(producto_id):
-    producto = next((p for categoria in productos_por_categoria.values() for p in categoria if p["id"] == producto_id), None)
+    db = conectar()
+    cursor = db.cursor(DictCursor)
+
+    cursor.execute("SELECT id, nombre_producto AS nombre, descripcion, precio, imagenes AS imagen FROM productos WHERE id = %s", (producto_id,))
+    producto = cursor.fetchone()
+    
+    cursor.close()
+    db.close()
+
     if not producto:
         return "<h1>Producto no encontrado</h1>", 404
+
     return render_template("producto.html", producto=producto)
+
+@product_bp.route("/productos_destacados")
+def productos_destacados():
+    db = conectar()
+    cursor = db.cursor(DictCursor)
+
+    cursor.execute("""
+        SELECT id, nombre_producto AS nombre, descripcion, precio, imagenes AS imagen 
+        FROM productos 
+        WHERE categoria_id IN (
+            SELECT id FROM categorias WHERE nombre IN ('Escayolas3D', 'Decoracion', 'Juguetes')
+        )
+        LIMIT 3
+    """)
+    productos = cursor.fetchall()
+    
+    cursor.close()
+    db.close()
+
+    return render_template("index.html", productos_destacados=productos)
+
+

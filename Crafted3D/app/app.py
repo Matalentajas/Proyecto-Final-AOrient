@@ -6,6 +6,8 @@ from app.config import Config
 from flask_mysqldb import MySQL
 from flask_login import LoginManager
 from app.models import load_user
+from MySQLdb.cursors import DictCursor
+from app.db import conectar
 
 # Cargar variables desde .env
 load_dotenv()
@@ -46,7 +48,24 @@ app.register_blueprint(usuario_bp)
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    db = conectar()
+    cursor = db.cursor(DictCursor)
+    
+    cursor.execute("""
+        SELECT id, nombre_producto AS nombre, descripcion, precio, imagenes AS imagen 
+        FROM productos 
+        WHERE categoria_id IN (
+            SELECT id FROM categorias WHERE nombre IN ('Escayolas3D', 'Decoracion', 'Juguetes')
+        )
+        LIMIT 3
+    """)
+    productos_destacados = cursor.fetchall()
+    
+    cursor.close()
+    db.close()
+
+    return render_template("index.html", productos_destacados=productos_destacados)
+
 
 @app.route("/test_db")
 def test_db():
