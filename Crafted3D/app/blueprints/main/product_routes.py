@@ -9,14 +9,12 @@ def productos_categoria(categoria_nombre):
     db = conectar()
     cursor = db.cursor(DictCursor)
 
-    # Obtener el ID de la categoría usando su nombre
     cursor.execute("SELECT id FROM categorias WHERE nombre = %s", (categoria_nombre,))
     categoria = cursor.fetchone()
 
     if not categoria:
         return "<h1>Categoría no encontrada</h1>", 404
 
-    # Obtener los productos de esa categoría
     cursor.execute("SELECT id, nombre_producto AS nombre, descripcion, precio, imagenes AS imagen FROM productos WHERE categoria_id = %s", (categoria["id"],))
     productos = cursor.fetchall()
     
@@ -44,4 +42,25 @@ def producto(producto_id):
         return "<h1>Producto no encontrado</h1>", 404
 
     return render_template("producto.html", producto=producto)
+
+@product_bp.route("/productos_destacados")
+def productos_destacados():
+    db = conectar()
+    cursor = db.cursor(DictCursor)
+
+    cursor.execute("""
+        SELECT id, nombre_producto AS nombre, descripcion, precio, imagenes AS imagen 
+        FROM productos 
+        WHERE categoria_id IN (
+            SELECT id FROM categorias WHERE nombre IN ('Escayolas3D', 'Decoracion', 'Juguetes')
+        )
+        LIMIT 3
+    """)
+    productos = cursor.fetchall()
+    
+    cursor.close()
+    db.close()
+
+    return render_template("index.html", productos_destacados=productos)
+
 

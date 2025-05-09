@@ -86,35 +86,21 @@
 <section class="container mx-auto py-12">
   <h2 class="text-3xl font-bold text-center mb-8">Productos Destacados</h2>
   <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-    <!-- Producto Destacado 1 -->
+    {% for producto in productos_destacados %}
     <div class="border rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
-      <img src="/Crafted3D/app/static/css/images/productos/producto1.jpg" alt="Producto 1" class="w-full h-48 object-cover">
+      <img src="{{ url_for('static', filename='css/images/' + producto['imagen']) }}" alt="{{ producto['nombre'] }}" class="w-full h-48 object-cover">
       <div class="p-4">
-        <h3 class="text-xl font-bold">Producto Destacado 1</h3>
-        <p class="mt-2 text-gray-700">Breve descripción del producto.</p>
-        <a href="#" class="mt-4 inline-block bg-[#39CB60] text-white px-4 py-2 rounded hover:bg-green-600">Ver Producto</a>
+        <h3 class="text-xl font-bold">{{ producto['nombre'] }}</h3>
+        <p class="mt-2 text-gray-700">{{ producto['descripcion'] }}</p>
+        <a href="{{ url_for('product.producto', producto_id=producto['id']) }}" class="mt-4 inline-block bg-[#39CB60] text-white px-4 py-2 rounded hover:bg-green-600">
+          Ver Producto
+        </a>
       </div>
     </div>
-    <!-- Producto Destacado 2 -->
-    <div class="border rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
-      <img src="/Crafted3D/app/static/css/images/productos/producto2.jpg" alt="Producto 2" class="w-full h-48 object-cover">
-      <div class="p-4">
-        <h3 class="text-xl font-bold">Producto Destacado 2</h3>
-        <p class="mt-2 text-gray-700">Breve descripción del producto.</p>
-        <a href="#" class="mt-4 inline-block bg-[#39CB60] text-white px-4 py-2 rounded hover:bg-green-600">Ver Producto</a>
-      </div>
-    </div>
-    <!-- Producto Destacado 3 -->
-    <div class="border rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
-      <img src="/Crafted3D/app/static/css/images/productos/producto3.jpg" alt="Producto 3" class="w-full h-48 object-cover">
-      <div class="p-4">
-        <h3 class="text-xl font-bold">Producto Destacado 3</h3>
-        <p class="mt-2 text-gray-700">Breve descripción del producto.</p>
-        <a href="#" class="mt-4 inline-block bg-[#39CB60] text-white px-4 py-2 rounded hover:bg-green-600">Ver Producto</a>
-      </div>
-    </div>
+    {% endfor %}
   </div>
 </section>
+
 
 <!-- Sección ¿Por qué comprar en Crafted3D? -->
 <section class="bg-gray-100 py-12">
