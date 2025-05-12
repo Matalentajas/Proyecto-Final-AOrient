@@ -197,8 +197,6 @@ En resumen, este archivo combina HTML, CSS (Tailwind) y JavaScript para crear un
     });
 }
 
-
-
 function toggleCart() {
     const carrito = document.getElementById("cart-dropdown");
 
@@ -212,57 +210,129 @@ function toggleCart() {
 
 
 
-    function cargarCarrito() {
-        const csrfToken = document.querySelector("[name=csrf_token]").value;  // ✅ Obtener el token CSRF
+function cargarCarrito() {
+    fetch("/ver_carrito")
+    .then(response => response.json())
+    .then(data => {
+        console.log("📌 Datos recibidos del servidor:", data);  // 🚀 Verificar datos
 
-        fetch("/ver_carrito", {
-            method: "GET",
-            headers: {
-                "X-CSRFToken": csrfToken  // 🚀 Enviar el token CSRF con la solicitud
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                mostrarCarrito(data.productos);
-            } else {
-                console.error("Error al obtener el carrito:", data.error);
-            }
-        })
-        .catch(error => {
-            console.error("❌ Error al cargar el carrito:", error);
-        });
-    }
+        if (data.success) {
+            mostrarCarrito(data.productos);  // ✅ Llamada correcta a mostrarCarrito()
+        } else {
+            console.error("❌ Error al obtener el carrito:", data.error);
+        }
+    })
+    .catch(error => {
+        console.error("❌ Error en la solicitud:", error);
+    });
+}
 
 
-    function mostrarCarrito(productos) {
+
+function mostrarCarrito(productos) {
+    console.log("📌 Procesando estos productos en el carrito:", productos);
+
     const carritoContenedor = document.getElementById("cart-items");
-    const carritoVacio = document.getElementById("cart-empty");
-
     carritoContenedor.innerHTML = "";
 
     if (productos.length === 0) {
-        carritoVacio.classList.remove("hidden");
+        document.getElementById("cart-empty").classList.remove("hidden");
         carritoContenedor.classList.add("hidden");
         return;
     }
 
-    carritoVacio.classList.add("hidden");
+    document.getElementById("cart-empty").classList.add("hidden");
     carritoContenedor.classList.remove("hidden");
 
     productos.forEach(producto => {
+        const precioTotal = (producto.precio * producto.cantidad).toFixed(2);
+
         const item = document.createElement("li");
         item.classList.add("flex", "items-center", "gap-4", "p-2", "border-b");
         item.innerHTML = `
             <img src="/static/css/images/${producto.imagen}" alt="${producto.nombre}" class="w-12 h-12 object-cover rounded">
             <div>
                 <h4 class="text-lg font-bold">${producto.nombre}</h4>
-                <p class="text-gray-600">${producto.cantidad} x ${producto.precio} €</p>
+                <p class="text-gray-600">Precio unitario: ${producto.precio} €</p>
+                <p class="text-gray-900 font-bold">Total: ${precioTotal} €</p>
+
+                <input type="number" id="cantidad-${producto.producto_id}" class="border p-1 w-16 text-center"
+                       value="${producto.cantidad}" min="1"
+                       onchange="actualizarCantidad(${producto.producto_id}, this.value)">
+
+                <button class="eliminar-btn bg-red-500 text-white px-2 py-1 rounded ml-4 hover:bg-red-600 cursor-pointer"
+                        onclick="eliminarProducto(${producto.producto_id})">Eliminar</button>
             </div>
         `;
         carritoContenedor.appendChild(item);
     });
+
+    console.log("✅ Carrito actualizado correctamente.");
+}
+
+function eliminarProducto(productoId) {
+    fetch(`/eliminar_carrito/${productoId}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": document.querySelector("[name=csrf_token]").value
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            console.log("✅ Producto eliminado correctamente.");
+            cargarCarrito();  // 🚀 Actualizar el carrito después de eliminar el producto
+        } else {
+            console.error("❌ Error al eliminar producto:", data.error);
+        }
+    })
+    .catch(error => {
+        console.error("❌ Error en la solicitud:", error);
+    });
+}
+
+
+function actualizarCantidad(productoId, nuevaCantidad) {
+    const inputCantidad = document.getElementById(`cantidad-${productoId}`);
+
+    if (parseInt(nuevaCantidad) < 1) {
+        alert("❌ La cantidad no puede ser menor a 1. Se ha ajustado automáticamente.");
+        inputCantidad.value = 1;  // 🚀 Restablecer cantidad a 1
+        nuevaCantidad = 1;
     }
+
+    fetch(`/actualizar_carrito/${productoId}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": document.querySelector("[name=csrf_token]").value
+        },
+        body: JSON.stringify({ cantidad: parseInt(nuevaCantidad) })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            console.log("✅ Cantidad actualizada correctamente.");
+            cargarCarrito();  // 🚀 Actualizar el carrito tras el cambio
+        } else {
+            console.error("❌ Error al actualizar cantidad:", data.error);
+        }
+    })
+    .catch(error => {
+        console.error("❌ Error en la solicitud:", error);
+    });
+}
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -52,17 +52,14 @@ def ver_carrito():
     if not current_user.is_authenticated:
         return jsonify({"success": False, "error": "Usuario no autenticado"}), 401
 
-    csrf_token = request.headers.get("X-CSRFToken")  # 🚀 Obtener el token CSRF
-    if not csrf_token:
-        return jsonify({"success": False, "error": "Token CSRF faltante"}), 403
-
     usuario_id = current_user.id  
 
     db = conectar()
     cursor = db.cursor(DictCursor)
 
     cursor.execute("""
-        SELECT c.producto_id, p.nombre_producto AS nombre, p.precio, p.imagenes AS imagen, c.cantidad 
+        SELECT c.producto_id, p.nombre_producto AS nombre, p.precio, p.imagenes AS imagen, 
+               c.cantidad, (p.precio * c.cantidad) AS precio_total
         FROM carrito c
         JOIN productos p ON c.producto_id = p.id
         WHERE c.usuario_id = %s
@@ -74,3 +71,38 @@ def ver_carrito():
     db.close()
 
     return jsonify({"success": True, "productos": productos_carrito})
+
+
+@carrito_bp.route("/actualizar_carrito/<int:producto_id>", methods=["POST"])
+def actualizar_carrito(producto_id):
+    if not current_user.is_authenticated:
+        return jsonify({"success": False, "error": "Usuario no autenticado"}), 401
+
+    data = request.get_json()
+    nueva_cantidad = int(data.get("cantidad", 1))
+
+    db = conectar()
+    cursor = db.cursor()
+    cursor.execute("UPDATE carrito SET cantidad = %s WHERE usuario_id = %s AND producto_id = %s",
+                   (nueva_cantidad, current_user.id, producto_id))
+    db.commit()
+    cursor.close()
+    db.close()
+
+    return jsonify({"success": True})
+
+
+@carrito_bp.route("/eliminar_carrito/<int:producto_id>", methods=["POST"])
+def eliminar_carrito(producto_id):
+    if not current_user.is_authenticated:
+        return jsonify({"success": False, "error": "Usuario no autenticado"}), 401
+
+    db = conectar()
+    cursor = db.cursor()
+    cursor.execute("DELETE FROM carrito WHERE usuario_id = %s AND producto_id = %s",
+                   (current_user.id, producto_id))
+    db.commit()
+    cursor.close()
+    db.close()
+
+    return jsonify({"success": True})
