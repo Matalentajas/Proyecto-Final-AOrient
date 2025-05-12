@@ -162,34 +162,55 @@ En resumen, este archivo combina HTML, CSS (Tailwind) y JavaScript para crear un
 
 <script>
     // 🛒 Carrito de Compras
-    function addToCart(productId, quantity) {
-        const csrfToken = document.querySelector("[name=csrf_token]").value;
-        const url = `/agregar_carrito/${parseInt(productId)}`;
-
-        fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRFToken": csrfToken
-            },
-            body: JSON.stringify({ cantidad: parseInt(quantity) })
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log("📌 Respuesta recibida:", data);
-        })
-        .catch(error => {
-            console.error("❌ Error en la solicitud:", error);
-        });
+ function addToCart(productId) {
+    const cantidad = parseInt(document.getElementById("quantity").value);
+    if (isNaN(cantidad) || cantidad < 1) {
+        alert("❌ Introduce una cantidad válida.");
+        return;
     }
-    function toggleCart() {
+
+    const csrfToken = document.querySelector("[name=csrf_token]").value;
+    const url = `/agregar_carrito/${parseInt(productId)}`;
+
+    fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrfToken
+        },
+        body: JSON.stringify({ cantidad })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("📌 Producto añadido:", data);
+
         const carrito = document.getElementById("cart-dropdown");
-        carrito.classList.toggle("hidden");
 
-        if (!carrito.classList.contains("hidden")) {
-            cargarCarrito();  // Cargar los productos cuando el carrito se muestra
+        if (carrito.classList.contains("hidden")) {
+            toggleCart();  // 🚀 Si está cerrado, abrirlo
+        } else {
+            cargarCarrito();  // ✅ Si ya está abierto, solo actualizar productos
         }
+    })
+    .catch(error => {
+        console.error("❌ Error al añadir al carrito:", error);
+    });
+}
+
+
+
+function toggleCart() {
+    const carrito = document.getElementById("cart-dropdown");
+
+    if (carrito.classList.contains("hidden")) {
+        cargarCarrito();
     }
+
+    carrito.classList.toggle("hidden");
+}
+
+
+
 
     function cargarCarrito() {
         const csrfToken = document.querySelector("[name=csrf_token]").value;  // ✅ Obtener el token CSRF
