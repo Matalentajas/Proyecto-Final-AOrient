@@ -162,30 +162,92 @@ En resumen, este archivo combina HTML, CSS (Tailwind) y JavaScript para crear un
 
 <script>
     // 🛒 Carrito de Compras
+    function addToCart(productId, quantity) {
+        const csrfToken = document.querySelector("[name=csrf_token]").value;
+        const url = `/agregar_carrito/${parseInt(productId)}`;
+
+        fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrfToken
+            },
+            body: JSON.stringify({ cantidad: parseInt(quantity) })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("📌 Respuesta recibida:", data);
+        })
+        .catch(error => {
+            console.error("❌ Error en la solicitud:", error);
+        });
+    }
     function toggleCart() {
-        const cartDropdown = document.getElementById("cart-dropdown");
-        cartDropdown.classList.toggle("hidden");
+        const carrito = document.getElementById("cart-dropdown");
+        carrito.classList.toggle("hidden");
+
+        if (!carrito.classList.contains("hidden")) {
+            cargarCarrito();  // Cargar los productos cuando el carrito se muestra
+        }
     }
 
-    function addToCart(productName, price) {
-        const cartCount = document.getElementById("cart-count");
-        const cartEmpty = document.getElementById("cart-empty");
-        const cartItems = document.getElementById("cart-items");
+    function cargarCarrito() {
+        const csrfToken = document.querySelector("[name=csrf_token]").value;  // ✅ Obtener el token CSRF
 
-        // Ocultar mensaje vacío y mostrar la lista de productos
-        cartEmpty.classList.add("hidden");
-        cartItems.classList.remove("hidden");
+        fetch("/ver_carrito", {
+            method: "GET",
+            headers: {
+                "X-CSRFToken": csrfToken  // 🚀 Enviar el token CSRF con la solicitud
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                mostrarCarrito(data.productos);
+            } else {
+                console.error("Error al obtener el carrito:", data.error);
+            }
+        })
+        .catch(error => {
+            console.error("❌ Error al cargar el carrito:", error);
+        });
+    }
 
-        // Agregar el producto al carrito
+
+    function mostrarCarrito(productos) {
+    const carritoContenedor = document.getElementById("cart-items");
+    const carritoVacio = document.getElementById("cart-empty");
+
+    carritoContenedor.innerHTML = "";
+
+    if (productos.length === 0) {
+        carritoVacio.classList.remove("hidden");
+        carritoContenedor.classList.add("hidden");
+        return;
+    }
+
+    carritoVacio.classList.add("hidden");
+    carritoContenedor.classList.remove("hidden");
+
+    productos.forEach(producto => {
         const item = document.createElement("li");
-        item.textContent = `${productName} - ${price} €`;
-        cartItems.appendChild(item);
-
-        // Actualizar contador del carrito
-        let currentCount = parseInt(cartCount.textContent) || 0;
-        cartCount.textContent = currentCount + 1;
-        cartCount.classList.remove("hidden");
+        item.classList.add("flex", "items-center", "gap-4", "p-2", "border-b");
+        item.innerHTML = `
+            <img src="/static/css/images/${producto.imagen}" alt="${producto.nombre}" class="w-12 h-12 object-cover rounded">
+            <div>
+                <h4 class="text-lg font-bold">${producto.nombre}</h4>
+                <p class="text-gray-600">${producto.cantidad} x ${producto.precio} €</p>
+            </div>
+        `;
+        carritoContenedor.appendChild(item);
+    });
     }
+
+
+
+
+
+
 
     // 🌍 Selector de País
     const dropdownButton = document.getElementById('dropdownButton');

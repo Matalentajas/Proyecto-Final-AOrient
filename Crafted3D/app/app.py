@@ -1,6 +1,6 @@
 import os
 from flask import Flask, render_template, request, redirect, url_for, flash
-from flask_wtf.csrf import CSRFProtect
+from flask_wtf.csrf import CSRFProtect, generate_csrf
 from dotenv import load_dotenv
 from app.config import Config
 from flask_mysqldb import MySQL
@@ -20,6 +20,9 @@ app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 
 # Proteger los formularios contra ataques CSRF
 csrf = CSRFProtect(app)
+@app.context_processor
+def inject_csrf_token():
+    return {"csrf_token": generate_csrf}
 
 # Configuración de la BD
 app.config["MYSQL_HOST"] = Config.MYSQL_HOST
@@ -40,6 +43,10 @@ login_manager.user_loader(load_user)  # ✅ Ahora solo está definido una vez
 from app.blueprints.main.order_routes import order_bp
 from app.blueprints.main.product_routes import product_bp
 from app.blueprints.main.user_routes import usuario_bp
+from app.blueprints.main.carrito_routes import carrito_bp
+
+# ✅ Registrar el Blueprint
+app.register_blueprint(carrito_bp)
 
 # Registrar los Blueprints
 app.register_blueprint(order_bp)

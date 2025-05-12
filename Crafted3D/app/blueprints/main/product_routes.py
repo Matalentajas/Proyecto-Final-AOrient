@@ -1,6 +1,7 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, jsonify
 from MySQLdb.cursors import DictCursor
 from app.db import conectar
+from flask_login import current_user
 
 product_bp = Blueprint("product", __name__)
 
@@ -22,10 +23,6 @@ def productos_categoria(categoria_nombre):
     db.close()
 
     return render_template("producto.html", categoria=categoria_nombre, productos=productos)
-
-
-
-
 
 @product_bp.route("/producto/<int:producto_id>")
 def producto(producto_id):
@@ -85,6 +82,3 @@ def buscar():
     db.close()
 
     return render_template("buscar.html", resultados=resultados, query=query)
-
-
-
