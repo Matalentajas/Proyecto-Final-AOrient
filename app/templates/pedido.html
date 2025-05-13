@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <!-- Botón de volver -->
+    <div class="mt-6 ml-[10rem] ">
+        <a href="{{ url_for('usuario.perfil') }}" class="font-semibold rounded hover:text-blue-700">
+            ← Volver
+        </a>
+    </div>
+    <div class="w-[30%] mt-[50px] ml-[10rem]">
+        <!-- Título Principal -->
+        <h1 class="text-4xl font-bold mb-6">Detalles del Pedido</h1>
+
+        <!-- Información del Pedido -->
+        <div class="text-lg">
+            <p><strong>Número de Pedido:</strong> {{ pedido.numero }}</p>
+            <p><strong>Fecha:</strong> {{ pedido.fecha }}</p>
+            <p><strong>Estado de Pago:</strong> 
+                <span class="{% if pedido.estado_pago == 'Pagado' %}text-green-600{% elif pedido.estado_pago == 'Procesando' %}text-gray-600{% else %}text-red-600{% endif %}">
+                    {{ pedido.estado_pago }}
+                </span>
+            </p>
+            <p><strong>Estado del Pedido:</strong> 
+                <span class="{% if pedido.estado == 'Enviado' %}text-blue-600{% elif pedido.estado == 'Completado' %}text-green-600{% elif pedido.estado == 'Cancelado' %}text-red-600{% else %}text-gray-600{% endif %}">
+                    {{ pedido.estado }}
+                </span>
+            </p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-[4rem] mb-[4rem]">
+        <!-- Productos en el Pedido -->
+        <div class="w-[100%] ml-[10rem]">
+            <h2 class="text-2xl font-semibold mb-4">Productos Comprados</h2>
+            <div class="space-y-4">
+                {% for producto in pedido.productos %}
+                <div class="flex items-center border-b pb-2">
+                    <img src="{{ url_for('static', filename=producto.imagen) }}" alt="{{ producto.nombre }}" class="h-14 w-14 object-cover rounded">
+                    <div class="ml-4">
+                        <p class="text-gray-700"><strong>{{ producto.nombre }}</strong></p>
+                        <p class="text-gray-600 text-sm">Cantidad: {{ producto.cantidad }}</p>
+                        <p class="text-gray-600 text-sm">Precio: {{ producto.precio }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Resumen de Costos y Dirección -->
+        <div class="p-6 md:w-[50%] md:ml-auto">
+            <h2 class="text-2xl font-semibold mb-4">Resumen del Pedido</h2>
+            <hr class="border-gray-300 my-4 w-[60%]">
+            <ul class="space-y-4">
+                <li><p><strong>Subtotal:</strong> {{ pedido.subtotal }}€</p></li>
+                <li><p><strong>Envío:</strong> {{ pedido.envio }}€</p></li>
+                <li><p><strong>IVA:</strong> {{ pedido.iva }}€</p></li>
+                <li><p class="text-lg font-bold"><strong>Total:</strong> {{ pedido.total }}€</p></li>
+            </ul>
+
+            <h2 class="text-2xl font-semibold mt-6 mb-4">Dirección de Envío</h2>
+            <hr class="border-gray-300 my-4 w-[60%]">
+            <ul class="space-y-4">
+                <li><p></p></li>
+                <li><p></p></li>
+                <li class="grid grid-cols-2">
+                    <div><p></p></div>
+                    <div><p></p></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}

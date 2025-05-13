@@ -161,169 +161,127 @@ En resumen, este archivo combina HTML, CSS (Tailwind) y JavaScript para crear un
 
 
 <script>
-    // 🛒 Carrito de Compras
- function addToCart(productId) {
-    const cantidad = parseInt(document.getElementById("quantity").value);
-    if (isNaN(cantidad) || cantidad < 1) {
-        alert("❌ Introduce una cantidad válida.");
-        return;
-    }
 
-    const csrfToken = document.querySelector("[name=csrf_token]").value;
-    const url = `/agregar_carrito/${parseInt(productId)}`;
+         // 🛒 Función para mostrar/ocultar el carrito
+        function toggleCart() {
+            const carrito = document.getElementById("cart-dropdown");
 
-    fetch(url, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken": csrfToken
-        },
-        body: JSON.stringify({ cantidad })
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log("📌 Producto añadido:", data);
+            if (carrito.classList.contains("hidden")) {
+                cargarCarrito();
+            }
 
-        const carrito = document.getElementById("cart-dropdown");
-
-        if (carrito.classList.contains("hidden")) {
-            toggleCart();  // 🚀 Si está cerrado, abrirlo
-        } else {
-            cargarCarrito();  // ✅ Si ya está abierto, solo actualizar productos
+            carrito.classList.toggle("hidden");
         }
-    })
-    .catch(error => {
-        console.error("❌ Error al añadir al carrito:", error);
-    });
-}
 
-function toggleCart() {
-    const carrito = document.getElementById("cart-dropdown");
+        // 🛒 Función para cargar el carrito desde el servidor
+        function cargarCarrito() {
+            fetch("/ver_carrito")
+            .then(response => response.json())
+            .then(data => {
+                console.log("📌 Datos recibidos del servidor:", data);
 
-    if (carrito.classList.contains("hidden")) {
-        cargarCarrito();
-    }
-
-    carrito.classList.toggle("hidden");
-}
-
-
-
-
-function cargarCarrito() {
-    fetch("/ver_carrito")
-    .then(response => response.json())
-    .then(data => {
-        console.log("📌 Datos recibidos del servidor:", data);  // 🚀 Verificar datos
-
-        if (data.success) {
-            mostrarCarrito(data.productos);  // ✅ Llamada correcta a mostrarCarrito()
-        } else {
-            console.error("❌ Error al obtener el carrito:", data.error);
+                if (data.success) {
+                    mostrarCarrito(data.productos);  // Llamada a mostrarCarrito()
+                } else {
+                    console.error("❌ Error al obtener el carrito:", data.error);
+                }
+            })
+            .catch(error => {
+                console.error("❌ Error en la solicitud:", error);
+            });
         }
-    })
-    .catch(error => {
-        console.error("❌ Error en la solicitud:", error);
-    });
-}
 
+        // 🛒 Función para mostrar los productos del carrito
+        function mostrarCarrito(productos) {
+            const carritoContenedor = document.getElementById("cart-items");
+            carritoContenedor.innerHTML = "";
 
+            if (productos.length === 0) {
+                document.getElementById("cart-empty").classList.remove("hidden");
+                carritoContenedor.classList.add("hidden");
+                return;
+            }
 
-function mostrarCarrito(productos) {
-    console.log("📌 Procesando estos productos en el carrito:", productos);
+            document.getElementById("cart-empty").classList.add("hidden");
+            carritoContenedor.classList.remove("hidden");
 
-    const carritoContenedor = document.getElementById("cart-items");
-    carritoContenedor.innerHTML = "";
+            productos.forEach(producto => {
+                const precioTotal = (producto.precio * producto.cantidad).toFixed(2);
 
-    if (productos.length === 0) {
-        document.getElementById("cart-empty").classList.remove("hidden");
-        carritoContenedor.classList.add("hidden");
-        return;
-    }
+                const item = document.createElement("li");
+                item.classList.add("flex", "items-center", "gap-4", "p-2", "border-b");
+                item.innerHTML = `
+                    <img src="/static/css/images/${producto.imagen}" alt="${producto.nombre}" class="w-12 h-12 object-cover rounded">
+                    <div>
+                        <h4 class="text-lg font-bold">${producto.nombre}</h4>
+                        <p class="text-gray-600">Precio unitario: ${producto.precio} €</p>
+                        <p class="text-gray-900 font-bold">Total: ${precioTotal} €</p>
 
-    document.getElementById("cart-empty").classList.add("hidden");
-    carritoContenedor.classList.remove("hidden");
+                        <input type="number" id="cantidad-${producto.producto_id}" class="border p-1 w-16 text-center"
+                               value="${producto.cantidad}" min="1"
+                               onchange="actualizarCantidad(${producto.producto_id}, this.value)">
 
-    productos.forEach(producto => {
-        const precioTotal = (producto.precio * producto.cantidad).toFixed(2);
-
-        const item = document.createElement("li");
-        item.classList.add("flex", "items-center", "gap-4", "p-2", "border-b");
-        item.innerHTML = `
-            <img src="/static/css/images/${producto.imagen}" alt="${producto.nombre}" class="w-12 h-12 object-cover rounded">
-            <div>
-                <h4 class="text-lg font-bold">${producto.nombre}</h4>
-                <p class="text-gray-600">Precio unitario: ${producto.precio} €</p>
-                <p class="text-gray-900 font-bold">Total: ${precioTotal} €</p>
-
-                <input type="number" id="cantidad-${producto.producto_id}" class="border p-1 w-16 text-center"
-                       value="${producto.cantidad}" min="1"
-                       onchange="actualizarCantidad(${producto.producto_id}, this.value)">
-
-                <button class="eliminar-btn bg-red-500 text-white px-2 py-1 rounded ml-4 hover:bg-red-600 cursor-pointer"
-                        onclick="eliminarProducto(${producto.producto_id})">Eliminar</button>
-            </div>
-        `;
-        carritoContenedor.appendChild(item);
-    });
-
-    console.log("✅ Carrito actualizado correctamente.");
-}
-
-function eliminarProducto(productoId) {
-    fetch(`/eliminar_carrito/${productoId}`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken": document.querySelector("[name=csrf_token]").value
+                        <button class="eliminar-btn bg-red-500 text-white px-2 py-1 rounded ml-4 hover:bg-red-600 cursor-pointer"
+                                onclick="eliminarProducto(${producto.producto_id})">Eliminar</button>
+                    </div>
+                `;
+                carritoContenedor.appendChild(item);
+            });
         }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            console.log("✅ Producto eliminado correctamente.");
-            cargarCarrito();  // 🚀 Actualizar el carrito después de eliminar el producto
-        } else {
-            console.error("❌ Error al eliminar producto:", data.error);
+
+        // 🛒 Función para eliminar un producto del carrito
+        function eliminarProducto(productoId) {
+            fetch(`/eliminar_carrito/${productoId}`, {
+                method: "DELETE",  // Aquí usas DELETE
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": document.querySelector("[name=csrf_token]").value
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log("✅ Producto eliminado correctamente.");
+                    cargarCarrito();  // Recargar el carrito
+                } else {
+                    console.error("❌ Error al eliminar producto:", data.error);
+                }
+            })
+            .catch(error => {
+                console.error("❌ Error en la solicitud:", error);
+            });
         }
-    })
-    .catch(error => {
-        console.error("❌ Error en la solicitud:", error);
-    });
-}
 
+        // 🛒 Función para actualizar la cantidad de un producto en el carrito
+        function actualizarCantidad(productoId, nuevaCantidad) {
+            nuevaCantidad = parseInt(nuevaCantidad);
 
-function actualizarCantidad(productoId, nuevaCantidad) {
-    const inputCantidad = document.getElementById(`cantidad-${productoId}`);
+            if (nuevaCantidad < 1) {
+                alert("❌ La cantidad no puede ser menor a 1. Se ha ajustado automáticamente.");
+                nuevaCantidad = 1;
+            }
 
-    if (parseInt(nuevaCantidad) < 1) {
-        alert("❌ La cantidad no puede ser menor a 1. Se ha ajustado automáticamente.");
-        inputCantidad.value = 1;  // 🚀 Restablecer cantidad a 1
-        nuevaCantidad = 1;
-    }
-
-    fetch(`/actualizar_carrito/${productoId}`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken": document.querySelector("[name=csrf_token]").value
-        },
-        body: JSON.stringify({ cantidad: parseInt(nuevaCantidad) })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            console.log("✅ Cantidad actualizada correctamente.");
-            cargarCarrito();  // 🚀 Actualizar el carrito tras el cambio
-        } else {
-            console.error("❌ Error al actualizar cantidad:", data.error);
+            fetch(`/actualizar_carrito/${productoId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": document.querySelector("[name=csrf_token]").value
+                },
+                body: JSON.stringify({ cantidad: nuevaCantidad })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log("✅ Cantidad actualizada correctamente.");
+                    cargarCarrito();  // Recargar el carrito
+                } else {
+                    console.error("❌ Error al actualizar cantidad:", data.error);
+                }
+            })
+            .catch(error => {
+                console.error("❌ Error en la solicitud:", error);
+            });
         }
-    })
-    .catch(error => {
-        console.error("❌ Error en la solicitud:", error);
-    });
-}
-
 
 
 
