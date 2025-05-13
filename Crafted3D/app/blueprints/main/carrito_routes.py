@@ -44,7 +44,6 @@ def agregar_carrito(producto_id):
 
     return jsonify({"success": True})
 
-# 🚀 **Excluir solo `agregar_carrito` de CSRF si es necesario**
 csrf.exempt(agregar_carrito)
 
 @carrito_bp.route("/ver_carrito", methods=["GET"])
@@ -92,7 +91,7 @@ def actualizar_carrito(producto_id):
     return jsonify({"success": True})
 
 
-@carrito_bp.route("/eliminar_carrito/<int:producto_id>", methods=["POST"])
+@carrito_bp.route("/eliminar_carrito/<int:producto_id>", methods=["DELETE"])
 def eliminar_carrito(producto_id):
     if not current_user.is_authenticated:
         return jsonify({"success": False, "error": "Usuario no autenticado"}), 401
@@ -106,3 +105,4 @@ def eliminar_carrito(producto_id):
     db.close()
 
     return jsonify({"success": True})
+
