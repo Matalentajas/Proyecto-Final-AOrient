@@ -73,14 +73,5 @@ def index():
 
     return render_template("index.html", productos_destacados=productos_destacados)
 
-
-@app.route("/test_db")
-def test_db():
-    cursor = mysql.connection.cursor()
-    cursor.execute("SELECT * FROM usuarios")
-    data = cursor.fetchall()
-    cursor.close()
-    return f"Usuarios en la BD: {data}"
-
 if __name__ == "__main__":
     app.run(debug=True)

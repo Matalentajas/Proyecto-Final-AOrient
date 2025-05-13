@@ -44,7 +44,13 @@ def registro():
         return redirect(url_for("usuario.perfil"))
     form = RegistroUsuarioForm()
     
-    if request.method == "POST" and form.validate_on_submit():
+    if request.method == "POST":
+        print("Formulario recibido")
+    if form.validate_on_submit():
+        print("Formulario validado correctamente")
+    else:
+        print("Errores de validación:", form.errors)
+
         nombre_completo = form.nombre_completo.data
         email = form.email.data
         contraseña = generate_password_hash(form.contraseña.data)
@@ -69,7 +75,10 @@ def registro():
             user = Usuario(user_id, nombre_completo, email)
             login_user(user)
 
-        enviar_correo_bienvenida(email, nombre_completo)
+            print(f"📩 Intentando enviar correo de bienvenida a: {email}")
+            enviar_correo_bienvenida(email, nombre_completo)
+            print(f"✅ Correo de bienvenida enviado con éxito.")
+
         return redirect(url_for("usuario.perfil"))
 
     return render_template("registro.html", form=form)

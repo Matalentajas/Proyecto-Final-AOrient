@@ -1,11 +1,17 @@
 from wtforms import StringField, PasswordField, SubmitField, EmailField, DateField, BooleanField
-from wtforms.validators import DataRequired, Length, Email, EqualTo
+from wtforms.validators import DataRequired, Length, EqualTo
 from flask_wtf import FlaskForm
+import re
+
+# Función de validación manual de email
+def validar_email_manual(email):
+    patron = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
+    return re.match(patron, email) is not None
 
 # Formulario de Registro
 class RegistroUsuarioForm(FlaskForm):
     nombre_completo = StringField('Nombre Completo', validators=[DataRequired(), Length(min=2, max=50)])
-    email = EmailField('Correo Electrónico', validators=[DataRequired(), Email()])
+    email = EmailField('Correo Electrónico', validators=[DataRequired()])
     contraseña = PasswordField('Contraseña', validators=[DataRequired(), Length(min=6)])
     confirmar_contraseña = PasswordField('Confirmar Contraseña', validators=[
         DataRequired(),
@@ -20,16 +26,23 @@ class RegistroUsuarioForm(FlaskForm):
 
     submit = SubmitField('Registrarse')
 
+    # Validación manual en `validate()`
+    def validate(self):
+        if not validar_email_manual(self.email.data):
+            self.email.errors.append("❌ El correo electrónico no es válido.")
+            return False
+        return super().validate()
+
 # Formulario de Inicio de Sesión
 class LoginForm(FlaskForm):
-    email = EmailField('Correo Electrónico', validators=[DataRequired(), Email()])
+    email = EmailField('Correo Electrónico', validators=[DataRequired()])
     contraseña = PasswordField('Contraseña', validators=[DataRequired(), Length(min=6)])
     recordar_sesion = BooleanField('Recordar sesión')
     submit = SubmitField('Iniciar Sesión')
 
 # Formulario de Recuperar Contraseña 1
 class ModificarContraseñaForm(FlaskForm):
-    email = EmailField('Dirección de email', validators=[DataRequired(), Email()])
+    email = EmailField('Dirección de email', validators=[DataRequired()])
     submit = SubmitField('Enviar Correo')
 
 # Formulario de Recuperar Contraseña 2
@@ -46,7 +59,6 @@ class EditarDireccionForm(FlaskForm):
 
 # Formulario de Editar Perfil
 class EditarPerfilForm(FlaskForm):
-    email = EmailField('Dirección de email*', validators=[DataRequired(), Email()])
+    email = EmailField('Dirección de email*', validators=[DataRequired()])
     nombre = StringField('Nombre Completo*', validators=[DataRequired(), Length(min=2, max=50)])
     submit = SubmitField('Editar Perfil')
-
