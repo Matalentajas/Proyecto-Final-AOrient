@@ -1,7 +1,0 @@
-.env
-__pycache__/
-instance/
-*.pyc
-*.pyo
-*.pyd
-venv/
