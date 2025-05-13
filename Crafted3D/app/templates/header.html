@@ -161,6 +161,41 @@ En resumen, este archivo combina HTML, CSS (Tailwind) y JavaScript para crear un
 
 
 <script>
+            function addToCart(productId) {
+            const cantidad = parseInt(document.getElementById("quantity").value);
+            if (isNaN(cantidad) || cantidad < 1) {
+                alert("❌ Introduce una cantidad válida.");
+                return;
+            }
+
+            const csrfToken = document.querySelector("[name=csrf_token]").value;
+            const url = `/agregar_carrito/${parseInt(productId)}`;
+
+            fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrfToken
+                },
+                body: JSON.stringify({ cantidad })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("📌 Producto añadido:", data);
+
+                const carrito = document.getElementById("cart-dropdown");
+
+                if (carrito.classList.contains("hidden")) {
+                    toggleCart();  // 🚀 Si está cerrado, abrirlo
+                } else {
+                    cargarCarrito();  // ✅ Si ya está abierto, solo actualizar productos
+                }
+            })
+            .catch(error => {
+                console.error("❌ Error al añadir al carrito:", error);
+            });
+        }
+
 
          // 🛒 Función para mostrar/ocultar el carrito
         function toggleCart() {
