@@ -42,14 +42,14 @@ def perfil():
 def registro():
     if current_user.is_authenticated:
         return redirect(url_for("usuario.perfil"))
+
     form = RegistroUsuarioForm()
     
     if request.method == "POST":
         print("Formulario recibido")
+
     if form.validate_on_submit():
         print("Formulario validado correctamente")
-    else:
-        print("Errores de validación:", form.errors)
 
         nombre_completo = form.nombre_completo.data
         email = form.email.data
@@ -81,7 +81,11 @@ def registro():
 
         return redirect(url_for("usuario.perfil"))
 
+    else:
+        print("Errores de validación:", form.errors)
+
     return render_template("registro.html", form=form)
+
 
 # Vista del login
 @usuario_bp.route("/login", methods=["GET", "POST"])

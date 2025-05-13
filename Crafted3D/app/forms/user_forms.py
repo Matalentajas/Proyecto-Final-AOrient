@@ -1,3 +1,4 @@
+from flask import request
 from wtforms import StringField, PasswordField, SubmitField, EmailField, DateField, BooleanField
 from wtforms.validators import DataRequired, Length, EqualTo
 from flask_wtf import FlaskForm
@@ -27,11 +28,14 @@ class RegistroUsuarioForm(FlaskForm):
     submit = SubmitField('Registrarse')
 
     # Validación manual en `validate()`
-    def validate(self):
-        if not validar_email_manual(self.email.data):
-            self.email.errors.append("❌ El correo electrónico no es válido.")
-            return False
-        return super().validate()
+    def validate(self, extra_validators=None):
+        if request.method == "POST":
+            if not validar_email_manual(self.email.data):
+                self.email.errors.append("❌ El correo electrónico no es válido.")
+                return False
+        return super().validate(extra_validators=extra_validators)
+
+
 
 # Formulario de Inicio de Sesión
 class LoginForm(FlaskForm):
