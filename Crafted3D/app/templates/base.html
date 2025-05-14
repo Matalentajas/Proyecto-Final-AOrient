@@ -22,7 +22,12 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
         integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+
   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"></script>
+
   <title>{% block title %}Crafted 3D{% endblock %}</title>
 </head>
 <body class="font-nunito">
@@ -42,12 +47,7 @@
   {% include "footer.html" %}
   
   <!-- Scripts -->
-  {% block scripts %}
-  <script>
-
-
-  </script>
-  {% endblock %}
-  
+{% if mensaje is defined and tipo is defined and mensaje and tipo %}
+{% endif %}
 </body>
 </html>

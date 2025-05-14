@@ -38,7 +38,6 @@ def perfil():
 
     return render_template("perfil.html", usuario=usuario_info)
 
-# Vista del formulario de registro con autenticación automática
 @usuario_bp.route("/registro", methods=["GET", "POST"])
 def registro():
     if current_user.is_authenticated:
@@ -88,31 +87,40 @@ def registro():
     return render_template("registro.html", form=form)
 
 
+
 # Vista del login
 @usuario_bp.route("/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for("usuario.perfil"))
-    form = LoginForm()
     
+    form = LoginForm()
+
     if request.method == "POST" and form.validate_on_submit():
         email = form.email.data
         contraseña = form.contraseña.data
 
+        # Consultar el usuario en la base de datos
         cursor = current_app.mysql.connection.cursor()
         cursor.execute("SELECT id, nombre_completo, email, contraseña FROM usuarios WHERE email = %s", (email,))
         user_data = cursor.fetchone()
         cursor.close()
 
-        if user_data and check_password_hash(user_data[3], contraseña):
+        if user_data is None:
+            # Si no se encuentra el usuario con ese correo
+            form.email.errors.append("❌ El correo electrónico no está registrado.")
+        elif not check_password_hash(user_data[3], contraseña):
+            # Si la contraseña no es correcta
+            form.contraseña.errors.append("❌ La contraseña es incorrecta.")
+        else:
+            # Si las credenciales son correctas
             user = Usuario(user_data[0], user_data[1], user_data[2])
             login_user(user)
             flash("Inicio de sesión exitoso!", "success")
             return redirect(url_for("usuario.perfil"))
-        else:
-            flash("Correo o contraseña incorrectos", "danger")
 
     return render_template("login.html", form=form)
+
 
 
 # Vista para modificar contraseña

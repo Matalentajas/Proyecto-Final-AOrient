@@ -29,11 +29,44 @@ class RegistroUsuarioForm(FlaskForm):
 
     # Validación manual en `validate()`
     def validate(self, extra_validators=None):
+        valid = super().validate(extra_validators=extra_validators)
+
         if request.method == "POST":
+            # Validar formato de email
             if not validar_email_manual(self.email.data):
+                self.email.errors = list(self.email.errors)
                 self.email.errors.append("❌ El correo electrónico no es válido.")
                 return False
-        return super().validate(extra_validators=extra_validators)
+
+            # Verificar si el correo ya está registrado
+            import MySQLdb
+            from flask import current_app
+
+            try:
+                conn = MySQLdb.connect(
+                    host=current_app.config['MYSQL_HOST'],
+                    user=current_app.config['MYSQL_USER'],
+                    passwd=current_app.config['MYSQL_PASSWORD'],
+                    db=current_app.config['MYSQL_DB']
+                )
+                cursor = conn.cursor()
+                cursor.execute("SELECT id FROM usuarios WHERE email = %s", (self.email.data,))
+                if cursor.fetchone():
+                    self.email.errors = list(self.email.errors)
+                    self.email.errors.append("❌ Este correo ya está registrado.")
+                    return False
+            except Exception as e:
+                print("Error al validar email en BD:", e)
+            finally:
+                cursor.close()
+                conn.close()
+
+        return valid and not self.email.errors
+
+
+
+
+
 
 
 
@@ -48,6 +81,21 @@ class LoginForm(FlaskForm):
 class ModificarContraseñaForm(FlaskForm):
     email = EmailField('Dirección de email', validators=[DataRequired()])
     submit = SubmitField('Enviar Correo')
+
+    def validate(self, extra_validators=None):
+        valid = super().validate(extra_validators=extra_validators)
+
+        if request.method == "POST":
+            # Validar si el correo electrónico es válido
+            if not validar_email_manual(self.email.data):
+                if not self.email.errors:
+                    self.email.errors = []
+                else:
+                    self.email.errors = list(self.email.errors)
+                self.email.errors.append("❌ El correo electrónico no es válido.")
+                return False
+
+        return valid
 
 # Formulario de Recuperar Contraseña 2
 class CambiarContraseñaForm(FlaskForm):
@@ -66,3 +114,18 @@ class EditarPerfilForm(FlaskForm):
     email = EmailField('Dirección de email*', validators=[DataRequired()])
     nombre = StringField('Nombre Completo*', validators=[DataRequired(), Length(min=2, max=50)])
     submit = SubmitField('Editar Perfil')
+
+    def validate(self, extra_validators=None):
+        valid = super().validate(extra_validators=extra_validators)
+
+        if request.method == "POST":
+            # Validar si el correo electrónico es válido
+            if not validar_email_manual(self.email.data):
+                if not self.email.errors:
+                    self.email.errors = []
+                else:
+                    self.email.errors = list(self.email.errors)
+                self.email.errors.append("❌ El correo electrónico no es válido.")
+                return False
+
+        return valid
