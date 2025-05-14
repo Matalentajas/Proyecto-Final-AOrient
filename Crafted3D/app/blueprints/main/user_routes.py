@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, current_app
+from app.utils.token import guardar_token
 from app.forms.user_forms import RegistroUsuarioForm, LoginForm, ModificarContraseñaForm, CambiarContraseñaForm, EditarDireccionForm, EditarPerfilForm  
-from app.email_sender import enviar_correo_bienvenida, enviar_correo_actualizacion, enviar_correo_actualizacion_direccion
+from app.email_sender import enviar_correo_bienvenida, enviar_correo_actualizacion, enviar_correo_actualizacion_direccion, enviar_correo_confirmacion, enviar_correo_recuperacion
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 from app.models import Usuario
@@ -118,19 +119,62 @@ def login():
 @usuario_bp.route("/modificar_contraseña_1", methods=["GET", "POST"])
 def modificar_contraseña():
     form = ModificarContraseñaForm()
+
     if request.method == "POST" and form.validate_on_submit():
-        flash("Correo de recuperación enviado!", "success")
-        return redirect(url_for("usuario.login"))
+        email = form.email.data
+
+        # Verificar si el usuario existe
+        cursor = current_app.mysql.connection.cursor()
+        cursor.execute("SELECT nombre_completo FROM usuarios WHERE email = %s", (email,))
+        resultado = cursor.fetchone()
+        cursor.close()
+
+        if resultado:
+            nombre = resultado[0]
+            token = guardar_token(email)
+            enviar_correo_recuperacion(email, nombre, token)
+            
+            flash("Correo de recuperación enviado!", "success")
+            return redirect(url_for("usuario.login"))
+        else:
+            flash("❌ El correo ingresado no está registrado.", "error")
+
     return render_template("modificar_contraseña.html", form=form)
 
+
 # Vista para cambiar contraseña
-@usuario_bp.route("/cambiar_contraseña", methods=["GET", "POST"])
-def cambiar_contraseña():
+@usuario_bp.route("/cambiar_contraseña/<token>", methods=["GET", "POST"])
+def cambiar_contraseña(token):
     form = CambiarContraseñaForm()
+
+    cursor = current_app.mysql.connection.cursor()
+    cursor.execute("SELECT email, nombre_completo FROM usuarios WHERE reset_token = %s", (token,))
+    resultado = cursor.fetchone()
+    cursor.close()
+
+
+    if not resultado:
+        return render_template("error.html", mensaje="❌ Token inválido o expirado.")
+
+    email = resultado[0]
+    nombre = resultado[1]
+
+
     if request.method == "POST" and form.validate_on_submit():
-        flash("Tu contraseña ha sido modificada!", "success")
-        return redirect(url_for("usuario.login"))
+        nueva_contraseña = form.nueva_contraseña.data
+
+        # Guardar la nueva contraseña y eliminar el token
+        cursor = current_app.mysql.connection.cursor()
+        nueva_contraseña_hash = generate_password_hash(nueva_contraseña)
+        cursor.execute("UPDATE usuarios SET contraseña = %s, reset_token = NULL WHERE email = %s", 
+                       (nueva_contraseña_hash, email))
+        current_app.mysql.connection.commit()
+        cursor.close()
+        enviar_correo_confirmacion(email, nombre)
+        return redirect(url_for("usuario.login", mensaje="✅ Contraseña actualizada exitosamente."))
+
     return render_template("cambiar_contraseña.html", form=form)
+
 
 # Vista para editar dirección del usuario
 @usuario_bp.route("/editar_direccion", methods=["GET", "POST"])
