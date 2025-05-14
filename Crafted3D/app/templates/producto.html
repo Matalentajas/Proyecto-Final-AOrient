@@ -52,6 +52,24 @@
               Añadir a la cesta
           </button>
 
+            <h3 class="text-xl font-bold mt-6">Deja tu valoración</h3>
+            <div class="rating" style="font-size: 2rem;">
+              <span class="star" data-value="1">★</span>
+              <span class="star" data-value="2">★</span>
+              <span class="star" data-value="3">★</span>
+              <span class="star" data-value="4">★</span>
+              <span class="star" data-value="5">★</span>
+            </div>
+
+            <form id="formValoracion" method="POST" action="{{ url_for('product.valorar', producto_id=producto.id) }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <textarea name="comentario" placeholder="Escribe tu opinión aquí..." required style="resize: none; width: 100%; height: 120px; border: 2px solid black; border-radius: 8px;"></textarea>
+                <input type="hidden" name="valor" id="valoracion"> <!-- ✅ este es el único necesario -->
+                <button type="submit" class="bg-[#39CB60] text-white px-4 py-2 rounded hover:bg-green-600">Enviar Valoración</button>
+            </form>
+
+
+
 
       </div>
   </div>
@@ -80,6 +98,64 @@
             priceElement.textContent = `${totalPrice} €`;
         }
     }
+
+      document.querySelectorAll('.star').forEach((star, index, stars) => {
+        star.addEventListener('click', function() {
+            let valor = this.getAttribute('data-value');
+            document.getElementById('valoracion').value = valor;  // ✅ Guarda la puntuación correctamente
+
+            // Resaltar la estrella seleccionada y todas las anteriores
+            stars.forEach(s => s.classList.remove('selected'));
+            for (let i = 0; i <= index; i++) {
+                stars[i].classList.add('selected');
+            }
+        });
+    });
+
+
+    document.getElementById("formValoracion").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        let valoracion = document.getElementById("valoracion").value;
+
+        if (!valoracion || valoracion === "0") {
+            alert("Por favor, selecciona una puntuación antes de enviar tu valoración.");
+            return;
+        }
+
+        let formData = new FormData(this);
+
+        fetch(this.action, {
+            method: "POST",
+            body: formData
+        }).then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert(data.error);
+            } else {
+                alert(data.mensaje);
+                location.reload();
+            }
+        });
+    });
+
+
+
+
+
 </script>
+
+<style>
+  .star {
+    cursor: pointer;
+    font-size: 24px;
+    color: gray;
+}
+
+.star.selected {
+    color: gold;
+}
+
+</style>
 
 {% endblock %}

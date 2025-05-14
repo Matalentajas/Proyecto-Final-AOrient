@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, jsonify
+from flask import Blueprint, redirect, render_template, request, jsonify, url_for, flash
 from MySQLdb.cursors import DictCursor
 from app.db import conectar
 from flask_login import current_user
@@ -29,8 +29,18 @@ def producto(producto_id):
     db = conectar()
     cursor = db.cursor(DictCursor)
 
-    cursor.execute("SELECT id, nombre_producto AS nombre, descripcion, precio, imagenes AS imagen FROM productos WHERE id = %s", (producto_id,))
+    cursor.execute("""
+        SELECT id, nombre_producto AS nombre, descripcion, precio, imagenes AS imagen 
+        FROM productos WHERE id = %s
+    """, (producto_id,))
     producto = cursor.fetchone()
+
+    cursor.execute("""
+        SELECT valor, comentario, fecha 
+        FROM valoraciones WHERE producto_id = %s 
+        ORDER BY fecha DESC
+    """, (producto_id,))
+    valoraciones = cursor.fetchall()
     
     cursor.close()
     db.close()
@@ -38,7 +48,8 @@ def producto(producto_id):
     if not producto:
         return "<h1>Producto no encontrado</h1>", 404
 
-    return render_template("producto.html", producto=producto)
+    return render_template("producto.html", producto=producto, valoraciones=valoraciones)
+
 
 @product_bp.route("/productos_destacados")
 def productos_destacados():
@@ -82,3 +93,30 @@ def buscar():
     db.close()
 
     return render_template("buscar.html", resultados=resultados, query=query)
+
+@product_bp.route("/valorar/<int:producto_id>", methods=["POST"])
+def valorar(producto_id):
+    if not current_user.is_authenticated:
+        return jsonify({"error": "Debes iniciar sesión para valorar un producto"}), 403
+
+    valor = request.form.get("valor")
+    comentario = request.form.get("comentario")
+
+    if not valor:
+        return jsonify({"error": "Selecciona una puntuación antes de enviar"}), 400
+
+    db = conectar()
+    cursor = db.cursor()
+
+    cursor.execute("""
+        INSERT INTO valoraciones (producto_id, usuario_id, valor, comentario) 
+        VALUES (%s, %s, %s, %s)
+    """, (producto_id, current_user.id, float(valor), comentario))
+
+    db.commit()
+    cursor.close()
+    db.close()
+
+    return jsonify({"mensaje": "¡Gracias por tu valoración!", "valoracion": float(valor)})
+
+
