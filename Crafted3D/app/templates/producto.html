@@ -72,7 +72,7 @@
             <div class="border p-4 rounded-lg shadow mt-4">
                 <p class="text-lg font-bold">⭐ {{ valoracion.valor }} / 5</p>
                 <p class="text-gray-600">{{ valoracion.comentario }}</p>
-                <p class="text-sm text-gray-500">Publicado el {{ valoracion.fecha.strftime('%d/%m/%Y') }}</p>
+                <p class="text-sm text-gray-500">Publicado por <strong>{{ valoracion.usuario }}</strong> el {{ valoracion.fecha.strftime('%d/%m/%Y') }}</p>
             </div>
             {% endfor %}
         {% else %}
@@ -92,7 +92,7 @@
           <form id="formValoracion" method="POST" action="{{ url_for('product.valorar', producto_id=producto.id) }}">
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
               <textarea name="comentario" placeholder="Escribe tu opinión aquí..." required style="resize: none; width: 100%; height: 120px; border: 2px solid black; border-radius: 8px;"></textarea>
-              <input type="hidden" name="valor" id="valoracion"> <!-- ✅ este es el único necesario -->
+              <input type="hidden" name="valor" id="valoracion">
               <button type="submit" class="bg-[#39CB60] text-white px-4 py-2 rounded hover:bg-green-600">Enviar Valoración</button>
           </form>
       </div>
