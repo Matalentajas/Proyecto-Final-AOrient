@@ -115,8 +115,15 @@ En resumen, este archivo combina HTML, CSS (Tailwind) y JavaScript para crear un
                         Tu carrito está vacío
                     </div>
                     <ul id="cart-items" class="hidden"></ul>
+                    
+                    <!-- Botón Realizar Pedido -->
+                    <div id="realizar-pedido-container" class="mt-6 hidden text-center"></div>
+                        <button id="realizar-pedido-btn" class="cursor-pointer bg-gradient-to-r from-green-400 via-green-500 to-green-600 text-white px-8 py-4 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ease-in-out w-full font-semibold text-lg"
+                            onclick="realizarPedido()">🛒 Realizar Pedido</button>
+                    </div>
                 </div>
             </div>
+
 
         </div>
     </section>
@@ -234,12 +241,14 @@ En resumen, este archivo combina HTML, CSS (Tailwind) y JavaScript para crear un
             if (productos.length === 0) {
                 document.getElementById("cart-empty").classList.remove("hidden");
                 carritoContenedor.classList.add("hidden");
+                document.getElementById("realizar-pedido-container").classList.add("hidden");
                 return;
             }
 
             document.getElementById("cart-empty").classList.add("hidden");
             carritoContenedor.classList.remove("hidden");
 
+            // Mostrar los productos del carrito
             productos.forEach(producto => {
                 const precioTotal = (producto.precio * producto.cantidad).toFixed(2);
 
@@ -253,8 +262,8 @@ En resumen, este archivo combina HTML, CSS (Tailwind) y JavaScript para crear un
                         <p class="text-gray-900 font-bold">Total: ${precioTotal} €</p>
 
                         <input type="number" id="cantidad-${producto.producto_id}" class="border p-1 w-16 text-center"
-                               value="${producto.cantidad}" min="1"
-                               onchange="actualizarCantidad(${producto.producto_id}, this.value)">
+                            value="${producto.cantidad}" min="1"
+                            onchange="actualizarCantidad(${producto.producto_id}, this.value)">
 
                         <button class="eliminar-btn bg-red-500 text-white px-2 py-1 rounded ml-4 hover:bg-red-600 cursor-pointer"
                                 onclick="eliminarProducto(${producto.producto_id})">Eliminar</button>
@@ -262,7 +271,11 @@ En resumen, este archivo combina HTML, CSS (Tailwind) y JavaScript para crear un
                 `;
                 carritoContenedor.appendChild(item);
             });
+
+            // Mostrar el botón "Realizar Pedido"
+            document.getElementById("realizar-pedido-container").classList.remove("hidden");
         }
+
 
         // 🛒 Función para eliminar un producto del carrito
         function eliminarProducto(productoId) {
