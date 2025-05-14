@@ -59,11 +59,10 @@ def index():
     cursor = db.cursor(DictCursor)
     
     cursor.execute("""
-        SELECT id, nombre_producto AS nombre, descripcion, precio, imagenes AS imagen 
-        FROM productos 
-        WHERE categoria_id IN (
-            SELECT id FROM categorias WHERE nombre IN ('Escayolas3D', 'Decoracion', 'Juguetes')
-        )
+        SELECT p.id, p.nombre_producto AS nombre, p.descripcion, p.precio, p.imagenes AS imagen,
+               COALESCE((SELECT AVG(valor) FROM valoraciones WHERE producto_id = p.id), 0) AS media_valoracion
+        FROM productos p
+        ORDER BY media_valoracion DESC
         LIMIT 3
     """)
     productos_destacados = cursor.fetchall()
@@ -72,6 +71,7 @@ def index():
     db.close()
 
     return render_template("index.html", productos_destacados=productos_destacados)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
