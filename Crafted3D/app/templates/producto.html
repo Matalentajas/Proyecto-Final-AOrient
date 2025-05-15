@@ -8,7 +8,21 @@
 <div class="container mx-auto py-8">
   
   {% if categoria %}
-  <h1 class="text-3xl font-bold text-center mb-8">{{ categoria|capitalize }}</h1>
+    <h1 class="text-3xl font-bold text-center mb-8">{{ categoria|capitalize }}</h1>
+    <div class="flex gap-4 mb-6">
+        <a href="{{ url_for('product.productos_categoria', categoria_nombre=categoria, filtro='mejor-valorados') }}"
+            class="bg-gradient-to-r from-green-400 to-green-600 text-white px-4 py-2 rounded shadow hover:from-green-500 hover:to-green-700 transition font-semibold">
+             🌟 Mejor Valorados
+        </a>
+        <a href="{{ url_for('product.productos_categoria', categoria_nombre=categoria, filtro='mas-baratos') }}"
+            class="bg-gradient-to-r from-green-300 to-green-500 text-white px-4 py-2 rounded shadow hover:from-green-400 hover:to-green-600 transition font-semibold">
+             💸 Más Baratos
+        </a>
+        <a href="{{ url_for('product.productos_categoria', categoria_nombre=categoria, filtro='mas-caros') }}"
+            class="bg-gradient-to-r from-green-500 to-green-700 text-white px-4 py-2 rounded shadow hover:from-green-600 hover:to-green-800 transition font-semibold">
+             💰 Más Caros
+        </a>
+    </div>
 
   {% if productos|length > 0 %}
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
@@ -61,9 +75,15 @@
           <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
 
-          <button onclick="addToCart('{{ producto.id }}', 1)" class="bg-[#39CB60] text-white font-bold px-6 py-3 rounded hover:bg-green-600 cursor-pointer">
-              Añadir a la cesta
-          </button>
+        {% if current_user.is_authenticated %}
+            <button onclick="addToCart('{{ producto.id }}', document.getElementById('quantity').value)" class="bg-[#39CB60] text-white font-bold px-6 py-3 rounded hover:bg-green-600 cursor-pointer">
+                Añadir a la cesta
+            </button>
+        {% else %}
+            <button onclick="alert('Debes iniciar sesión para añadir productos a la cesta.')" class="bg-[#39CB60] text-white font-bold px-6 py-3 rounded hover:bg-green-600 cursor-pointer">
+                Añadir a la cesta
+            </button>
+        {% endif %}
       </div>
       <div>
         <h2 class="text-2xl font-bold mt-6">Valoraciones del producto</h2>
