@@ -71,27 +71,33 @@
     </div>
 
     <!-- 🔹 Parte Derecha: Lista de Productos -->
-    <div class="w-1/2 h-screen bg-[#D4D4D4] p-10 flex flex-col justify-center">
-        <div class="space-y-6">
-            {% for producto in pedido.productos %}
-            <div class="flex items-center border-b border-gray-300 pb-4">
-                <img src="{{ url_for('static', filename=producto.imagen) }}" alt="{{ producto.nombre }}" class="h-16 w-16 object-cover rounded">
-                <div class="ml-6">
-                    <p class="text-gray-700 text-lg"><strong>{{ producto.nombre }}</strong></p>
-                    <p class="text-gray-600 text-sm">Cantidad: {{ producto.cantidad }}</p>
-                    <p class="text-gray-600 text-sm">Precio unitario: {{ producto.precio }} €</p>
-                    <p class="text-gray-700 text-sm font-bold">Precio total: {{ producto.precio_total }} €</p>  <!-- ✅ Ahora muestra el precio total -->
-                </div>
+    <!-- Contenedor de productos con scroll -->
+<div class="w-1/2 h-screen bg-[#D4D4D4] p-10 flex flex-col justify-center">
+    <div class="space-y-6 max-h-[70vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
+        {% for producto in pedido.productos %}
+        <div class="flex items-center border-b border-gray-300 pb-4">
+            <img src="{{ url_for('static', filename=producto.imagen) }}" alt="{{ producto.nombre }}" class="h-16 w-16 object-cover rounded">
+            <div class="ml-6">
+                <p class="text-gray-700 text-lg"><strong>{{ producto.nombre }}</strong></p>
+                <p class="text-gray-600 text-sm">Cantidad: {{ producto.cantidad }}</p>
+                <p class="text-gray-600 text-sm">Precio unitario: {{ producto.precio }} €</p>
+                <p class="text-gray-700 text-sm font-bold">Precio total: {{ producto.precio_total }} €</p>
             </div>
-            {% endfor %}
-
         </div>
-
-        <!-- Total del Pedido -->
-        <div class="mt-auto text-right"></div>
-            <p class="text-gray-700 text-xl font-bold">Total: {{ pedido.total }} €</p>
-        </div>
+        {% endfor %}
     </div>
+
+    <!-- Total del Pedido -->
+    <div class="mt-auto text-left p-6 bg-gray-100 rounded-lg shadow-md">
+        <p class="text-gray-700 text-lg font-semibold">Subtotal: {{ pedido.total }} €</p>
+        <p class="text-gray-600 text-sm">Gastos de envío: <span class="font-medium text-green-600">0 €</span></p>
+        <p class="text-gray-600 text-sm">IVA (21%): <span class="font-medium">{{ (pedido.total | float * 0.21) | round(2) }} €</span></p>
+        <p class="text-gray-700 text-2xl font-bold mt-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-md">
+            Total con IVA: {{ (pedido.total | float * 1.21) | round(2) }} €
+        </p>
+    </div>
+</div>
+
 
 </div>
 {% endblock %}
