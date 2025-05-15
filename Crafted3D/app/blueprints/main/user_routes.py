@@ -189,6 +189,7 @@ def cambiar_contraseña(token):
 @login_required
 def editar_direccion():
     form = EditarDireccionForm(obj=current_user)
+    next_url = request.args.get("next", url_for("usuario.perfil"))
 
     if request.method == "POST" and form.validate_on_submit():
         direccion_completa = form.direccion_completa.data
@@ -205,10 +206,9 @@ def editar_direccion():
         cursor.close()
 
         enviar_correo_actualizacion_direccion(current_user.email, direccion_completa, ciudad, codigo_postal)
-        return redirect(url_for("usuario.perfil"))
+        return redirect(next_url)  # ✅ Redirige a la página correcta
 
-    return render_template("editar_direccion.html", form=form)
-
+    return render_template("editar_direccion.html", form=form, next_url=next_url)
 
 
 # Vista para editar los datos del usuario
@@ -216,6 +216,7 @@ def editar_direccion():
 @login_required
 def editar_perfil():
     form = EditarPerfilForm(obj=current_user)
+    next_url = request.args.get("next", url_for("usuario.perfil"))
 
     if request.method == "POST" and form.validate_on_submit():
         nombre_completo = form.nombre.data
@@ -231,9 +232,9 @@ def editar_perfil():
         cursor.close()
 
         enviar_correo_actualizacion(current_user.email, nombre_completo)
-        return redirect(url_for("usuario.perfil"))
+        return redirect(next_url)  # ✅ Redirige a la página correcta
 
-    return render_template("editar_perfil.html", form=form)
+    return render_template("editar_perfil.html", form=form, next_url=next_url)
 
 
 #Cerrar la sesión del usuario
