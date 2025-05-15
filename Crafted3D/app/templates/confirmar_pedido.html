@@ -4,6 +4,18 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
+<div class="fixed top-4 left-4 z-50 flex flex-col items-end space-y-2">
+{% with mensajes = get_flashed_messages(with_categories=true) %}
+    {% if mensajes %}
+        {% for categoria, mensaje in mensajes %}
+            <div class="p-2 text-xs text-white rounded-lg shadow-lg {% if categoria == 'danger' %}bg-red-500{% elif categoria == 'success' %}bg-green-500{% endif %}">
+                {{ mensaje }}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+</div>
+
 <div class="flex w-full h-screen">
     
     <!-- 🔹 Parte Izquierda: Datos del Cliente y Pago -->
@@ -62,11 +74,13 @@
             </div>
 
             <!-- Botón para realizar pedido -->
-            <div class="flex justify-center mt-6">
+            <form method="POST" action="{{ url_for('order.procesar_pedido') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <button type="submit" class="w-full bg-green-500 text-white font-semibold px-8 py-4 rounded-lg hover:bg-green-600 transition-all text-center text-lg">
                     Realizar Pedido
                 </button>
-            </div>
+            </form>
+
         </div>
     </div>
 
