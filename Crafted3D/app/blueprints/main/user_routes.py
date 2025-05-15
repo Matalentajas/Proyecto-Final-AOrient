@@ -21,22 +21,53 @@ pedidos = [
 @login_required
 def perfil():
     cursor = current_app.mysql.connection.cursor()
-    cursor.execute("SELECT nombre_completo, email, direccion_completa, ciudad, codigo_postal FROM usuarios WHERE id = %s", (current_user.id,))
+
+    #Obtener datos del usuario
+    cursor.execute("""
+        SELECT nombre_completo, email, direccion_completa, ciudad, codigo_postal 
+        FROM usuarios WHERE id = %s
+    """, (current_user.id,))
     user_data = cursor.fetchone()
+
+    usuario_info = {
+        "nombre_completo": user_data[0],
+        "email": user_data[1],
+        "direccion_completa": user_data[2],
+        "ciudad": user_data[3],
+        "codigo_postal": user_data[4],
+    } if user_data else None
+
+    cursor.execute("""
+        SELECT numero_pedido, fecha_pedido, estado_pago, estado, total 
+        FROM pedidos 
+        WHERE usuario_id = %s 
+        ORDER BY fecha_pedido DESC
+    """, (current_user.id,))
+
+    pedidos_raw = cursor.fetchall()
+
+    print("DEBUG - pedidos_raw (estructura):", type(pedidos_raw), pedidos_raw)
+
+
+    #Convertir tuplas en diccionarios para que se accedan correctamente en la plantilla
+    pedidos = []
+    for pedido in pedidos_raw:
+        if pedido[0]:
+            pedidos.append({
+                "numero": pedido[0],
+                "fecha": pedido[1].strftime("%Y-%m-%d %H:%M:%S"),
+                "estado_pago": pedido[2],
+                "estado": pedido[3],
+                "total": float(pedido[4])
+            })
+
+    print("DEBUG - pedidos convertido:", pedidos)
+
+
     cursor.close()
 
-    if user_data:
-        usuario_info = {
-            "nombre_completo": user_data[0],
-            "email": user_data[1],
-            "direccion_completa": user_data[2],
-            "ciudad": user_data[3],
-            "codigo_postal": user_data[4],
-        }
-    else:
-        usuario_info = None
+    return render_template("perfil.html", usuario=usuario_info, pedidos=pedidos)
 
-    return render_template("perfil.html", usuario=usuario_info)
 
 @usuario_bp.route("/registro", methods=["GET", "POST"])
 def registro():
@@ -77,7 +108,7 @@ def registro():
 
             print(f"📩 Intentando enviar correo de bienvenida a: {email}")
             enviar_correo_bienvenida(email, nombre_completo)
-            print(f"✅ Correo de bienvenida enviado con éxito.")
+            print(f"Correo de bienvenida enviado con éxito.")
 
         return redirect(url_for("usuario.perfil"))
 
