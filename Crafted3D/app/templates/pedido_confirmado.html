@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedido Confirmado</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos.css') }}">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex flex-col justify-center items-center h-screen bg-gray-100 text-center">
+    
+    <!-- ✅ Mensaje de Confirmación -->
+    <div class="bg-white p-10 rounded-lg shadow-lg">
+        <h1 class="text-3xl font-bold text-green-600 mb-4 animate-bounce">🎉 ¡Pedido Confirmado! 🎉</h1>
+        <p class="text-gray-700 text-lg">Gracias por tu compra, <strong>{{ usuario.nombre_completo }}</strong> 🙌</p>
+        <p class="text-gray-600 mt-2">Tu número de pedido es:</p>
+        <p class="text-2xl font-bold text-blue-500">{{ numero_pedido }}</p>
+        <p class="mt-4 text-gray-500">Te enviaremos una confirmación a <strong>{{ usuario.email }}</strong>.</p>
+
+        <a href="{{ url_for('usuario.perfil') }}" class="mt-6 inline-block bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 transition">
+            Volver al Perfil
+        </a>
+    </div>
+
+</body>
+</html>

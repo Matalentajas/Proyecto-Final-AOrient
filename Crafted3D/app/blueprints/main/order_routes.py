@@ -100,12 +100,15 @@ def procesar_pedido():
     cursor.execute("SELECT numero_pedido FROM pedidos ORDER BY id DESC LIMIT 1")
     ultimo_pedido = cursor.fetchone()
 
-    if ultimo_pedido:
-        # Extraer el número y aumentarlo en 1
-        ultimo_numero = int(ultimo_pedido["numero_pedido"][2:])  # Eliminar "ES" y convertir a número
-        nuevo_numero_pedido = f"ES{ultimo_numero + 1:06d}"  # Formato con ceros a la izquierda
+    if ultimo_pedido and ultimo_pedido["numero_pedido"]:  # ✅ Verificar que el valor existe y no está vacío
+        try:
+            ultimo_numero = int(ultimo_pedido["numero_pedido"][2:])  # Extraer el número y convertir a int
+            nuevo_numero_pedido = f"ES{ultimo_numero + 1:06d}"  # Formato con ceros a la izquierda
+        except ValueError:  # ✅ Capturar error si el valor no es válido
+            nuevo_numero_pedido = "ES000001"
     else:
-        nuevo_numero_pedido = "ES000001"  # Primer pedido
+        nuevo_numero_pedido = "ES000001"  # Primer pedido si no hay registros en la BD
+
 
     # 🚀 Obtener los productos del carrito
     cursor.execute("""
@@ -120,7 +123,7 @@ def procesar_pedido():
 
     if not carrito:
         flash("El carrito está vacío.", "danger")
-        return redirect(url_for("order.confirmar_pedido"))  # Vuelve a la página si el carrito está vacío
+        return redirect(url_for("order.confirmar_pedido_vista"))
 
     # 🚀 Calcular el total del pedido
     total_pedido = sum(producto["precio_total"] for producto in carrito)
@@ -148,7 +151,7 @@ def procesar_pedido():
     flash(f"¡Pedido confirmado! Número: {nuevo_numero_pedido}", "success")
 
     # 🚀 Redirigir al usuario a la página del pedido confirmado
-    return redirect(url_for("order.pedido", numero=pedido_id))
+    return render_template("pedido_confirmado.html", usuario=current_user, numero_pedido=nuevo_numero_pedido)
 
 
 
