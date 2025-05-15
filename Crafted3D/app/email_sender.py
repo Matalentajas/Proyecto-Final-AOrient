@@ -188,3 +188,59 @@ def enviar_correo_confirmacion(destinatario, nombre):
         print("✅ Correo de confirmación de cambio de contraseña enviado correctamente!")
     except Exception as e:
         print("❌ Error al enviar el correo de confirmación:", e)
+
+
+
+
+
+def enviar_correo_confirmacion_pedido(destinatario, nombre, numero_pedido, pedido, direccion_completa, ciudad, codigo_postal):
+    asunto = f"Confirmación de Pedido: {numero_pedido}"
+
+    
+    mensaje_html = f"""
+    <html>
+    <body style="font-family: Arial, sans-serif; color: #333;">
+        <h2>¡Hola {nombre}, tu pedido ha sido confirmado! 🎉</h2>
+        <p>Gracias por tu compra. Aquí tienes los detalles de tu pedido:</p>
+        <p><strong>Número de Pedido:</strong> {numero_pedido}</p>
+        <p><strong>Dirección de envío:</strong> {direccion_completa}, {ciudad}, {codigo_postal}</p>
+
+        <h3>Productos comprados:</h3>
+        <ul>
+    """
+    print("DEBUG - pedido:", pedido)
+    for producto in pedido["productos"]:
+        mensaje_html += f"<li>{producto['nombre']} | Cantidad: {producto['cantidad']} | Total: {producto['precio_total']} €</li>"
+
+    mensaje_html += f"""
+        </ul>
+
+        <p><strong>Total con IVA:</strong> {float(pedido['total']) * 1.21:.2f} €</p>
+
+        <h3>Seguimiento de Pedido:</h3>
+        <p><a href="https://seguimiento-falso.com/{numero_pedido}" style="color: #007bff; font-weight: bold;">
+        Haz clic aquí para ver el estado de tu pedido</a></p>
+
+        <p>¡Gracias por confiar en Crafted3D! 🙌</p>
+    </body>
+    </html>
+    """
+
+    #Configurar y enviar el correo
+    msg = MIMEMultipart()
+    msg["From"] = EMAIL_SENDER
+    msg["To"] = destinatario
+    msg["Subject"] = asunto
+    msg.attach(MIMEText(mensaje_html, "html"))
+
+    try:
+        server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
+        server.starttls()
+        server.login(EMAIL_SENDER, EMAIL_PASSWORD)
+        server.sendmail(EMAIL_SENDER, destinatario, msg.as_string())
+        server.quit()
+        print(f"✅ Correo de confirmación de pedido ({numero_pedido}) enviado correctamente!")
+    except Exception as e:
+        print(f"❌ Error al enviar el correo de confirmación de pedido: {e}")
+
+        
