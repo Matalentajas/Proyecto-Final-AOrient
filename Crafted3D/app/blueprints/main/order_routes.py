@@ -1,5 +1,8 @@
-from flask import Blueprint, render_template, flash, redirect, url_for, request
-from flask_login import login_required
+from flask import Blueprint, render_template, flash, redirect, session, url_for, request
+from flask_login import current_user, login_required
+from app.db import conectar
+from MySQLdb.cursors import DictCursor
+
 
 order_bp = Blueprint("order", __name__)
 
@@ -47,10 +50,45 @@ def pedido(numero):
         return redirect(url_for("usuario.perfil"))
     return render_template("pedido.html", pedido=pedido)
 
-@order_bp.route("/confirmar_pedido", methods=["GET", "POST"])
+
+
+@order_bp.route("/confirmar_pedido", methods=["GET"])
 @login_required
 def confirmar_pedido():
-    if request.method == "POST":
-        flash("Pedido confirmado!", "success")
-        return redirect(url_for("order.pedido", numero=pedido_actual["numero"]))
-    return render_template("confirmar_pedido.html", usuario=usuario, pedido=pedido_actual)
+    usuario_id = current_user.id  
+
+    db = conectar()
+    cursor = db.cursor(DictCursor)
+
+    # 🚀 Obtener datos del usuario
+    cursor.execute("""
+        SELECT nombre_completo, email, direccion_completa, codigo_postal, ciudad
+        FROM usuarios
+        WHERE id = %s
+    """, (usuario_id,))
+    
+    usuario = cursor.fetchone()  # Extraer los datos del usuario
+
+    # 🚀 Obtener los productos del carrito
+    cursor.execute("""
+        SELECT c.producto_id, p.nombre_producto AS nombre, p.precio, c.cantidad, 
+            (p.precio * c.cantidad) AS precio_total, p.imagenes AS imagen
+        FROM carrito c
+        JOIN productos p ON c.producto_id = p.id
+        WHERE c.usuario_id = %s
+    """, (usuario_id,))
+
+    
+    productos_carrito = cursor.fetchall()
+
+    cursor.close()
+    db.close()
+
+    pedido = {"productos": productos_carrito, "total": sum(p["precio_total"] for p in productos_carrito)}
+
+    return render_template("confirmar_pedido.html", usuario=usuario, pedido=pedido)
+
+
+
+
+

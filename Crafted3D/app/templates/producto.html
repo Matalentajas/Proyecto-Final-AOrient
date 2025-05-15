@@ -36,7 +36,7 @@
             <span class="star {% if i < producto.media_valoracion | default(0) %}selected{% endif %}">★</span>
         {% endfor %}
     </div>
-    <p id="priceDisplay" class="text-xl text-gray-700 mb-4" data-price="{{ producto.precio|replace('€', '')|replace(',', '.') }}">{{ producto.precio }}</p>
+    <p id="priceDisplay" class="text-xl text-gray-700 mb-4" data-price="{{ producto.precio|replace('€', '')|replace(',', '.') }}">{{ producto.precio }}€</p>
     <a href="{{ url_for('product.producto', producto_id=producto['id']) }}" class="mt-4 bg-[#39CB60] text-white px-4 py-2 rounded hover:bg-green-600 block text-center">
         Ver Producto
     </a>
@@ -63,7 +63,7 @@
           </div>
 
           <h1 class="text-3xl font-bold mb-4">{{ producto.nombre }}</h1>
-          <p id="priceDisplay" class="text-xl text-gray-700 mb-4" data-price="{{ producto.precio|replace('€', '')|replace(',', '.') }}">{{ producto.precio }}</p>
+          <p id="priceDisplay" class="text-xl text-gray-700 mb-4" data-price="{{ producto.precio|replace('€', '')|replace(',', '.') }}">{{ producto.precio }}€</p>
           <p class="text-lg text-gray-600 mb-6">{{ producto.descripcion }}</p>
 
           <div class="flex items-center gap-4 mb-6">

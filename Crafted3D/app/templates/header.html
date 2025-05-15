@@ -117,9 +117,11 @@ En resumen, este archivo combina HTML, CSS (Tailwind) y JavaScript para crear un
                     <ul id="cart-items" class="hidden"></ul>
                     
                     <!-- Botón Realizar Pedido -->
-                    <div id="realizar-pedido-container" class="mt-6 hidden text-center"></div>
-                        <button id="realizar-pedido-btn" class="cursor-pointer bg-gradient-to-r from-green-400 via-green-500 to-green-600 text-white px-8 py-4 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ease-in-out w-full font-semibold text-lg"
-                            onclick="realizarPedido()">🛒 Realizar Pedido</button>
+                    <button id="realizar-pedido-btn" class="cursor-pointer bg-green-500 text-white px-8 py-4 rounded-lg shadow-lg hover:shadow-xl w-full font-semibold text-lg"onclick="window.location.href='{{ url_for('order.confirmar_pedido') }}'">
+                        🛒 Realizar Pedido
+                    </button>
+
+
                     </div>
                 </div>
             </div>

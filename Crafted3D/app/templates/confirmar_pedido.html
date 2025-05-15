@@ -37,7 +37,7 @@
                 <tr class="border-b">
                 <td class="py-2 font-semibold">Dirección de envío:</td>
                 <td class="py-2">
-                    {{ usuario.direccion }}, {{ usuario.codigo_postal }}, {{ usuario.ciudad }} ({{ usuario.pais }})
+                    {{ usuario.direccion_completa }}, {{ usuario.codigo_postal }}, {{ usuario.ciudad }} ({{ usuario.pais }})
                 </td>
                 <td class="py-2 text-right">
                     <a href="{{ url_for('usuario.editar_direccion') }}" class="text-green-500 hover:text-green-700 text-sm font-medium">Cambiar</a>
@@ -77,10 +77,12 @@
                 <div class="ml-6">
                     <p class="text-gray-700 text-lg"><strong>{{ producto.nombre }}</strong></p>
                     <p class="text-gray-600 text-sm">Cantidad: {{ producto.cantidad }}</p>
-                    <p class="text-gray-600 text-sm">Precio: {{ producto.precio }}</p>
+                    <p class="text-gray-600 text-sm">Precio unitario: {{ producto.precio }} €</p>
+                    <p class="text-gray-700 text-sm font-bold">Precio total: {{ producto.precio_total }} €</p>  <!-- ✅ Ahora muestra el precio total -->
                 </div>
             </div>
             {% endfor %}
+
         </div>
 
         <!-- Total del Pedido -->
