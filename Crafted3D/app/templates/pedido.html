@@ -1,19 +1,17 @@
 {% extends "base.html" %}
 
 {% block content %}
-
     <!-- Botón de volver -->
     <div class="mt-6 ml-[10rem] ">
         <a href="{{ url_for('usuario.perfil') }}" class="font-semibold rounded hover:text-blue-700">
             ← Volver
         </a>
     </div>
-    <div class="w-[30%] mt-[50px] ml-[10rem]">
-        <!-- Título Principal -->
-        <h1 class="text-4xl font-bold mb-6">Detalles del Pedido</h1>
 
+    <div class="w-[30%] mt-[50px] ml-[10rem]">
         <!-- Información del Pedido -->
         <div class="text-lg">
+            <h1 class="text-4xl font-bold mb-6 text-[#39CB60]">Detalles del Pedido</h1>
             <p><strong>Número de Pedido:</strong> {{ pedido.numero }}</p>
             <p><strong>Fecha:</strong> {{ pedido.fecha }}</p>
             <p><strong>Estado de Pago:</strong> 
@@ -27,6 +25,10 @@
                 </span>
             </p>
         </div>
+        <h2 class="text-2xl font-semibold mb-4 mt-10">Dirección de Envío</h2>
+        <p>{{ pedido.direccion.calle }}</p>
+        <p>{{ pedido.direccion.codigo_postal }}, {{ pedido.direccion.ciudad }}</p>
+
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-[4rem] mb-[4rem]">
@@ -40,7 +42,7 @@
                     <div class="ml-4">
                         <p class="text-gray-700"><strong>{{ producto.nombre }}</strong></p>
                         <p class="text-gray-600 text-sm">Cantidad: {{ producto.cantidad }}</p>
-                        <p class="text-gray-600 text-sm">Precio: {{ producto.precio }}</p>
+                        <p class="text-gray-600 text-sm">Precio: {{ producto.precio }}€</p>
                     </div>
                 </div>
                 {% endfor %}
@@ -55,18 +57,7 @@
                 <li><p><strong>Subtotal:</strong> {{ pedido.subtotal }}€</p></li>
                 <li><p><strong>Envío:</strong> {{ pedido.envio }}€</p></li>
                 <li><p><strong>IVA:</strong> {{ pedido.iva }}€</p></li>
-                <li><p class="text-lg font-bold"><strong>Total:</strong> {{ pedido.total }}€</p></li>
-            </ul>
-
-            <h2 class="text-2xl font-semibold mt-6 mb-4">Dirección de Envío</h2>
-            <hr class="border-gray-300 my-4 w-[60%]">
-            <ul class="space-y-4">
-                <li><p></p></li>
-                <li><p></p></li>
-                <li class="grid grid-cols-2">
-                    <div><p></p></div>
-                    <div><p></p></div>
-                </li>
+                <li><p class="text-lg font-bold text-[#39CB60]"><strong>Total:</strong> {{ pedido.total }}€</p></li>
             </ul>
         </div>
     </div>
