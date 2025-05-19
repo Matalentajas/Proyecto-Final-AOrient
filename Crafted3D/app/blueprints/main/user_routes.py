@@ -219,7 +219,25 @@ def cambiar_contraseña(token):
 @usuario_bp.route("/editar_direccion", methods=["GET", "POST"])
 @login_required
 def editar_direccion():
-    form = EditarDireccionForm(obj=current_user)
+    cursor = current_app.mysql.connection.cursor()
+    cursor.execute("""
+        SELECT direccion_completa, ciudad, codigo_postal 
+        FROM usuarios 
+        WHERE id = %s
+    """, (current_user.id,))
+    fila = cursor.fetchone()
+    cursor.close()
+
+    if fila:
+        datos = {
+            'direccion_completa': fila[0],
+            'ciudad': fila[1],
+            'codigo_postal': fila[2]
+        }
+    else:
+        datos = {}
+
+    form = EditarDireccionForm(data=datos)
     next_url = request.args.get("next", url_for("usuario.perfil"))
 
     if request.method == "POST" and form.validate_on_submit():
@@ -235,11 +253,13 @@ def editar_direccion():
         """, (direccion_completa, ciudad, codigo_postal, current_user.id))
         current_app.mysql.connection.commit()
         cursor.close()
-
+        
         enviar_correo_actualizacion_direccion(current_user.email, direccion_completa, ciudad, codigo_postal)
-        return redirect(next_url)  # ✅ Redirige a la página correcta
+        return redirect(next_url)
 
     return render_template("editar_direccion.html", form=form, next_url=next_url)
+
+
 
 
 # Vista para editar los datos del usuario
