@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="w-[80%] mt-[100px] ml-[10rem]">
+        <h1 class="text-4xl font-bold mb-6">Modificar Productos</h1>
+
+        <!-- Tabla de productos con botón de edición -->
+        <table class="w-full border border-gray-300 mb-6">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="p-3">ID</th>
+                    <th class="p-3">Nombre</th>
+                    <th class="p-3">Categoría</th>
+                    <th class="p-3">Precio</th>
+                    <th class="p-3">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for producto in productos %}
+                    <tr class="mt-6">
+                    <td class="text-center pb-6">{{ producto[0] }}</td>               <!-- id -->
+                    <td class="text-center pb-6">{{ producto[1] }}</td>               <!-- nombre_producto -->
+                    <td class="text-center pb-6">{{ producto[2] }}</td>               <!-- categoria_id (por ahora solo id) -->
+                    <td class="text-center pb-6">{{ producto[3] }}€</td>              <!-- precio (Decimal, se muestra bien) -->
+                    <td class="text-center pb-6">
+                        <a href="{{ url_for('admin.modificar_producto', producto_id=producto[0]) }}"
+                        class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 mt-2 inline-block">
+                        Editar
+                        </a>
+                    </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Formulario de edición de producto -->
+        {% if producto_seleccionado %}
+        <form method="POST">
+            {{ form.hidden_tag() }}
+
+            <label class="block text-lg font-medium mt-4">Nombre</label>
+            {{ form.nombre(class="w-full border border-gray-300 rounded-lg p-2") }}
+
+            <label class="block text-lg font-medium mt-4">Descripción</label>
+            {{ form.descripcion(class="w-full border border-gray-300 rounded-lg p-2") }}
+
+            <label class="block text-lg font-medium mt-4">Precio</label>
+            {{ form.precio(class="w-full border border-gray-300 rounded-lg p-2") }}
+
+            <label class="block text-lg font-medium mt-4">Categoría</label>
+            {{ form.categoria(class="w-full border border-gray-300 rounded-lg p-2") }}
+
+            <button type="submit" class="bg-green-500 text-white font-semibold py-3 rounded-lg hover:bg-green-600 transition-all w-full mt-6">
+                Guardar Cambios
+            </button>
+        </form>
+        {% endif %}
+    </div>
+{% endblock %}

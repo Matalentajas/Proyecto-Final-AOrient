@@ -1,7 +1,8 @@
 from flask import Blueprint, current_app, render_template, request, redirect, url_for, flash, session
 from flask_login import current_user
 from werkzeug.security import check_password_hash
-from app.forms.admin_form import AdminLoginForm, AgregarProductoForm
+from app.forms.admin_form import AdminLoginForm, AgregarProductoForm, ProductoForm
+
 
 admin_bp = Blueprint("admin", __name__)
 
@@ -86,9 +87,53 @@ def agregar_producto():
     return render_template("agregar_producto.html", form=form)
 
 
-@admin_bp.route("/admin/modificar-producto")
-def modificar_producto():
-    return render_template("admin/modificar_producto.html")
+@admin_bp.route("/admin/modificar_producto/", defaults={'producto_id': None}, methods=["GET", "POST"])
+@admin_bp.route("/admin/modificar_producto/<int:producto_id>", methods=["GET", "POST"])
+def modificar_producto(producto_id):
+    
+    form = ProductoForm()
+
+    cursor = current_app.mysql.connection.cursor()
+    cursor.execute("""
+        SELECT p.id, p.nombre_producto, c.nombre, p.precio
+        FROM productos p
+        JOIN categorias c ON p.categoria_id = c.id
+    """)
+    productos = cursor.fetchall()
+    print("-----------------", productos)
+
+    producto_seleccionado = None
+    if producto_id is not None:
+        cursor.execute("SELECT nombre_producto, descripcion, precio, categoria_id FROM productos WHERE id = %s", (producto_id,))
+        producto_seleccionado = cursor.fetchone()
+
+    cursor.close()
+
+    if producto_seleccionado and request.method == "GET":
+        form.nombre.data = producto_seleccionado[0]
+        form.descripcion.data = producto_seleccionado[1]
+        form.precio.data = producto_seleccionado[2]
+        form.categoria.data = producto_seleccionado[3]
+
+    if producto_seleccionado and request.method == "POST" and form.validate_on_submit():
+        nuevo_nombre = form.nombre.data
+        nueva_descripcion = form.descripcion.data
+        nuevo_precio = form.precio.data
+        nueva_categoria = form.categoria.data
+
+        cursor = current_app.mysql.connection.cursor()
+        cursor.execute("""
+            UPDATE productos SET nombre_producto=%s, descripcion=%s, precio=%s, categoria_id=%s WHERE id=%s
+        """, (nuevo_nombre, nueva_descripcion, nuevo_precio, nueva_categoria, producto_id))
+        current_app.mysql.connection.commit()
+        cursor.close()
+
+        flash("✅ Producto actualizado correctamente.", "success")
+        return redirect(url_for("admin.modificar_producto", producto_id=producto_id))
+
+    return render_template("modificar_producto.html", form=form, productos=productos, producto_seleccionado=producto_seleccionado)
+
+
 
 @admin_bp.route("/admin/eliminar-producto")
 def eliminar_producto():
