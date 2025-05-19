@@ -74,6 +74,13 @@ def index():
 
     return render_template("index.html", productos_destacados=productos_destacados)
 
+#Pagina 404
+def error_404(error):
+    return render_template('404.html')
+
+#Registramos en el manejador de errores el 404 en flask
+app.register_error_handler(404,error_404)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
