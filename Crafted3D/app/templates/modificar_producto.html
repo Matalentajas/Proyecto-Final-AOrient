@@ -21,16 +21,23 @@
             <tbody>
                 {% for producto in productos %}
                     <tr class="mt-6">
-                    <td class="text-center pb-6">{{ producto[0] }}</td>               <!-- id -->
-                    <td class="text-center pb-6">{{ producto[1] }}</td>               <!-- nombre_producto -->
-                    <td class="text-center pb-6">{{ producto[2] }}</td>               <!-- categoria_id (por ahora solo id) -->
-                    <td class="text-center pb-6">{{ producto[3] }}€</td>              <!-- precio (Decimal, se muestra bien) -->
-                    <td class="text-center pb-6">
-                        <a href="{{ url_for('admin.modificar_producto', producto_id=producto[0]) }}"
-                        class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 mt-2 inline-block">
-                        Editar
-                        </a>
-                    </td>
+                        <td class="text-center pb-6">{{ producto[0] }}</td>
+                        <td class="text-center pb-6">{{ producto[1] }}</td>           
+                        <td class="text-center pb-6">{{ producto[2] }}</td>               
+                        <td class="text-center pb-6">{{ producto[3] }}€</td>              
+                        <td class="text-center pb-6">
+                            <a href="{{ url_for('admin.modificar_producto', producto_id=producto[0]) }}"
+                               class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 mt-2 inline-block">
+                               Editar
+                            </a>
+                            <form method="POST" action="{{ url_for('admin.eliminar_producto', producto_id=producto[0]) }}" 
+                                  onsubmit="return confirm('¿Estás seguro de eliminar este producto?');" style="display:inline;">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                                    Eliminar
+                                </button>
+                            </form> 
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>

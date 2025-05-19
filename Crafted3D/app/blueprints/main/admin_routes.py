@@ -141,7 +141,13 @@ def modificar_producto(producto_id):
 
 
 
+@admin_bp.route("/admin/eliminar_producto/<int:producto_id>", methods=["POST"])
+def eliminar_producto(producto_id):
+    cursor = current_app.mysql.connection.cursor()
+    cursor.execute("DELETE FROM productos WHERE id = %s", (producto_id,))
+    current_app.mysql.connection.commit()
+    cursor.close()
+    flash("Producto eliminado correctamente.", "success")
+    return redirect(url_for("admin.modificar_producto"))
 
-@admin_bp.route("/admin/eliminar-producto")
-def eliminar_producto():
-    return render_template("admin/eliminar_producto.html")
+
