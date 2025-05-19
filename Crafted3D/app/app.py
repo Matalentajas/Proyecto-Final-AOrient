@@ -37,21 +37,23 @@ app.mysql = mysql
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "usuario.login"
-login_manager.user_loader(load_user)  # ✅ Ahora solo está definido una vez
+login_manager.user_loader(load_user)
 
 # Importar Blueprints después de inicializar `app`
 from app.blueprints.main.order_routes import order_bp
 from app.blueprints.main.product_routes import product_bp
 from app.blueprints.main.user_routes import usuario_bp
 from app.blueprints.main.carrito_routes import carrito_bp
+from app.blueprints.main.admin_routes import admin_bp
 
-# ✅ Registrar el Blueprint
+
+#Registrar el Blueprint
 app.register_blueprint(carrito_bp)
-
-# Registrar los Blueprints
 app.register_blueprint(order_bp)
 app.register_blueprint(product_bp)
 app.register_blueprint(usuario_bp)
+app.register_blueprint(admin_bp)
+
 
 @app.route("/")
 def index():
