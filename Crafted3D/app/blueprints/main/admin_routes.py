@@ -1,7 +1,7 @@
 from flask import Blueprint, current_app, render_template, request, redirect, url_for, flash, session
 from flask_login import current_user
 from werkzeug.security import check_password_hash
-from app.forms.admin_form import AdminLoginForm
+from app.forms.admin_form import AdminLoginForm, AgregarProductoForm
 
 admin_bp = Blueprint("admin", __name__)
 
@@ -50,9 +50,41 @@ def admin_dashboard():
     return render_template("perfil_admin.html")
 
 
-@admin_bp.route("/admin/agregar-producto")
+@admin_bp.route("/admin/agregar-producto", methods=["GET", "POST"])
 def agregar_producto():
-    return render_template("admin/agregar_producto.html")
+    if "admin" not in session:
+        flash("Debes iniciar sesión como administrador.", "danger")
+        return redirect(url_for("admin.admin_login"))
+
+    form = AgregarProductoForm()
+
+    # Obtener categorías desde la base de datos
+    cursor = current_app.mysql.connection.cursor()
+    cursor.execute("SELECT id, nombre FROM categorias")
+    categorias = cursor.fetchall()
+    cursor.close()
+    form.categoria_id.choices = [(c[0], c[1]) for c in categorias]
+
+    if form.validate_on_submit():
+        nombre = form.nombre_producto.data
+        descripcion = form.descripcion.data
+        precio = float(form.precio.data)
+        imagenes = form.imagenes.data
+        categoria_id = form.categoria_id.data
+
+        cursor = current_app.mysql.connection.cursor()
+        cursor.execute("""
+            INSERT INTO productos (nombre_producto, descripcion, precio, imagenes, fecha_creacion, categoria_id)
+            VALUES (%s, %s, %s, %s, NOW(), %s)
+        """, (nombre, descripcion, precio, imagenes, categoria_id))
+        current_app.mysql.connection.commit()
+        cursor.close()
+
+        flash("Producto añadido correctamente.", "success")
+        return redirect(url_for("admin.admin_dashboard"))
+
+    return render_template("agregar_producto.html", form=form)
+
 
 @admin_bp.route("/admin/modificar-producto")
 def modificar_producto():
