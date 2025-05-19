@@ -38,7 +38,7 @@
             <div class="space-y-4">
                 {% for producto in pedido.productos %}
                 <div class="flex items-center border-b pb-2">
-                    <img src="{{ url_for('static', filename=producto.imagen) }}" alt="{{ producto.nombre }}" class="h-14 w-14 object-cover rounded">
+                    <img src="{{ producto.imagen }}" alt="{{ producto.nombre }}" alt="{{ producto.nombre }}" class="h-16 w-16 object-cover rounded">
                     <div class="ml-4">
                         <p class="text-gray-700"><strong>{{ producto.nombre }}</strong></p>
                         <p class="text-gray-600 text-sm">Cantidad: {{ producto.cantidad }}</p>
