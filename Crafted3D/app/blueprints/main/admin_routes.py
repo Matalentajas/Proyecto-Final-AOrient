@@ -13,7 +13,7 @@ def admin_login():
         email = form.email.data
         contraseña = form.contraseña.data
         
-        # 🚀 Conectar a la base de datos
+        #Conectar a la base de datos
         conn = MySQLdb.connect(
             host="TU_HOST",
             user="TU_USUARIO",
@@ -22,7 +22,7 @@ def admin_login():
         )
         cursor = conn.cursor()
 
-        # 🚀 Verificar credenciales de administrador
+        #Verificar credenciales de administrador
         cursor.execute("SELECT contraseña FROM administradores WHERE email = %s", (email,))
         admin_data = cursor.fetchone()
         
@@ -32,7 +32,7 @@ def admin_login():
         if admin_data and check_password_hash(admin_data[0], contraseña):
             session["admin"] = email  # ✅ Guardar sesión de admin
             flash("¡Bienvenido al panel de administración!", "success")
-            return redirect(url_for("admin.dashboard"))
+            return redirect(url_for("perfil_admin.html"))
         else:
             flash("❌ Credenciales incorrectas. Inténtalo de nuevo.", "danger")
 
