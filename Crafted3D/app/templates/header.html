@@ -195,9 +195,9 @@ En resumen, este archivo combina HTML, CSS (Tailwind) y JavaScript para crear un
                 const carrito = document.getElementById("cart-dropdown");
 
                 if (carrito.classList.contains("hidden")) {
-                    toggleCart();  // 🚀 Si está cerrado, abrirlo
+                    toggleCart();
                 } else {
-                    cargarCarrito();  // ✅ Si ya está abierto, solo actualizar productos
+                    cargarCarrito();
                 }
             })
             .catch(error => {
@@ -257,7 +257,7 @@ En resumen, este archivo combina HTML, CSS (Tailwind) y JavaScript para crear un
                 const item = document.createElement("li");
                 item.classList.add("flex", "items-center", "gap-4", "p-2", "border-b");
                 item.innerHTML = `
-                    <img src="/static/css/images/${producto.imagen}" alt="${producto.nombre}" class="w-12 h-12 object-cover rounded">
+                    <img src="${producto.imagen}" alt="${producto.nombre}" class="w-[20%]">
                     <div>
                         <h4 class="text-lg font-bold">${producto.nombre}</h4>
                         <p class="text-gray-600">Precio unitario: ${producto.precio} €</p>
@@ -274,10 +274,9 @@ En resumen, este archivo combina HTML, CSS (Tailwind) y JavaScript para crear un
                 carritoContenedor.appendChild(item);
             });
 
-            // Mostrar el botón "Realizar Pedido"
-            document.getElementById("realizar-pedido-container").classList.remove("hidden");
-        }
-
+// Mostrar el botón "Realizar Pedido"
+document.getElementById("realizar-pedido-container").classList.remove("hidden");
+}
 
         // 🛒 Función para eliminar un producto del carrito
         function eliminarProducto(productoId) {
