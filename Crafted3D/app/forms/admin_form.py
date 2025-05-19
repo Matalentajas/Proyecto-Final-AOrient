@@ -1,6 +1,7 @@
 from wtforms import DecimalField, EmailField, PasswordField, SelectField, StringField, SubmitField, TextAreaField
-from wtforms.validators import DataRequired, Length, NumberRange, InputRequired
+from wtforms.validators import DataRequired, Length, NumberRange, Optional, URL
 from flask_wtf import FlaskForm
+
 
 # Formulario de Inicio de Sesión para Administrador
 class AdminLoginForm(FlaskForm):
@@ -18,7 +19,9 @@ class AgregarProductoForm(FlaskForm):
 
     
 class ProductoForm(FlaskForm):
-    nombre = StringField('Nombre', validators=[InputRequired()])
-    descripcion = StringField('Descripción', validators=[InputRequired()])
-    precio = DecimalField('Precio', validators=[InputRequired()])
-    categoria = SelectField('Categoría', coerce=int, validators=[InputRequired()])
+    nombre = StringField('Nombre', validators=[DataRequired()])
+    descripcion = TextAreaField('Descripción', validators=[DataRequired()])
+    precio = DecimalField('Precio', validators=[DataRequired()])
+    categoria = SelectField('Categoría', coerce=int, validators=[DataRequired()])
+    imagen_url = StringField('URL de la imagen', validators=[Optional(), URL(message="Debe ser una URL válida")])    
+    submit = SubmitField('Guardar Cambios')
