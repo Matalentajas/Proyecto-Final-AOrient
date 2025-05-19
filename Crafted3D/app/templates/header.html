@@ -89,7 +89,7 @@ En resumen, este archivo combina HTML, CSS (Tailwind) y JavaScript para crear un
             {% if current_user.is_authenticated %}
                 <a href="{{ url_for('usuario.perfil') }}" class="text-2xl text-bold text-[#39CB60]">{{ current_user.nombre_completo }}</a>
             {% else %}
-                <a href="{{ url_for('usuario.login') }}" class="text-2xl">Iniciar Sesión</a>
+                <a href="{{ url_for('usuario.login') }}" class="text-2xl hover:text-[#39CB60]">Iniciar Sesión</a>
             {% endif %}
             <button id="searchToggleButton">
                 <i class="fa-solid fa-magnifying-glass hover:text-[#39CB60] text-2xl cursor-pointer"></i>
@@ -117,9 +117,11 @@ En resumen, este archivo combina HTML, CSS (Tailwind) y JavaScript para crear un
                     <ul id="cart-items" class="hidden"></ul>
                     
                     <!-- Botón Realizar Pedido -->
-                    <div id="realizar-pedido-container" class="mt-6 hidden text-center"></div>
-                        <button id="realizar-pedido-btn" class="cursor-pointer bg-gradient-to-r from-green-400 via-green-500 to-green-600 text-white px-8 py-4 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ease-in-out w-full font-semibold text-lg"
-                            onclick="realizarPedido()">🛒 Realizar Pedido</button>
+                    <button id="realizar-pedido-btn" class="mt-[20px] cursor-pointer bg-green-500 text-white px-8 py-4 rounded-lg shadow-lg hover:shadow-xl w-full font-semibold text-lg"onclick="window.location.href='{{ url_for('order.confirmar_pedido_vista') }}'">
+                        🛒 Realizar Pedido
+                    </button>
+
+
                     </div>
                 </div>
             </div>
@@ -161,7 +163,7 @@ En resumen, este archivo combina HTML, CSS (Tailwind) y JavaScript para crear un
             <button type="submit" class="bg-[#39CB60] text-white px-4 py-2 rounded hover:bg-green-600">Buscar</button>
         </form>
         <button id="closeSearchButton">
-            <i class="fa-solid fa-x hover:text-[#39CB60] text-2xl cursor-pointer"></i>
+            <i class="fa-solid ml-[40px] fa-x hover:text-[#39CB60] text-2xl cursor-pointer"></i>
         </button>
     </div>
 </div>

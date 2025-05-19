@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="w-[30%] mt-[100px] ml-[10rem]">
+        <!-- Título Principal -->
+        <h1 class="text-4xl font-bold mb-6">Panel de Administración</h1>
+
+        <!-- Mensaje de Bienvenida -->
+        <p class="text-lg">
+            ¡Bienvenido de nuevo, <span class="text-green-500 font-semibold">{{ session['admin'] }}</span>!
+        </p>
+
+        <!-- Enlaces de acción -->
+        <div class="flex gap-8 mt-5 mb-6">  
+            <a href="{{ url_for('admin.admin_logout') }}" class="text-red-500 hover:text-red-700 text-sm font-medium">Cerrar Sesión</a>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-[4rem] mb-[4rem]">
+        <!-- Gestión de Productos -->
+        <div class="w-[100%] ml-[10rem]">
+            <h2 class="text-2xl font-semibold mb-4">Gestión de Productos</h2>
+            <div class="overflow-x-auto space-y-4">
+                <a href="{{ url_for('admin.agregar_producto') }}" class="bg-green-500 text-white font-semibold px-6 py-3 rounded-lg hover:bg-green-600 transition-all w-[60%] text-center block">
+                    Añadir Producto
+                </a>
+                <a href="{{ url_for('admin.modificar_producto')}}" class="bg-yellow-500 text-white font-semibold px-6 py-3 rounded-lg hover:bg-yellow-600 transition-all w-[60%] text-center block">
+                    Modificar Producto
+                </a>
+            </div>
+        </div>
+
+        <!-- Gestión de Usuarios -->
+        <div class="p-6 mr-[80px] md:w-[50%] md:ml-auto bg-gray-200 rounded-lg text-center">
+            <h2 class="text-2xl font-semibold mb-4">Gestión de Usuarios</h2>
+            <hr class="border-gray-300 my-4 w-[60%]">
+            <p class="text-gray-500">⚠️ Esta sección está en mantenimiento.</p>
+        </div>
+    </div>
+
+{% endblock %}

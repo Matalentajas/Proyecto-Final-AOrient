@@ -6,8 +6,9 @@ from flask_login import current_user
 product_bp = Blueprint("product", __name__)
 
 
-@product_bp.route("/productos/<categoria_nombre>")
-def productos_categoria(categoria_nombre):
+@product_bp.route("/productos/<categoria_nombre>/", defaults={'filtro': 'mas-baratos'})
+@product_bp.route("/productos/<categoria_nombre>/<filtro>")
+def productos_categoria(categoria_nombre, filtro):
     db = conectar()
     cursor = db.cursor(DictCursor)
 
@@ -17,19 +18,27 @@ def productos_categoria(categoria_nombre):
     if not categoria:
         return "<h1>Categoría no encontrada</h1>", 404
 
-    cursor.execute("""
+    # Definir la ordenación según el filtro
+    orden = "precio ASC"  # Por defecto, ordena por precio más barato
+    if filtro == "mas-caros":
+        orden = "precio DESC"
+    elif filtro == "mejor-valorados":
+        orden = "media_valoracion DESC"
+
+    cursor.execute(f"""
         SELECT p.id, p.nombre_producto AS nombre, p.descripcion, p.precio, p.imagenes AS imagen,
-            COALESCE((SELECT AVG(valor) FROM valoraciones WHERE producto_id = p.id), 0) AS media_valoracion
+               COALESCE((SELECT AVG(valor) FROM valoraciones WHERE producto_id = p.id), 0) AS media_valoracion
         FROM productos p 
         WHERE categoria_id = %s
+        ORDER BY {orden}
     """, (categoria["id"],))
     productos = cursor.fetchall()
 
-    
     cursor.close()
     db.close()
 
-    return render_template("producto.html", categoria=categoria_nombre, productos=productos)
+    return render_template("producto.html", categoria=categoria_nombre, productos=productos, filtro=filtro)
+
 
 @product_bp.route("/producto/detalle/<int:producto_id>")
 def producto(producto_id):  

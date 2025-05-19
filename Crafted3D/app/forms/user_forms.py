@@ -13,7 +13,7 @@ def validar_email_manual(email):
 class RegistroUsuarioForm(FlaskForm):
     nombre_completo = StringField('Nombre Completo', validators=[DataRequired(), Length(min=2, max=50)])
     email = EmailField('Correo Electrónico', validators=[DataRequired()])
-    contraseña = PasswordField('Contraseña', validators=[DataRequired(), Length(min=6)])
+    contraseña = PasswordField('Contraseña', validators=[DataRequired(), Length(min=6, max=150)])
     confirmar_contraseña = PasswordField('Confirmar Contraseña', validators=[
         DataRequired(),
         EqualTo('contraseña', message='Las contraseñas deben coincidir')
