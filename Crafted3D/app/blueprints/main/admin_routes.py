@@ -90,10 +90,16 @@ def agregar_producto():
 @admin_bp.route("/admin/modificar_producto/", defaults={'producto_id': None}, methods=["GET", "POST"])
 @admin_bp.route("/admin/modificar_producto/<int:producto_id>", methods=["GET", "POST"])
 def modificar_producto(producto_id):
-    
     form = ProductoForm()
 
     cursor = current_app.mysql.connection.cursor()
+
+    # Cargar categorías para el SelectField
+    cursor.execute("SELECT id, nombre FROM categorias")
+    categorias = cursor.fetchall()
+    form.categoria.choices = [(cat[0], cat[1]) for cat in categorias]
+
+    # Cargar todos los productos para la tabla
     cursor.execute("""
         SELECT p.id, p.nombre_producto, c.nombre, p.precio
         FROM productos p
@@ -132,6 +138,7 @@ def modificar_producto(producto_id):
         return redirect(url_for("admin.modificar_producto", producto_id=producto_id))
 
     return render_template("modificar_producto.html", form=form, productos=productos, producto_seleccionado=producto_seleccionado)
+
 
 
 
