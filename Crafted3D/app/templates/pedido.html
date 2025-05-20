@@ -2,13 +2,13 @@
 
 {% block content %}
     <!-- Botón de volver -->
-    <div class="mt-6 ml-[10rem] ">
+    <div class="mt-6 mb-6 ml-4 md:ml-[10rem]">
         <a href="{{ url_for('usuario.perfil') }}" class="font-semibold rounded hover:text-green-500">
             ← Volver
         </a>
     </div>
 
-    <div class="w-[30%] mt-[50px] ml-[10rem]">
+    <div class="w-full ml-4 max-w-md mx-auto md:w-[30%] md:mt-[50px] md:ml-[10rem]">
         <!-- Información del Pedido -->
         <div class="text-lg">
             <h1 class="text-4xl font-bold mb-6 text-[#39CB60]">Detalles del Pedido</h1>
@@ -28,17 +28,16 @@
         <h2 class="text-2xl font-semibold mb-4 mt-10">Dirección de Envío</h2>
         <p>{{ pedido.direccion.calle }}</p>
         <p>{{ pedido.direccion.codigo_postal }}, {{ pedido.direccion.ciudad }}</p>
-
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-[4rem] mb-[4rem]">
+    <div class="grid ml-4 grid-cols-1 md:grid-cols-2 gap-8 mt-16 mb-16">
         <!-- Productos en el Pedido -->
-        <div class="w-[100%] ml-[10rem]">
+        <div class="w-full max-w-xl mx-auto md:w-[100%] md:ml-[10rem]">
             <h2 class="text-2xl font-semibold mb-4">Productos Comprados</h2>
             <div class="space-y-4">
                 {% for producto in pedido.productos %}
                 <div class="flex items-center border-b pb-2">
-                    <img src="{{ producto.imagen }}" alt="{{ producto.nombre }}" alt="{{ producto.nombre }}" class="h-16 w-16 object-cover rounded">
+                    <img src="{{ producto.imagen }}" alt="{{ producto.nombre }}" class="h-16 w-16 object-cover rounded">
                     <div class="ml-4">
                         <p class="text-gray-700"><strong>{{ producto.nombre }}</strong></p>
                         <p class="text-gray-600 text-sm">Cantidad: {{ producto.cantidad }}</p>
@@ -52,12 +51,12 @@
         <!-- Resumen de Costos y Dirección -->
         <div class="p-6 md:w-[50%] md:ml-auto">
             <h2 class="text-2xl font-semibold mb-4">Resumen del Pedido</h2>
-            <hr class="border-gray-300 my-4 w-[60%]">
+            <hr class="ml-5 border-gray-300 my-4 w-[60%] mx-auto md:mx-0">
             <ul class="space-y-4">
                 <li><p><strong>Subtotal:</strong> {{ pedido.subtotal }}€</p></li>
                 <li><p><strong>Envío:</strong> {{ pedido.envio }}€</p></li>
                 <li><p><strong>IVA:</strong> {{ pedido.iva }}€</p></li>
-                <li><p class="text-lg font-bold text-[#39CB60]"><strong>Total:</strong> {{ pedido.total }}€</p></li>
+                <li class="text-lg font-bold text-[#39CB60]"><strong>Total:</strong> {{ pedido.total }}€</li>
             </ul>
         </div>
     </div>
