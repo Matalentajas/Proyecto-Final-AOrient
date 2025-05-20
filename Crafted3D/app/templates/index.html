@@ -7,7 +7,7 @@
 <!-- Sección Hero: Imagen de Fondo Estática -->
 <section class="bg-cover bg-center h-[600px]">
   <div class="flex items-center justify-center h-full bg-black bg-opacity-40">
-    <h1 class="text-5xl font-bold text-white">Bienvenido a Crafted 3D</h1>
+    <h1 class="text-5xl font-bold text-white text-center">Bienvenido a Crafted 3D</h1>
   </div>
 </section>
 
@@ -15,106 +15,81 @@
   
   
   
-<!-- Sección Categorías -->
-<section class="container mx-auto py-12">
-  <h2 class="text-5xl font-bold text-center mb-8 text-[#39CB60]">Explora Nuestras Categorías</h2>
-  <p class="text-center text-3xl mb-[30px]">Encuentra lo que necesitas para tu próximo proyecto creativo.</p>
-  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+<section class="container mx-auto py-12 px-4">
+  <h2 class="text-3xl font-bold text-center mb-8 text-[#39CB60]">Explora Nuestras Categorías</h2>
+  <p class="text-center text-2xl mb-[30px]">Encuentra lo que necesitas para tu próximo proyecto creativo.</p>
+  <div class="grid grid-cols-2 gap-8">
     <!-- Tarjeta 1: Escayolas 3D -->
-     <a href="/productos/escayolas3D">
-      <div class="bg-[#EEEEEE] rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer h-[40vh]">
-        <div class="felx text-center p-4">
-          <h3 class="text-4xl font-bold mt-4 mb-2">Escayolas 3D</h3>
-          <p class="text-xl">El futuro de la salud</p>
-        </div>
-        <img src="{{ url_for('static', filename='css/images/Esc.png') }}" alt="Escayolas 3D" class="w-full h-48 object-cover mt-[20px]">
-
+    <a href="/productos/escayolas3D" class="block">
+      <div class="bg-[#EEEEEE] rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer flex flex-col items-center p-6 h-[30vh]">
+        <h3 class="text-2xl font-bold mb-1 text-center">Escayolas</h3>
+        <p class="text-base mb-3 text-center">El futuro de la salud</p>
+        <img src="{{ url_for('static', filename='css/images/Esc.png') }}" alt="Escayolas 3D" class="w-full h-40 object-cover rounded-md">
       </div>
     </a>
     <!-- Tarjeta 2: Almacenaje -->
-    <a href="/productos/almacenaje">
-      <div class="bg-[#EEEEEE] rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer h-[40vh]">
-        <div class="felx text-center p-4">
-          <h3 class="text-4xl font-bold mt-4 mb-2">Almacenaje</h3>
-          <p class="text-xl">Diseña tu estilo interior</p>
-        </div>
-        <div class="flex justify-center">
-          <img src="{{ url_for('static', filename='css/images/Alm.png') }}" alt="Escayolas 3D" class="w-[50%] object-cover">
-        </div>
+    <a href="/productos/almacenaje" class="block">
+      <div class="bg-[#EEEEEE] rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer flex flex-col items-center p-6 h-[30vh]">
+        <h3 class="text-2xl font-bold mb-1 text-center">Almacenaje</h3>
+        <p class="text-base mb-3 text-center">Diseña tu estilo interior</p>
+        <img src="{{ url_for('static', filename='css/images/Alm.png') }}" alt="Almacenaje" class="w-3/4 h-40 object-cover rounded-md">
       </div>
     </a>
     <!-- Tarjeta 3: Herramientas -->
-    <a href="/productos/herramientas">
-      <div class="bg-[#EEEEEE] rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer h-[40vh]">
-        <div class="felx text-center p-4">
-        <h3 class="text-4xl font-bold mt-4 mb-2">Herramientas</h3>
-        <p class="text-xl">La decoración sin límites</p>
-        </div>
-        <div class="flex justify-center mt-[-20px]">
-        <img src="{{ url_for('static', filename='css/images/Her.png') }}" alt="Escayolas 3D" class="w-[50%] object-cover">
-        </div>
+    <a href="/productos/herramientas" class="block">
+      <div class="bg-[#EEEEEE] rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer flex flex-col items-center p-6 h-[30vh]">
+        <h3 class="text-2xl font-bold mb-1 text-center">Herramientas</h3>
+        <p class="text-base mb-3 text-center">La decoración sin límites</p>
+        <img src="{{ url_for('static', filename='css/images/Her.png') }}" alt="Herramientas" class="w-3/4 h-40 object-cover rounded-md">
       </div>
     </a>
     <!-- Tarjeta 4: Gadgets -->
-    <a href="/productos/gadgets">
-      <div class="bg-[#EEEEEE] rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer h-[40vh]">
-        <div class="felx text-center p-4">
-          <h3 class="text-4xl font-bold mt-4 mb-2">Gadgets</h3>
-          <p class="text-xl">La idea de tu vida</p>
-        </div>
-        <div class="flex justify-center">
-          <img src="{{ url_for('static', filename='css/images/Gad.png') }}" alt="Escayolas 3D" class="w-[50%] object-cover">
-        </div>
+    <a href="/productos/gadgets" class="block">
+      <div class="bg-[#EEEEEE] rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer flex flex-col items-center p-6 h-[30vh]">
+        <h3 class="text-2xl font-bold mb-1 text-center">Gadgets</h3>
+        <p class="text-base mb-3 text-center">La idea de tu vida</p>
+        <img src="{{ url_for('static', filename='css/images/Gad.png') }}" alt="Gadgets" class="w-3/4 h-40 object-cover rounded-md">
       </div>
     </a>
     <!-- Tarjeta 5: Juguetes -->
-    <a href="/productos/juguetes">
-      <div class="bg-[#EEEEEE] rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer h-[40vh]">
-        <div class="felx text-center p-4">
-          <h3 class="text-4xl font-bold mt-4 mb-2">Juguetes</h3>
-          <p class="text-xl">Disfruta tu niño interior</p>
-        </div>
-        <div class="flex justify-center items-center">
-          <img src="{{ url_for('static', filename='css/images/Jug.png') }}" alt="Escayolas 3D" class="w-[70%] object-cover">
-        </div>
+    <a href="/productos/juguetes" class="block">
+      <div class="bg-[#EEEEEE] rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer flex flex-col items-center p-6 h-[30vh]">
+        <h3 class="text-2xl font-bold mb-1 text-center">Juguetes</h3>
+        <p class="text-base mb-3 text-center">Disfruta tu niño interior</p>
+        <img src="{{ url_for('static', filename='css/images/Jug.png') }}" alt="Juguetes" class="w-full h-40 object-cover rounded-md">
       </div>
     </a>
     <!-- Tarjeta 6: Decoración -->
-    <a href="/productos/decoracion">
-      <div class="bg-[#EEEEEE] rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer h-[40vh]">
-        <div class="felx text-center p-4">
-          <h3 class="text-4xl font-bold mt-4 mb-2">Decoración</h3>
-          <p class="text-xl">La decoración sin límites</p>
-        </div>
-        <div class="flex justify-center items-center mt-[-60px]">
-          <img src="{{ url_for('static', filename='css/images/Dec.png') }}" alt="Escayolas 3D" class="w-[70%] object-cover">
-        </div>
+    <a href="/productos/decoracion" class="block">
+      <div class="bg-[#EEEEEE] rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer flex flex-col items-center p-6 h-[30vh]">
+        <h3 class="text-2xl font-bold mb-1 text-center">Decoración</h3>
+        <p class="text-base mb-3 text-center">La decoración sin límites</p>
+        <img src="{{ url_for('static', filename='css/images/Dec.png') }}" alt="Decoración" class="w-full h-40 object-cover rounded-md">
       </div>
     </a>
+  </div>
 </section>
 
+
+
 <!-- Sección Productos Destacados -->
-<section class="container mx-auto py-12">
+<section class="container mx-auto py-12 px-4">
   <h2 class="text-3xl font-bold text-center mb-8">Productos Destacados</h2>
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
     {% for producto in productos_destacados %}
-    <div class="border rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
-
+    <div class="border rounded-lg overflow-hidden hover:shadow-lg transition-shadow flex flex-col h-full bg-white">
       <img src="{{ producto.imagen }}" alt="{{ producto.nombre }}" class="w-full aspect-square object-cover transition-transform duration-300 hover:scale-105">
-
-      <div class="p-4">
-        <h3 class="text-xl font-bold">{{ producto['nombre'] }}</h3>
-        <div class="rating-display">
-            {% for i in range(5) %}
-                <span class="star {% if i < producto['media_valoracion'] %}selected{% endif %}">★</span>
-            {% endfor %}
+      <div class="p-4 flex flex-col flex-1">
+        <h3 class="text-xl font-bold mb-2">{{ producto['nombre'] }}</h3>
+        <div class="rating-display mb-4">
+          {% for i in range(5) %}
+            <span class="star {% if i < producto['media_valoracion'] %}selected{% endif %}">★</span>
+          {% endfor %}
         </div>
-        <a href="{{ url_for('product.producto', producto_id=producto['id']) }}" class="mt-4 inline-block bg-[#39CB60] text-white px-4 py-2 rounded hover:bg-green-600">
-            Ver Producto
+        <a href="{{ url_for('product.producto', producto_id=producto['id']) }}" class="mt-auto inline-block bg-[#39CB60] text-white px-4 py-2 rounded hover:bg-green-600 text-center w-full">
+          Ver Producto
         </a>
-    </div>
-
-
+      </div>
     </div>
     {% endfor %}
   </div>
