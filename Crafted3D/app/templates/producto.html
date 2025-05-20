@@ -9,9 +9,9 @@
 
   {% if categoria %}
     <h1 class="text-3xl font-bold text-center mb-8">{{ categoria|capitalize }}</h1>
-    <div class="flex gap-4 mb-6">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 mb-6">
         <a href="{{ url_for('product.productos_categoria', categoria_nombre=categoria, filtro='mejor-valorados') }}"
-            class="px-4 py-2 rounded shadow font-semibold transition
+            class="px-4 py-2 rounded shadow font-semibold transition text-center
             {% if filtro == 'mejor-valorados' %}
                 bg-green-700 text-white
             {% else %}
@@ -20,7 +20,7 @@
              Mejor Valorados
         </a>
         <a href="{{ url_for('product.productos_categoria', categoria_nombre=categoria, filtro='mas-baratos') }}"
-            class="px-4 py-2 rounded shadow font-semibold transition
+            class="px-4 py-2 rounded shadow font-semibold transition text-center
             {% if filtro == 'mas-baratos' %}
                 bg-green-700 text-white
             {% else %}
@@ -29,7 +29,7 @@
              Más Baratos
         </a>
         <a href="{{ url_for('product.productos_categoria', categoria_nombre=categoria, filtro='mas-caros') }}"
-            class="px-4 py-2 rounded shadow font-semibold transition
+            class="px-4 py-2 rounded shadow font-semibold transition text-center
             {% if filtro == 'mas-caros' %}
                 bg-green-700 text-white
             {% else %}
@@ -40,30 +40,30 @@
     </div>
 
     {% if productos|length > 0 %}
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-      {% for producto in productos %}
-      <div class="border rounded-lg shadow hover:shadow-lg transition-shadow">
-          <div class="overflow-hidden rounded-t-lg">
-            {% if "http" in producto.imagen %}
-                <img src="{{ producto.imagen }}" alt="{{ producto.nombre }}" class="w-full aspect-square object-cover transition-transform duration-300 hover:scale-105">
-            {% else %}
-                <img src="{{ url_for('static', filename='css/images/' + producto.imagen) }}" alt="{{ producto.nombre }}" class="w-full aspect-square object-cover transition-transform duration-300 hover:scale-105">
-            {% endif %}
-          </div>
-          <div class="p-4">
-              <h3 class="text-xl font-bold">{{ producto.nombre }}</h3>
-              <div class="rating-display">
-                  {% for i in range(5) %}
-                      <span class="star {% if i < producto.media_valoracion | default(0) %}selected{% endif %}">★</span>
-                  {% endfor %}
-              </div>
-              <p id="priceDisplay" class="text-xl text-gray-700 mb-4" data-price="{{ producto.precio|replace('€', '')|replace(',', '.') }}">{{ producto.precio }}€</p>
-              <a href="{{ url_for('product.producto', producto_id=producto['id']) }}" class="mt-4 bg-[#39CB60] text-white px-4 py-2 rounded hover:bg-green-600 block text-center">
-                  Ver Producto
-              </a>
-          </div>
-      </div>
-      {% endfor %}
+    <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-8">
+        {% for producto in productos %}
+        <div class="border m-1 rounded-lg shadow hover:shadow-lg transition-shadow">
+                <div class="overflow-hidden rounded-t-lg">
+                    {% if "http" in producto.imagen %}
+                            <img src="{{ producto.imagen }}" alt="{{ producto.nombre }}" class="w-full aspect-square object-cover transition-transform duration-300 hover:scale-105">
+                    {% else %}
+                            <img src="{{ url_for('static', filename='css/images/' + producto.imagen) }}" alt="{{ producto.nombre }}" class="w-full aspect-square object-cover transition-transform duration-300 hover:scale-105">
+                    {% endif %}
+                </div>
+                <div class="p-4">
+                        <h3 class="text-xl font-bold">{{ producto.nombre }}</h3>
+                        <div class="rating-display">
+                                {% for i in range(5) %}
+                                        <span class="star {% if i < producto.media_valoracion | default(0) %}selected{% endif %}">★</span>
+                                {% endfor %}
+                        </div>
+                        <p id="priceDisplay" class="text-xl text-gray-700 mb-4" data-price="{{ producto.precio|replace('€', '')|replace(',', '.') }}">{{ producto.precio }}€</p>
+                        <a href="{{ url_for('product.producto', producto_id=producto['id']) }}" class="mt-4 bg-[#39CB60] text-white px-4 py-2 rounded hover:bg-green-600 block text-center">
+                                Ver Producto
+                        </a>
+                </div>
+        </div>
+        {% endfor %}
     </div>
     {% else %}
     <p class="text-center text-gray-600 mt-6">Actualmente no hay productos disponibles en esta categoría.</p>
@@ -71,50 +71,51 @@
 
   {% else %}
 
-    <div class="mt-4 mb-4">
+    <div class="mt-4 mb-4 ml-4 sm:ml-0"></div>
         <a href="javascript:window.history.back();" class="font-semibold rounded hover:text-blue-700">← Volver</a>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div class="text-center overflow-hidden rounded-lg">
         {% if "http" in producto.imagen %}
-            <img src="{{ producto.imagen }}" alt="{{ producto.nombre }}" class="w-full max-w-md mx-auto aspect-square object-cover transition-transform duration-300 hover:scale-105">
+            <img src="{{ producto.imagen }}" alt="{{ producto.nombre }}" class="w-full max-w-md mx-auto aspect-square object-cover transition-transform duration-300 hover:scale-105 sm:max-w-md max-w-xs">
         {% else %}
-            <img src="{{ url_for('static', filename='css/images/' + producto.imagen) }}" alt="{{ producto.nombre }}" class="w-full max-w-md mx-auto aspect-square object-cover transition-transform duration-300 hover:scale-105">
+            <img src="{{ url_for('static', filename='css/images/' + producto.imagen) }}" alt="{{ producto.nombre }}" class="w-full max-w-md mx-auto aspect-square object-cover transition-transform duration-300 hover:scale-105 sm:max-w-md max-w-xs">
         {% endif %}
         </div>
 
         <div>
-          <div class="rating-display">
-              {% for i in range(5) %}
-                  <span class="star {% if i < media_valoracion %}selected{% endif %}">★</span>
-              {% endfor %}
-          </div>
-
-          <h1 class="text-3xl font-bold mb-4">{{ producto.nombre }}</h1>
-          <p id="priceDisplay" class="text-xl text-gray-700 mb-4" data-price="{{ producto.precio|replace('€', '')|replace(',', '.') }}">{{ producto.precio }}€</p>
-          <p class="text-lg text-gray-600 mb-6">{{ producto.descripcion }}</p>
-
-          <div class="flex items-center gap-4 mb-6">
-              <button onclick="updateQuantity(-1)" class="bg-gray-300 px-3 py-2 rounded cursor-pointer hover:bg-gray-400">-</button>
-              <input id="quantity" type="number" value="1" min="1" class="w-16 text-center border rounded py-2" onchange="updatePrice()">
-              <button onclick="updateQuantity(1)" class="bg-gray-300 px-3 py-2 rounded cursor-pointer hover:bg-gray-400">+</button>
-          </div>
-
-          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-
-          {% if current_user.is_authenticated %}
-              <button onclick="addToCart('{{ producto.id }}', document.getElementById('quantity').value)" class="bg-[#39CB60] text-white font-bold px-6 py-3 rounded hover:bg-green-600 cursor-pointer">
-                  Añadir a la cesta
-              </button>
-          {% else %}
-              <button onclick="alert('Debes iniciar sesión para añadir productos a la cesta.')" class="bg-[#39CB60] text-white font-bold px-6 py-3 rounded hover:bg-green-600 cursor-pointer">
-                  Añadir a la cesta
-              </button>
-          {% endif %}
+        <div class="rating-display flex justify-center sm:justify-start">
+            {% for i in range(5) %}
+                <span class="star {% if i < media_valoracion %}selected{% endif %}">★</span>
+            {% endfor %}
         </div>
 
-        <div>
+        <h1 class="text-3xl font-bold mb-4 text-center sm:text-left">{{ producto.nombre }}</h1>
+        <p id="priceDisplay" class="text-xl text-gray-700 mb-4 text-center sm:text-left" data-price="{{ producto.precio|replace('€', '')|replace(',', '.') }}">{{ producto.precio }}€</p>
+        <p class="text-lg text-gray-600 mb-6 text-center sm:text-left">{{ producto.descripcion }}</p>
+
+        <div class="flex items-center gap-4 mb-6 justify-center sm:justify-start">
+            <button onclick="updateQuantity(-1)" class="bg-gray-300 px-3 py-2 rounded cursor-pointer hover:bg-gray-400">-</button>
+            <input id="quantity" type="number" value="1" min="1" class="w-16 text-center border rounded py-2" onchange="updatePrice()">
+            <button onclick="updateQuantity(1)" class="bg-gray-300 px-3 py-2 rounded cursor-pointer hover:bg-gray-400">+</button>
+        </div>
+
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="flex justify-center sm:justify-start">
+            {% if current_user.is_authenticated %}
+                    <button onclick="addToCart('{{ producto.id }}', document.getElementById('quantity').value)" class="bg-[#39CB60] text-white font-bold px-6 py-3 rounded hover:bg-green-600 cursor-pointer w-full sm:w-auto">
+                            Añadir a la cesta
+                    </button>
+            {% else %}
+                    <button onclick="alert('Debes iniciar sesión para añadir productos a la cesta.')" class="bg-[#39CB60] text-white font-bold px-6 py-3 rounded hover:bg-green-600 cursor-pointer w-full sm:w-auto">
+                            Añadir a la cesta
+                    </button>
+            {% endif %}
+        </div>
+        </div>
+
+        <div class="md:col-span-2"></div>
           <h2 class="text-2xl font-bold mt-6">Valoraciones del producto</h2>
           {% if valoraciones %}
               {% for valoracion in valoraciones %}
@@ -129,7 +130,7 @@
           {% endif %}
         </div>
 
-        <div>
+        <div class="md:col-span-2"></div>
             <h2 class="text-2xl font-bold mt-6">Deja tu valoración</h2>
             <div class="rating" style="font-size: 2rem;">
               <span class="star" data-value="1">★</span>
