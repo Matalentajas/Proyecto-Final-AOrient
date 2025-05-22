@@ -1,18 +1,29 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, current_app
+from flask import Blueprint, render_template, request, redirect, session, url_for, flash, current_app
 from app.utils.token import guardar_token
 from app.forms.user_forms import RegistroUsuarioForm, LoginForm, ModificarContraseñaForm, CambiarContraseñaForm, EditarDireccionForm, EditarPerfilForm  
 from app.email_sender import enviar_correo_bienvenida, enviar_correo_actualizacion, enviar_correo_actualizacion_direccion, enviar_correo_confirmacion, enviar_correo_recuperacion
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 from app.models import Usuario
-from datetime import datetime
 
 usuario_bp = Blueprint("usuario", __name__)
+
+# Lista de pedidos de ejemplo
+pedidos = [
+    {"numero": "PED12345", "fecha": "2025-05-01", "estado_pago": "Pagado", "estado": "Completado", "total": 150.00},
+    {"numero": "PED12346", "fecha": "2025-05-03", "estado_pago": "Procesando", "estado": "Enviado", "total": 75.50},
+    {"numero": "PED12347", "fecha": "2025-05-05", "estado_pago": "Pendiente", "estado": "Cancelado", "total": 200.00}
+]
+
 
 # Vista del perfil del usuario
 @usuario_bp.route("/perfil")
 @login_required
 def perfil():
+    # Si hay sesión de admin, redirige al panel admin
+    if "admin" in session:
+        return redirect(url_for("admin.admin_dashboard"))
+
     cursor = current_app.mysql.connection.cursor()
 
     # Obtener datos del usuario
@@ -39,21 +50,12 @@ def perfil():
 
     pedidos_raw = cursor.fetchall()
 
-    # Convertir tuplas en diccionarios y formatear fecha a dd/mm/yyyy
     pedidos = []
     for pedido in pedidos_raw:
         if pedido[0]:
-            fecha = pedido[1]
-            # Si la fecha viene como string, convertir a datetime
-            if isinstance(fecha, str):
-                try:
-                    fecha = datetime.strptime(fecha, "%Y-%m-%d %H:%M:%S")
-                except ValueError:
-                    fecha = datetime.strptime(fecha, "%Y-%m-%d")
-
             pedidos.append({
                 "numero": pedido[0],
-                "fecha": fecha.strftime("%d/%m/%Y"),  # Aquí la fecha ya formateada para mostrar
+                "fecha": pedido[1].strftime("%Y-%m-%d %H:%M:%S"),
                 "estado_pago": pedido[2],
                 "estado": pedido[3],
                 "total": float(pedido[4])
@@ -66,6 +68,10 @@ def perfil():
 
 @usuario_bp.route("/registro", methods=["GET", "POST"])
 def registro():
+    # Si hay sesión de admin, redirige al panel admin
+    if "admin" in session:
+        return redirect(url_for("admin.admin_dashboard"))
+    
     if current_user.is_authenticated:
         return redirect(url_for("usuario.perfil"))
 
@@ -117,6 +123,10 @@ def registro():
 # Vista del login
 @usuario_bp.route("/login", methods=["GET", "POST"])
 def login():
+    # Si hay sesión de admin, redirige al panel admin
+    if "admin" in session:
+        return redirect(url_for("admin.admin_dashboard"))
+    
     if current_user.is_authenticated:
         return redirect(url_for("usuario.perfil"))
     
@@ -152,6 +162,9 @@ def login():
 # Vista para modificar contraseña
 @usuario_bp.route("/modificar_contraseña_1", methods=["GET", "POST"])
 def modificar_contraseña():
+    # Si hay sesión de admin, redirige al panel admin
+    if "admin" in session:
+        return redirect(url_for("admin.admin_dashboard"))
     form = ModificarContraseñaForm()
 
     if request.method == "POST" and form.validate_on_submit():
@@ -179,6 +192,9 @@ def modificar_contraseña():
 # Vista para cambiar contraseña
 @usuario_bp.route("/cambiar_contraseña/<token>", methods=["GET", "POST"])
 def cambiar_contraseña(token):
+    # Si hay sesión de admin, redirige al panel admin
+    if "admin" in session:
+        return redirect(url_for("admin.admin_dashboard"))
     form = CambiarContraseñaForm()
 
     cursor = current_app.mysql.connection.cursor()
@@ -214,25 +230,10 @@ def cambiar_contraseña(token):
 @usuario_bp.route("/editar_direccion", methods=["GET", "POST"])
 @login_required
 def editar_direccion():
-    cursor = current_app.mysql.connection.cursor()
-    cursor.execute("""
-        SELECT direccion_completa, ciudad, codigo_postal 
-        FROM usuarios 
-        WHERE id = %s
-    """, (current_user.id,))
-    fila = cursor.fetchone()
-    cursor.close()
-
-    if fila:
-        datos = {
-            'direccion_completa': fila[0],
-            'ciudad': fila[1],
-            'codigo_postal': fila[2]
-        }
-    else:
-        datos = {}
-
-    form = EditarDireccionForm(data=datos)
+    # Si hay sesión de admin, redirige al panel admin
+    if "admin" in session:
+        return redirect(url_for("admin.admin_dashboard"))
+    form = EditarDireccionForm(obj=current_user)
     next_url = request.args.get("next", url_for("usuario.perfil"))
 
     if request.method == "POST" and form.validate_on_submit():
@@ -248,19 +249,20 @@ def editar_direccion():
         """, (direccion_completa, ciudad, codigo_postal, current_user.id))
         current_app.mysql.connection.commit()
         cursor.close()
-        
+
         enviar_correo_actualizacion_direccion(current_user.email, direccion_completa, ciudad, codigo_postal)
-        return redirect(next_url)
+        return redirect(next_url)  # ✅ Redirige a la página correcta
 
     return render_template("editar_direccion.html", form=form, next_url=next_url)
-
-
 
 
 # Vista para editar los datos del usuario
 @usuario_bp.route("/editar_perfil", methods=["GET", "POST"])
 @login_required
 def editar_perfil():
+    # Si hay sesión de admin, redirige al panel admin
+    if "admin" in session:
+        return redirect(url_for("admin.admin_dashboard"))
     form = EditarPerfilForm(obj=current_user)
     next_url = request.args.get("next", url_for("usuario.perfil"))
 
@@ -287,6 +289,9 @@ def editar_perfil():
 @usuario_bp.route("/logout")
 @login_required
 def logout():
+    # Si hay sesión de admin, redirige al panel admin
+    if "admin" in session:
+        return redirect(url_for("admin.admin_dashboard"))
     logout_user() 
     flash("Has cerrado sesión correctamente.", "info")
     return redirect(url_for("usuario.login"))
