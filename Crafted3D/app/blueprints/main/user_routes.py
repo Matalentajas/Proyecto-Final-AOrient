@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, current_app
+from flask import Blueprint, render_template, request, redirect, session, url_for, flash, current_app
 from app.utils.token import guardar_token
 from app.forms.user_forms import RegistroUsuarioForm, LoginForm, ModificarContraseñaForm, CambiarContraseñaForm, EditarDireccionForm, EditarPerfilForm  
 from app.email_sender import enviar_correo_bienvenida, enviar_correo_actualizacion, enviar_correo_actualizacion_direccion, enviar_correo_confirmacion, enviar_correo_recuperacion
@@ -20,9 +20,13 @@ pedidos = [
 @usuario_bp.route("/perfil")
 @login_required
 def perfil():
+    # Si hay sesión de admin, redirige al panel admin
+    if "admin" in session:
+        return redirect(url_for("admin.admin_dashboard"))
+
     cursor = current_app.mysql.connection.cursor()
 
-    #Obtener datos del usuario
+    # Obtener datos del usuario
     cursor.execute("""
         SELECT nombre_completo, email, direccion_completa, ciudad, codigo_postal 
         FROM usuarios WHERE id = %s
@@ -46,10 +50,6 @@ def perfil():
 
     pedidos_raw = cursor.fetchall()
 
-    print("DEBUG - pedidos_raw (estructura):", type(pedidos_raw), pedidos_raw)
-
-
-    #Convertir tuplas en diccionarios para que se accedan correctamente en la plantilla
     pedidos = []
     for pedido in pedidos_raw:
         if pedido[0]:
@@ -61,9 +61,6 @@ def perfil():
                 "total": float(pedido[4])
             })
 
-    print("DEBUG - pedidos convertido:", pedidos)
-
-
     cursor.close()
 
     return render_template("perfil.html", usuario=usuario_info, pedidos=pedidos)
@@ -71,6 +68,10 @@ def perfil():
 
 @usuario_bp.route("/registro", methods=["GET", "POST"])
 def registro():
+    # Si hay sesión de admin, redirige al panel admin
+    if "admin" in session:
+        return redirect(url_for("admin.admin_dashboard"))
+    
     if current_user.is_authenticated:
         return redirect(url_for("usuario.perfil"))
 
@@ -122,6 +123,10 @@ def registro():
 # Vista del login
 @usuario_bp.route("/login", methods=["GET", "POST"])
 def login():
+    # Si hay sesión de admin, redirige al panel admin
+    if "admin" in session:
+        return redirect(url_for("admin.admin_dashboard"))
+    
     if current_user.is_authenticated:
         return redirect(url_for("usuario.perfil"))
     
@@ -157,6 +162,9 @@ def login():
 # Vista para modificar contraseña
 @usuario_bp.route("/modificar_contraseña_1", methods=["GET", "POST"])
 def modificar_contraseña():
+    # Si hay sesión de admin, redirige al panel admin
+    if "admin" in session:
+        return redirect(url_for("admin.admin_dashboard"))
     form = ModificarContraseñaForm()
 
     if request.method == "POST" and form.validate_on_submit():
@@ -184,6 +192,9 @@ def modificar_contraseña():
 # Vista para cambiar contraseña
 @usuario_bp.route("/cambiar_contraseña/<token>", methods=["GET", "POST"])
 def cambiar_contraseña(token):
+    # Si hay sesión de admin, redirige al panel admin
+    if "admin" in session:
+        return redirect(url_for("admin.admin_dashboard"))
     form = CambiarContraseñaForm()
 
     cursor = current_app.mysql.connection.cursor()
@@ -219,6 +230,9 @@ def cambiar_contraseña(token):
 @usuario_bp.route("/editar_direccion", methods=["GET", "POST"])
 @login_required
 def editar_direccion():
+    # Si hay sesión de admin, redirige al panel admin
+    if "admin" in session:
+        return redirect(url_for("admin.admin_dashboard"))
     form = EditarDireccionForm(obj=current_user)
     next_url = request.args.get("next", url_for("usuario.perfil"))
 
@@ -246,6 +260,9 @@ def editar_direccion():
 @usuario_bp.route("/editar_perfil", methods=["GET", "POST"])
 @login_required
 def editar_perfil():
+    # Si hay sesión de admin, redirige al panel admin
+    if "admin" in session:
+        return redirect(url_for("admin.admin_dashboard"))
     form = EditarPerfilForm(obj=current_user)
     next_url = request.args.get("next", url_for("usuario.perfil"))
 
@@ -272,6 +289,9 @@ def editar_perfil():
 @usuario_bp.route("/logout")
 @login_required
 def logout():
+    # Si hay sesión de admin, redirige al panel admin
+    if "admin" in session:
+        return redirect(url_for("admin.admin_dashboard"))
     logout_user() 
     flash("Has cerrado sesión correctamente.", "info")
     return redirect(url_for("usuario.login"))
