@@ -3,10 +3,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<div class="flex w-full h-screen">
+<div class="flex flex-col md:flex-row w-full min-h-screen">
     
     <!-- 🔹 Parte Izquierda: Datos del Cliente y Pago -->
-    <div class="w-1/2 h-screen bg-white p-10 flex flex-col justify-between">
+    <div class="order-2 md:order-1 w-full md:w-1/2 bg-white p-6 md:p-10 flex flex-col justify-between min-h-screen">
         
         <!-- Logo -->
         <div class="flex justify-center mb-6">
@@ -15,14 +15,14 @@
                     class="h-[120px]">
             </a>
         </div>
-        <div class="mt-6 ">
+        <div class="mt-4 md:mt-6">
             <a href="{{ url_for('usuario.perfil') }}" class="font-semibold rounded hover:text-blue-700">
                 ← Volver
             </a>
         </div>
 
         <!-- Información del Cliente -->
-        <div class="border border-black p-4 rounded-lg">
+        <div class="border border-black p-4 rounded-lg mt-6">
             <h2 class="text-2xl font-semibold mb-4">Datos del Cliente</h2>
             <table class="table-auto w-full text-left text-gray-700">
                 <tbody>
@@ -52,54 +52,50 @@
             </table>
         </div>
 
-
         <!-- Método de pago (no habilitado) -->
-        <div>
-            <h2 class="text-2xl font-semibold mt-6 mb-4">Método de Pago</h2>
-            <div class="bg-gray-200 p-5 text-gray-500 text-center text-sm">
+        <div class="mt-6">
+            <h2 class="text-2xl font-semibold mb-4">Método de Pago</h2>
+            <div class="bg-gray-200 p-5 text-gray-500 text-center text-sm rounded-md">
                 *El selector de método de pago está en mantenimiento.
             </div>
 
             <!-- Botón para realizar pedido -->
-            <form method="POST" action="{{ url_for('order.procesar_pedido') }}">
+            <form method="POST" action="{{ url_for('order.procesar_pedido') }}" class="mt-6">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <button type="submit" class="w-full bg-green-500 text-white font-semibold px-8 py-4 rounded-lg hover:bg-green-600 transition-all text-center text-lg">
                     Realizar Pedido
                 </button>
             </form>
-
         </div>
     </div>
 
     <!-- 🔹 Parte Derecha: Lista de Productos -->
-    <!-- Contenedor de productos con scroll -->
-<div class="w-1/2 h-screen bg-[#D4D4D4] p-10 flex flex-col justify-center">
-    <div class="space-y-6 max-h-[70vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
-        {% for producto in pedido.productos %}
-        <div class="flex items-center border-b border-gray-300 pb-4">
-            <img src="{{ producto.imagen }}" alt="{{ producto.nombre }}" alt="{{ producto.nombre }}" class="h-16 w-16 object-cover rounded">
+    <div class="order-1 md:order-2 w-full md:w-1/2 bg-[#D4D4D4] p-6 md:p-10 flex flex-col justify-center min-h-screen">
+        <div class="space-y-6 max-h-[70vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 pr-2">
+            {% for producto in pedido.productos %}
+            <div class="flex items-center border-b border-gray-300 pb-4">
+                <img src="{{ producto.imagen }}" alt="{{ producto.nombre }}" class="h-16 w-16 object-cover rounded">
 
-            <div class="ml-6">
-                <p class="text-gray-700 text-lg"><strong>{{ producto.nombre }}</strong></p>
-                <p class="text-gray-600 text-sm">Cantidad: {{ producto.cantidad }}</p>
-                <p class="text-gray-600 text-sm">Precio unitario: {{ producto.precio }} €</p>
-                <p class="text-gray-700 text-sm font-bold">Precio total: {{ producto.precio_total }} €</p>
+                <div class="ml-6">
+                    <p class="text-gray-700 text-lg"><strong>{{ producto.nombre }}</strong></p>
+                    <p class="text-gray-600 text-sm">Cantidad: {{ producto.cantidad }}</p>
+                    <p class="text-gray-600 text-sm">Precio unitario: {{ producto.precio }} €</p>
+                    <p class="text-gray-700 text-sm font-bold">Precio total: {{ producto.precio_total }} €</p>
+                </div>
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-    </div>
 
-    <!-- Total del Pedido -->
-    <div class="mt-auto text-left p-6 bg-gray-100 rounded-lg shadow-md">
-        <p class="text-gray-700 text-lg font-semibold">Subtotal: {{ pedido.total }} €</p>
-        <p class="text-gray-600 text-sm">Gastos de envío: <span class="font-medium text-green-600">0 €</span></p>
-        <p class="text-gray-600 text-sm">IVA (21%): <span class="font-medium">{{ (pedido.total | float * 0.21) | round(2) }} €</span></p>
-        <p class="text-gray-700 text-2xl font-bold mt-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-md">
-            Total con IVA: {{ (pedido.total | float * 1.21) | round(2) }} €
-        </p>
+        <!-- Total del Pedido -->
+        <div class="mt-auto text-left p-6 bg-gray-100 rounded-lg shadow-md">
+            <p class="text-gray-700 text-lg font-semibold">Subtotal: {{ pedido.total }} €</p>
+            <p class="text-gray-600 text-sm">Gastos de envío: <span class="font-medium text-green-600">0 €</span></p>
+            <p class="text-gray-600 text-sm">IVA (21%): <span class="font-medium">{{ (pedido.total | float * 0.21) | round(2) }} €</span></p>
+            <p class="text-gray-700 text-2xl font-bold mt-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-md">
+                Total con IVA: {{ (pedido.total | float * 1.21) | round(2) }} €
+            </p>
+        </div>
     </div>
-</div>
-
 
 </div>
 {% endblock %}

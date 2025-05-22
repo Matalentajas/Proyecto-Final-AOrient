@@ -5,16 +5,9 @@ from app.email_sender import enviar_correo_bienvenida, enviar_correo_actualizaci
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 from app.models import Usuario
+from datetime import datetime
 
 usuario_bp = Blueprint("usuario", __name__)
-
-# Lista de pedidos de ejemplo
-pedidos = [
-    {"numero": "PED12345", "fecha": "2025-05-01", "estado_pago": "Pagado", "estado": "Completado", "total": 150.00},
-    {"numero": "PED12346", "fecha": "2025-05-03", "estado_pago": "Procesando", "estado": "Enviado", "total": 75.50},
-    {"numero": "PED12347", "fecha": "2025-05-05", "estado_pago": "Pendiente", "estado": "Cancelado", "total": 200.00}
-]
-
 
 # Vista del perfil del usuario
 @usuario_bp.route("/perfil")
@@ -22,7 +15,7 @@ pedidos = [
 def perfil():
     cursor = current_app.mysql.connection.cursor()
 
-    #Obtener datos del usuario
+    # Obtener datos del usuario
     cursor.execute("""
         SELECT nombre_completo, email, direccion_completa, ciudad, codigo_postal 
         FROM usuarios WHERE id = %s
@@ -46,23 +39,25 @@ def perfil():
 
     pedidos_raw = cursor.fetchall()
 
-    print("DEBUG - pedidos_raw (estructura):", type(pedidos_raw), pedidos_raw)
-
-
-    #Convertir tuplas en diccionarios para que se accedan correctamente en la plantilla
+    # Convertir tuplas en diccionarios y formatear fecha a dd/mm/yyyy
     pedidos = []
     for pedido in pedidos_raw:
         if pedido[0]:
+            fecha = pedido[1]
+            # Si la fecha viene como string, convertir a datetime
+            if isinstance(fecha, str):
+                try:
+                    fecha = datetime.strptime(fecha, "%Y-%m-%d %H:%M:%S")
+                except ValueError:
+                    fecha = datetime.strptime(fecha, "%Y-%m-%d")
+
             pedidos.append({
                 "numero": pedido[0],
-                "fecha": pedido[1].strftime("%Y-%m-%d %H:%M:%S"),
+                "fecha": fecha.strftime("%d/%m/%Y"),  # Aquí la fecha ya formateada para mostrar
                 "estado_pago": pedido[2],
                 "estado": pedido[3],
                 "total": float(pedido[4])
             })
-
-    print("DEBUG - pedidos convertido:", pedidos)
-
 
     cursor.close()
 
