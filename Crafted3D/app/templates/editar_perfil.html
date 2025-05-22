@@ -50,4 +50,37 @@
             </div>
         </form>
     </div>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const nombreInput = document.querySelector("[name='nombre']");
+        const emailInput = document.querySelector("[name='email']");
+        const confirmarBtn = document.querySelector("button[type='submit']");
+        
+        const valoresOriginales = {
+            nombre: nombreInput.value,
+            email: emailInput.value
+        };
+
+        function verificarCambios() {
+            if (nombreInput.value !== valoresOriginales.nombre || emailInput.value !== valoresOriginales.email) {
+                confirmarBtn.disabled = false;
+                confirmarBtn.classList.remove("bg-gray-400");
+                confirmarBtn.classList.add("bg-green-500", "hover:bg-green-600");
+            } else {
+                confirmarBtn.disabled = true;
+                confirmarBtn.classList.remove("bg-green-500", "hover:bg-green-600");
+                confirmarBtn.classList.add("bg-gray-400");
+            }
+        }
+
+        nombreInput.addEventListener("input", verificarCambios);
+        emailInput.addEventListener("input", verificarCambios);
+
+        //Desactivar el botón al cargar la página
+        confirmarBtn.disabled = true;
+        confirmarBtn.classList.remove("bg-green-500", "hover:bg-green-600");
+        confirmarBtn.classList.add("bg-gray-400");
+    });
+</script>
+
 </body>

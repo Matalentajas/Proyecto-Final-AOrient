@@ -25,31 +25,32 @@
 
             <div class="space-y-3">
                 <!-- Dirección -->
-                <div>
-                    {{ form.direccion_completa.label(class="block text-gray-700 text-xs sm:text-sm") }}
-                    {{ form.direccion_completa(value=current_user.direccion_completa, class="w-full border-b-2 border-gray-300 focus:border-black focus:outline-none py-1 sm:py-2 text-xs sm:text-sm") }}
-                    {% for error in form.direccion_completa.errors %}
-                        <p class="text-red-500 text-xs mt-1">{{ error }}</p>
-                    {% endfor %}
-                </div>
+            <div>
+                {{ form.direccion_completa.label(class="block text-gray-700 text-xs sm:text-sm") }}
+                {{ form.direccion_completa(class="w-full border-b-2 border-gray-300 focus:border-black focus:outline-none py-1 sm:py-2 text-xs sm:text-sm") }}
+                {% for error in form.direccion_completa.errors %}
+                    <p class="text-red-500 text-xs mt-1">{{ error }}</p>
+                {% endfor %}
+            </div>
 
-                <!-- Código Postal -->
-                <div>
-                    {{ form.codigo_postal.label(class="block text-gray-700 text-xs sm:text-sm") }}
-                    {{ form.codigo_postal(value=current_user.codigo_postal, class="w-full border-b-2 border-gray-300 focus:border-black focus:outline-none py-1 sm:py-2 text-xs sm:text-sm") }}
-                    {% for error in form.codigo_postal.errors %}
-                        <p class="text-red-500 text-xs mt-1">{{ error }}</p>
-                    {% endfor %}
-                </div>
+            <!-- Código Postal -->
+            <div>
+                {{ form.codigo_postal.label(class="block text-gray-700 text-xs sm:text-sm") }}
+                {{ form.codigo_postal(class="w-full border-b-2 border-gray-300 focus:border-black focus:outline-none py-1 sm:py-2 text-xs sm:text-sm") }}
+                {% for error in form.codigo_postal.errors %}
+                    <p class="text-red-500 text-xs mt-1">{{ error }}</p>
+                {% endfor %}
+            </div>
 
-                <!-- Ciudad -->
-                <div>
-                    {{ form.ciudad.label(class="block text-gray-700 text-xs sm:text-sm") }}
-                    {{ form.ciudad(value=current_user.ciudad, class="w-full border-b-2 border-gray-300 focus:border-black focus:outline-none py-1 sm:py-2 text-xs sm:text-sm") }}
-                    {% for error in form.ciudad.errors %}
-                        <p class="text-red-500 text-xs mt-1">{{ error }}</p>
-                    {% endfor %}
-                </div>
+            <!-- Ciudad -->
+            <div>
+                {{ form.ciudad.label(class="block text-gray-700 text-xs sm:text-sm") }}
+                {{ form.ciudad(class="w-full border-b-2 border-gray-300 focus:border-black focus:outline-none py-1 sm:py-2 text-xs sm:text-sm") }}
+                {% for error in form.ciudad.errors %}
+                    <p class="text-red-500 text-xs mt-1">{{ error }}</p>
+                {% endfor %}
+            </div>
+
 
             </div>
 
@@ -61,4 +62,44 @@
             </div>
         </form>
     </div>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const direccionInput = document.querySelector("[name='direccion_completa']");
+        const codigoPostalInput = document.querySelector("[name='codigo_postal']");
+        const ciudadInput = document.querySelector("[name='ciudad']");
+        const confirmarBtn = document.querySelector("button[type='submit']");
+        
+        const valoresOriginales = {
+            direccion: direccionInput.value,
+            codigo_postal: codigoPostalInput.value,
+            ciudad: ciudadInput.value
+        };
+
+        function verificarCambios() {
+            if (
+                direccionInput.value !== valoresOriginales.direccion || 
+                codigoPostalInput.value !== valoresOriginales.codigo_postal || 
+                ciudadInput.value !== valoresOriginales.ciudad
+            ) {
+                confirmarBtn.disabled = false;
+                confirmarBtn.classList.remove("bg-gray-400");
+                confirmarBtn.classList.add("bg-green-500", "hover:bg-green-600");
+            } else {
+                confirmarBtn.disabled = true;
+                confirmarBtn.classList.remove("bg-green-500", "hover:bg-green-600");
+                confirmarBtn.classList.add("bg-gray-400");
+            }
+        }
+
+        direccionInput.addEventListener("input", verificarCambios);
+        codigoPostalInput.addEventListener("input", verificarCambios);
+        ciudadInput.addEventListener("input", verificarCambios);
+
+        // 🚀 Desactivar el botón al cargar la página
+        confirmarBtn.disabled = true;
+        confirmarBtn.classList.remove("bg-green-500", "hover:bg-green-600");
+        confirmarBtn.classList.add("bg-gray-400");
+    });
+</script>
+
 </body>

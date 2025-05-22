@@ -20,7 +20,6 @@
                 <th class="p-3">Nombre</th>
                 <th class="p-3">Categoría</th>
                 <th class="p-3">Precio</th>
-                <th class="p-3">Imagen</th>
                 <th class="p-3">Acciones</th>
             </tr>
         </thead>
@@ -31,13 +30,6 @@
                 <td class="text-center pb-6">{{ producto[1] }}</td>           
                 <td class="text-center pb-6">{{ producto[2] }}</td>               
                 <td class="text-center pb-6">{{ producto[3] }}€</td>
-                <td class="text-center pb-6">
-                    {% if producto[4] %}
-                        <img src="{{ url_for('static', filename='uploads/' ~ producto[4]) }}" alt="Imagen producto" class="w-16 h-16 object-cover mx-auto rounded" />
-                    {% else %}
-                        Sin imagen
-                    {% endif %}
-                </td>
                 <td class="text-center pb-6">
                     <a href="{{ url_for('admin.modificar_producto', producto_id=producto[0]) }}" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 mt-2 inline-block">
                         Editar

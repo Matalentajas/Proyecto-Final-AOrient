@@ -3,18 +3,23 @@
 {% block title %}Resultados de búsqueda{% endblock %}
 
 {% block content %}
-<div class="container mx-auto py-8">
+<div class="container mx-auto px-4 py-8">
     <h2 class="text-3xl font-bold text-center mb-6">Resultados para "{{ query }}"</h2>
 
     {% if resultados %}
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {% for producto in resultados %}
-        <div class="border rounded-lg shadow hover:shadow-lg transition-shadow">
-            <img src="{{ url_for('static', filename='css/images/' + producto['imagen']) }}" alt="{{ producto['nombre'] }}" class="w-full h-48 object-cover">
+        <div class="overflow-hidden rounded-t-lg border border-black shadow-sm hover:shadow-md transition-shadow duration-300">
+            {% if "http" in producto.imagen %}
+                <img src="{{ producto.imagen }}" alt="{{ producto.nombre }}" class="w-full aspect-square object-cover transition-transform duration-300 hover:scale-105">
+            {% else %}
+                <img src="{{ url_for('static', filename='css/images/' + producto.imagen) }}" alt="{{ producto.nombre }}" class="w-full aspect-square object-cover transition-transform duration-300 hover:scale-105">
+            {% endif %}
+
             <div class="p-4">
-                <h3 class="text-xl font-bold">{{ producto['nombre'] }}</h3>
-                <p class="text-gray-700">{{ producto['descripcion'] }}</p>
-                <a href="{{ url_for('product.producto', producto_id=producto['id']) }}" class="mt-4 bg-[#39CB60] text-white px-4 py-2 rounded hover:bg-green-600 block text-center">
+                <h3 class="text-xl font-bold mb-2">{{ producto['nombre'] }}</h3>
+                <p class="text-gray-700 mb-4">{{ producto['precio'] }}€</p>
+                <a href="{{ url_for('product.producto', producto_id=producto['id']) }}" class="bg-[#39CB60] text-white px-4 py-2 rounded hover:bg-green-600 block text-center">
                     Ver Producto
                 </a>
             </div>
