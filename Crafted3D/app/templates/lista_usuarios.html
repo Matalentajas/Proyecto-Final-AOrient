@@ -16,7 +16,7 @@
     <form method="get" action="{{ url_for('admin.lista_usuarios') }}" class="mb-6">
         <input type="text" name="search" placeholder="Buscar por nombre o email" value="{{ search_query }}" 
             class="border rounded px-4 py-2 w-full max-w-md">
-        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded ml-2 hover:bg-blue-600">Buscar</button>
+        <button type="submit" class="cursor-pointen bg-blue-500 text-white px-4 py-2 rounded ml-2 hover:bg-blue-600">Buscar</button>
     </form>
 
     {% if usuarios %}
