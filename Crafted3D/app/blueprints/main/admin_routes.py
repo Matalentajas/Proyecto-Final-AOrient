@@ -1,9 +1,9 @@
 from flask import Blueprint, current_app, render_template, request, redirect, url_for, flash, session
 from flask_login import current_user
 from werkzeug.security import check_password_hash
-from app.forms.admin_form import AdminLoginForm, AgregarProductoForm, ProductoForm
+from app.forms.admin_form import AdminLoginForm, AgregarProductoForm, ProductoForm, CrearAdminForm
 from werkzeug.utils import secure_filename
-import os
+from werkzeug.security import generate_password_hash
 
 
 admin_bp = Blueprint("admin", __name__)
@@ -205,3 +205,36 @@ def ver_pedidos_usuario(usuario_id):
 
     return render_template("pedidos_usuario.html", usuario=usuario, pedidos=pedidos)
 
+@admin_bp.route("/admin/crear-admin", methods=["GET", "POST"])
+def crear_admin():
+    if "admin" not in session:
+        flash("Debes iniciar sesión como administrador.", "danger")
+        return redirect(url_for("admin.admin_login"))
+
+    form = CrearAdminForm()
+
+    if form.validate_on_submit():
+        email = form.email.data
+        contraseña = form.contraseña.data
+        hashed_password = generate_password_hash(contraseña)
+
+        cursor = current_app.mysql.connection.cursor()
+        cursor.execute("SELECT id FROM administradores WHERE email = %s", (email,))
+        existe = cursor.fetchone()
+
+        if existe:
+            flash("❌ Ya existe un administrador con ese correo.", "danger")
+            cursor.close()
+            return render_template("crear_admin.html", form=form)
+
+        cursor.execute(
+            "INSERT INTO administradores (email, contraseña) VALUES (%s, %s)",
+            (email, hashed_password)
+        )
+        current_app.mysql.connection.commit()
+        cursor.close()
+
+        flash("✅ Nuevo administrador creado correctamente.", "success")
+        return redirect(url_for("admin.admin_dashboard"))
+
+    return render_template("crear_admin.html", form=form)

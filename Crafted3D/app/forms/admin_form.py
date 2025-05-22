@@ -1,7 +1,7 @@
 from wtforms import DecimalField, EmailField, PasswordField, SelectField, StringField, SubmitField, TextAreaField
-from wtforms.validators import DataRequired, Length, NumberRange, Optional, URL
+from wtforms.validators import DataRequired, Length, NumberRange, Optional, URL, EqualTo
 from flask_wtf import FlaskForm
-
+import re
 
 # Formulario de Inicio de Sesión para Administrador
 class AdminLoginForm(FlaskForm):
@@ -25,3 +25,9 @@ class ProductoForm(FlaskForm):
     categoria = SelectField('Categoría', coerce=int, validators=[DataRequired()])
     imagen_url = StringField('URL de la imagen', validators=[Optional(), URL(message="Debe ser una URL válida")])    
     submit = SubmitField('Guardar Cambios')
+
+class CrearAdminForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired()])
+    contraseña = PasswordField('Contraseña', validators=[DataRequired(), Length(min=6)])
+    confirmar_contraseña = PasswordField('Confirmar Contraseña', validators=[DataRequired(), EqualTo('contraseña')])
+    submit = SubmitField('Crear Administrador')

@@ -31,14 +31,15 @@
         </div>
 
         <!-- Gestión de Usuarios -->
-        <div class="p-6 mr-[80px] md:w-[50%] md:ml-auto text-center">
-            <h2 class="text-2xl font-semibold mb-4">Gestión de Usuarios</h2>
+        <div class="p-8 mr-[80px] md:w-[50%] md:ml-auto bg-white rounded-xl shadow-lg flex flex-col items-center">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800">Gestión de Usuarios</h2>
+            <a href="{{ url_for('admin.crear_admin') }}" class="bg-purple-500 text-white font-semibold px-6 py-3 rounded-lg hover:bg-purple-600 transition-all w-[60%] text-center block mb-4">
+            Crear nuevo Administrador
+            </a>
             <!-- Botón para ir a lista de usuarios -->
-            <div class="flex justify-center">
-                <a href="{{ url_for('admin.lista_usuarios') }}" class="bg-blue-500 text-white font-semibold px-6 py-3 rounded-lg hover:bg-blue-600 transition-all w-[60%] text-center block">
-                    Ver Usuarios
-                </a>
-            </div>
+            <a href="{{ url_for('admin.lista_usuarios') }}" class="bg-blue-500 text-white font-semibold px-6 py-3 rounded-lg hover:bg-blue-600 transition-all w-[60%] text-center block">
+            Ver Usuarios
+            </a>
         </div>
 
     </div>
