@@ -28,9 +28,8 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-16 mb-16">
 
       <!-- Historial de Pedidos -->
-      <div class="w-full md:w-[100%] overflow-x-auto">
-        <h2 class="text-2xl font-semibold mb-4">Historial de Pedidos</h2>
-        <table class="w-full min-w-[600px] md:min-w-full">
+      <div class="hidden md:block">
+        <table class="w-full min-w-full">
           <thead class="text-gray-700">
             <tr>
               <th class="p-3 text-left">N° Pedido</th>
@@ -45,7 +44,7 @@
               <tr class="border-t border-gray-300">
                 <td class="p-3">
                   <a href="{{ url_for('order.pedido_info', numero=pedido.numero) }}" 
-                     class="text-green-500 hover:text-green-700 font-medium">
+                    class="text-green-500 hover:text-green-700 font-medium">
                     {{ pedido.numero }}
                   </a>
                 </td>
@@ -58,6 +57,26 @@
           </tbody>
         </table>
       </div>
+
+      <!-- Tarjetas: solo visibles en móvil -->
+      <div class="block md:hidden space-y-4">
+        {% for pedido in pedidos %}
+          <div class="border rounded-lg p-4 shadow-sm">
+            <div class="mb-2">
+              <span class="font-semibold text-gray-700">N° Pedido: </span>
+              <a href="{{ url_for('order.pedido_info', numero=pedido.numero) }}" 
+                class="text-green-500 hover:text-green-700 font-medium">
+                {{ pedido.numero }}
+              </a>
+            </div>
+            <div class="mb-1"><span class="font-semibold">Fecha:</span> {{ pedido.fecha }}</div>
+            <div class="mb-1"><span class="font-semibold">Estado de Pago:</span> {{ pedido.estado_pago }}</div>
+            <div class="mb-1"><span class="font-semibold">Estado:</span> {{ pedido.estado }}</div>
+            <div><span class="font-semibold">Total:</span> {{ pedido.total }}€</div>
+          </div>
+        {% endfor %}
+      </div>
+
 
       <!-- Dirección del Usuario -->
       <div class="p-6 md:w-[50%] md:ml-auto bg-white rounded-lg shadow">
