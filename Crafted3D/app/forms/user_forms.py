@@ -42,6 +42,8 @@ class RegistroUsuarioForm(FlaskForm):
             import MySQLdb
             from flask import current_app
 
+            conn = None
+            cursor = None
             try:
                 conn = MySQLdb.connect(
                     host=current_app.config['MYSQL_HOST'],
@@ -58,8 +60,10 @@ class RegistroUsuarioForm(FlaskForm):
             except Exception as e:
                 print("Error al validar email en BD:", e)
             finally:
-                cursor.close()
-                conn.close()
+                if cursor is not None:
+                    cursor.close()
+                if conn is not None:
+                    conn.close()
 
         return valid and not self.email.errors
 
