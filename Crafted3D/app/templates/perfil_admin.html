@@ -31,11 +31,16 @@
         </div>
 
         <!-- Gestión de Usuarios -->
-        <div class="p-6 mr-[80px] md:w-[50%] md:ml-auto bg-gray-200 rounded-lg text-center">
+        <div class="p-6 mr-[80px] md:w-[50%] md:ml-auto text-center">
             <h2 class="text-2xl font-semibold mb-4">Gestión de Usuarios</h2>
-            <hr class="border-gray-300 my-4 w-[60%]">
-            <p class="text-gray-500">⚠️ Esta sección está en mantenimiento.</p>
+            <!-- Botón para ir a lista de usuarios -->
+            <div class="flex justify-center">
+                <a href="{{ url_for('admin.lista_usuarios') }}" class="bg-blue-500 text-white font-semibold px-6 py-3 rounded-lg hover:bg-blue-600 transition-all w-[60%] text-center block">
+                    Ver Usuarios
+                </a>
+            </div>
         </div>
+
     </div>
 
 {% endblock %}

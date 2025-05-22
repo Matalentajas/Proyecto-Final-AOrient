@@ -140,10 +140,6 @@ def modificar_producto(producto_id):
 
     return render_template("modificar_producto.html", form=form, productos=productos, producto_seleccionado=producto_seleccionado)
 
-
-
-
-
 @admin_bp.route("/admin/eliminar_producto/<int:producto_id>", methods=["POST"])
 def eliminar_producto(producto_id):
     cursor = current_app.mysql.connection.cursor()
@@ -153,4 +149,59 @@ def eliminar_producto(producto_id):
     flash("Producto eliminado correctamente.", "success")
     return redirect(url_for("admin.modificar_producto"))
 
+
+@admin_bp.route("/admin/usuarios", methods=["GET", "POST"])
+def lista_usuarios():
+    if "admin" not in session:
+        flash("Debes iniciar sesión como administrador.", "danger")
+        return redirect(url_for("admin.admin_login"))
+
+    cursor = current_app.mysql.connection.cursor()
+
+    search_query = request.args.get('search', '')
+
+    if search_query:
+        query = """
+            SELECT id, nombre_completo, email FROM usuarios
+            WHERE nombre_completo LIKE %s OR email LIKE %s
+            ORDER BY nombre_completo
+        """
+        like_pattern = f"%{search_query}%"
+        cursor.execute(query, (like_pattern, like_pattern))
+    else:
+        cursor.execute("SELECT id, nombre_completo, email FROM usuarios ORDER BY nombre_completo")
+
+    usuarios = cursor.fetchall()
+    cursor.close()
+
+    return render_template("lista_usuarios.html", usuarios=usuarios, search_query=search_query)
+
+@admin_bp.route("/admin/usuario/<int:usuario_id>/pedidos")
+def ver_pedidos_usuario(usuario_id):
+    if "admin" not in session:
+        flash("Debes iniciar sesión como administrador.", "danger")
+        return redirect(url_for("admin.admin_login"))
+
+    cursor = current_app.mysql.connection.cursor()
+
+    # Obtener datos del usuario
+    cursor.execute("SELECT nombre_completo, email FROM usuarios WHERE id = %s", (usuario_id,))
+    usuario = cursor.fetchone()
+
+    if not usuario:
+        flash("Usuario no encontrado.", "danger")
+        cursor.close()
+        return redirect(url_for("admin.lista_usuarios"))
+
+    # Obtener pedidos de ese usuario
+    cursor.execute("""
+        SELECT numero_pedido, fecha_pedido, estado_pago, estado, total
+        FROM pedidos
+        WHERE usuario_id = %s
+        ORDER BY fecha_pedido DESC
+    """, (usuario_id,))
+    pedidos = cursor.fetchall()
+    cursor.close()
+
+    return render_template("pedidos_usuario.html", usuario=usuario, pedidos=pedidos)
 
