@@ -9,9 +9,9 @@
 
   {% if categoria %}
     <h1 class="text-3xl font-bold text-center mb-8">{{ categoria|capitalize }}</h1>
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 mb-6">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 mb-6 justify-center items-center text-center">
         <a href="{{ url_for('product.productos_categoria', categoria_nombre=categoria, filtro='mejor-valorados') }}"
-            class="px-4 py-2 rounded shadow font-semibold transition text-center
+            class="px-4 py-2 w-[50%] mx-auto rounded shadow font-semibold transition text-center
             {% if filtro == 'mejor-valorados' %}
                 bg-green-700 text-white
             {% else %}
@@ -20,7 +20,7 @@
              Mejor Valorados
         </a>
         <a href="{{ url_for('product.productos_categoria', categoria_nombre=categoria, filtro='mas-baratos') }}"
-            class="px-4 py-2 rounded shadow font-semibold transition text-center
+            class="px-4 py-2 w-[50%] mx-auto rounded shadow font-semibold transition text-center
             {% if filtro == 'mas-baratos' %}
                 bg-green-700 text-white
             {% else %}
@@ -29,7 +29,7 @@
              Más Baratos
         </a>
         <a href="{{ url_for('product.productos_categoria', categoria_nombre=categoria, filtro='mas-caros') }}"
-            class="px-4 py-2 rounded shadow font-semibold transition text-center
+            class="px-4 py-2 w-[50%] mx-auto rounded shadow font-semibold transition text-center
             {% if filtro == 'mas-caros' %}
                 bg-green-700 text-white
             {% else %}
@@ -84,7 +84,7 @@
         {% endif %}
         </div>
 
-        <div>
+        <div class="mx-6">
             <div class="rating-display flex justify-center sm:justify-start">
                 {% for i in range(5) %}
                     <span class="star {% if i < media_valoracion %}selected{% endif %}">★</span>
@@ -115,7 +115,7 @@
         </div>
         </div>
         
-        <div class="md:w-[200%]">
+        <div class="md:w-[200%] mx-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8 justify-center">
                 <!-- Valoraciones a la izquierda -->
                 <div>
