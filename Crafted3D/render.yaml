@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: crafted3d-app
+    env: python
+    buildCommand: ""
+    startCommand: gunicorn app.app:app
+    plan: free
+    envVars:
+      - key: MYSQL_HOST
+        value: "set in dashboard"
+      - key: MYSQL_USER
+        value: "set in dashboard"
+      - key: MYSQL_PASSWORD
+        value: "set in dashboard"
+      - key: MYSQL_DB
+        value: "set in dashboard"
+
