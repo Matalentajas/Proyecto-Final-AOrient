@@ -9,6 +9,7 @@ class AdminLoginForm(FlaskForm):
     contraseña = PasswordField('Contraseña', validators=[DataRequired(), Length(min=6)])
     submit = SubmitField('Iniciar Sesión')
 
+# Formulario para Agregar Productos a la bd
 class AgregarProductoForm(FlaskForm):
     nombre_producto = StringField("Nombre del Producto", validators=[DataRequired(), Length(max=100)])
     descripcion = TextAreaField("Descripción", validators=[DataRequired()])
@@ -17,7 +18,7 @@ class AgregarProductoForm(FlaskForm):
     categoria_id = SelectField("Categoría", coerce=int, validators=[DataRequired()])
     submit = SubmitField("Añadir Producto")
 
-    
+# Formulario de Modificar Producto
 class ProductoForm(FlaskForm):
     nombre = StringField('Nombre', validators=[DataRequired()])
     descripcion = TextAreaField('Descripción', validators=[DataRequired()])
@@ -26,6 +27,7 @@ class ProductoForm(FlaskForm):
     imagen_url = StringField('URL de la imagen', validators=[Optional(), URL(message="Debe ser una URL válida")])    
     submit = SubmitField('Guardar Cambios')
 
+# Formulario de Crear un Administrador
 class CrearAdminForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired()])
     contraseña = PasswordField('Contraseña', validators=[DataRequired(), Length(min=6)])
