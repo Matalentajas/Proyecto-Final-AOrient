@@ -1,7 +1,7 @@
 <header>
     <section class="flex items-center justify-between p-4">
         <!-- Currency Selector -->
-        <div class="relative flex items-center flex-1 hidden md:flex" style="z-index: 50;">
+        <div class="relative flex items-center flex-1 hidden lg:block" style="z-index: 50;">
             <button id="dropdownButton"
                 class="cursor-pointer flex items-center text-gray-600 hover:text-gray-800 px-6 py-3 text-lg">
                 <img src="{{ url_for('static', filename='css/images/Banderas/BANDERA - EU.png') }}" alt="Bandera UE"
@@ -33,25 +33,25 @@
             </div>
         </div>
 
-        <button id="menu-btn" class="md:hidden text-2xl text-gray-700 focus:outline-none">
+        <button id="menu-btn" class="lg:hidden text-2xl text-gray-700 focus:outline-none">
             ☰
         </button>
 
 
         <!-- Logo -->
-        <div class="flex ml-[25%] md:ml-[0%] items-center justify-center flex-1">
+        <div class="flex ml-[25%] lg:ml-[0%] items-center justify-center flex-1">
             <a href="{{ url_for('index') }}">
                 <img src="{{ url_for('static', filename='css/images/Logo.webp') }}" alt="Logo Crafted3D"
-                    class="mx-auto h-[60px] md:h-[100px] block"
+                    class="mx-auto h-[60px] lg:h-[100px] block">
             </a>
         </div>
 
         <!-- User, Search, and Cart -->
         <div class="flex items-center justify-end flex-1 gap-5 mr-[20px]">
             {% if current_user.is_authenticated %}
-                <a href="{{ url_for('usuario.perfil') }}" class="text-2xl text-bold text-[#39CB60] hidden md:inline">{{ current_user.nombre_completo }}</a>
+                <a href="{{ url_for('usuario.perfil') }}" class="text-2xl text-bold text-[#39CB60] hidden lg:inline">{{ current_user.nombre_completo }}</a>
             {% else %}
-                <a href="{{ url_for('usuario.login') }}" class="text-2xl hover:text-[#39CB60] hidden md:inline">Iniciar Sesión</a>
+                <a href="{{ url_for('usuario.login') }}" class="text-2xl hover:text-[#39CB60] hidden lg:inline">Iniciar Sesión</a>
             {% endif %}
             <button id="searchToggleButton">
                 <i class="fa-solid fa-magnifying-glass hover:text-[#39CB60] text-2xl cursor-pointer"></i>
@@ -64,7 +64,7 @@
                     <span id="cart-count" class="bg-red-500 text-white rounded-full px-2 py-1 text-sm hidden">0</span>
                 </button>
                 <!-- Dropdown del carrito con tamaño ajustado -->
-                <div id="cart-dropdown" class="absolute right-0 top-16 w-[60vh] max-w-xs h-[90vh] bg-white shadow-lg rounded hidden overflow-y-auto p-4 z-50">
+                <div id="cart-dropdown" class="hidden fixed top-16 right-0 w-64 h-screen bg-white shadow-lg rounded overflow-y-auto p-4 z-50 sm:absolute sm:top-16 sm:right-0 sm:w-[60vh] sm:max-w-xs sm:h-[90vh]">
                     <div class="flex justify-between items-center">
                         <h3 class="text-lg font-bold">Carrito</h3>
                         <button onclick="toggleCart()" class="text-gray-500 hover:text-gray-800">
@@ -78,11 +78,9 @@
                     <ul id="cart-items" class="hidden"></ul>
                     
                     <!-- Botón Realizar Pedido -->
-                    <button id="realizar-pedido-btn" class="mt-[20px] cursor-pointer bg-green-500 text-white px-8 py-4 rounded-lg shadow-lg hover:shadow-xl w-full font-semibold text-lg"onclick="window.location.href='{{ url_for('order.confirmar_pedido_vista') }}'">
+                    <button id="realizar-pedido-btn" class="mb-[50px] mt-[20px] cursor-pointer bg-green-500 text-white px-8 py-4 rounded-lg shadow-lg hover:shadow-xl w-full font-semibold text-lg"onclick="window.location.href='{{ url_for('order.confirmar_pedido_vista') }}'">
                         🛒 Realizar Pedido
                     </button>
-
-
                     </div>
                 </div>
             </div>
@@ -92,7 +90,7 @@
     </section>
 
     <!-- Navigation Bar -->
-    <nav class="hidden md:block"> 
+    <nav class="hidden lg:block"> 
         <div class="container mx-auto">
             <ul class="flex justify-center gap-[100px] py-3">
                 <li><a href="/" class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Inicio</a>
@@ -114,7 +112,7 @@
         </div>
     </nav>
 
-    <nav id="mobile-menu" class="hidden fixed top-0 left-0 w-screen h-screen bg-[#434343] z-50 shadow-lg p-6">
+    <nav id="mobile-menu" class="hidden fixed top-0 left-0 w-screen h-screen bg-[#434343] z-50 shadow-lg p-6 overflow-y-scroll">
         <button id="close-menu" class="absolute top-4 left-6 text-2xl">✖</button>
         <ul class="space-y-6 mt-14 ml-[1%] text-lg font-semibold text-white">
             <li><a href="/" class="text-white">Inicio</a></li>
@@ -160,6 +158,21 @@
         </button>
     </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <script>
