@@ -64,7 +64,7 @@
                     <span id="cart-count" class="bg-red-500 text-white rounded-full px-2 py-1 text-sm hidden">0</span>
                 </button>
                 <!-- Dropdown del carrito con tamaño ajustado -->
-                <div id="cart-dropdown" class="absolute right-0 top-16 w-[60vh] max-w-xs h-[90vh] bg-white shadow-lg rounded hidden overflow-y-auto p-4 z-50">
+                <div id="cart-dropdown" class="hidden fixed top-16 right-0 w-64 h-screen bg-white shadow-lg rounded overflow-y-auto p-4 z-50 sm:absolute sm:top-16 sm:right-0 sm:w-[60vh] sm:max-w-xs sm:h-[90vh]">
                     <div class="flex justify-between items-center">
                         <h3 class="text-lg font-bold">Carrito</h3>
                         <button onclick="toggleCart()" class="text-gray-500 hover:text-gray-800">
@@ -78,11 +78,9 @@
                     <ul id="cart-items" class="hidden"></ul>
                     
                     <!-- Botón Realizar Pedido -->
-                    <button id="realizar-pedido-btn" class="mt-[20px] cursor-pointer bg-green-500 text-white px-8 py-4 rounded-lg shadow-lg hover:shadow-xl w-full font-semibold text-lg"onclick="window.location.href='{{ url_for('order.confirmar_pedido_vista') }}'">
+                    <button id="realizar-pedido-btn" class="mb-[50px] mt-[20px] cursor-pointer bg-green-500 text-white px-8 py-4 rounded-lg shadow-lg hover:shadow-xl w-full font-semibold text-lg"onclick="window.location.href='{{ url_for('order.confirmar_pedido_vista') }}'">
                         🛒 Realizar Pedido
                     </button>
-
-
                     </div>
                 </div>
             </div>

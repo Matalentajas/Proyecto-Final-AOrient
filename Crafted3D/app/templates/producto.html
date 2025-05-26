@@ -85,7 +85,7 @@
         </div>
 
         <div class="mx-6">
-            <div class="rating-display flex justify-center sm:justify-start">
+            <div class="rating-display flex justify-center sm:justify-start" style="pointer-events: none;">
                 {% for i in range(5) %}
                     <span class="star {% if i < media_valoracion %}selected{% endif %}">★</span>
                 {% endfor %}
