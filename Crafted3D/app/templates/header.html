@@ -1,7 +1,7 @@
 <header>
     <section class="flex items-center justify-between p-4">
         <!-- Currency Selector -->
-        <div class="relative flex items-center flex-1 hidden md:flex" style="z-index: 50;">
+        <div class="relative flex items-center flex-1 hidden lg:block" style="z-index: 50;">
             <button id="dropdownButton"
                 class="cursor-pointer flex items-center text-gray-600 hover:text-gray-800 px-6 py-3 text-lg">
                 <img src="{{ url_for('static', filename='css/images/Banderas/BANDERA - EU.png') }}" alt="Bandera UE"
@@ -33,25 +33,25 @@
             </div>
         </div>
 
-        <button id="menu-btn" class="md:hidden text-2xl text-gray-700 focus:outline-none">
+        <button id="menu-btn" class="lg:hidden text-2xl text-gray-700 focus:outline-none">
             ☰
         </button>
 
 
         <!-- Logo -->
-        <div class="flex ml-[25%] md:ml-[0%] items-center justify-center flex-1">
+        <div class="flex ml-[25%] lg:ml-[0%] items-center justify-center flex-1">
             <a href="{{ url_for('index') }}">
                 <img src="{{ url_for('static', filename='css/images/Logo.webp') }}" alt="Logo Crafted3D"
-                    class="mx-auto h-[60px] md:h-[100px] block"
+                    class="mx-auto h-[60px] lg:h-[100px] block">
             </a>
         </div>
 
         <!-- User, Search, and Cart -->
         <div class="flex items-center justify-end flex-1 gap-5 mr-[20px]">
             {% if current_user.is_authenticated %}
-                <a href="{{ url_for('usuario.perfil') }}" class="text-2xl text-bold text-[#39CB60] hidden md:inline">{{ current_user.nombre_completo }}</a>
+                <a href="{{ url_for('usuario.perfil') }}" class="text-2xl text-bold text-[#39CB60] hidden lg:inline">{{ current_user.nombre_completo }}</a>
             {% else %}
-                <a href="{{ url_for('usuario.login') }}" class="text-2xl hover:text-[#39CB60] hidden md:inline">Iniciar Sesión</a>
+                <a href="{{ url_for('usuario.login') }}" class="text-2xl hover:text-[#39CB60] hidden lg:inline">Iniciar Sesión</a>
             {% endif %}
             <button id="searchToggleButton">
                 <i class="fa-solid fa-magnifying-glass hover:text-[#39CB60] text-2xl cursor-pointer"></i>
@@ -92,7 +92,7 @@
     </section>
 
     <!-- Navigation Bar -->
-    <nav class="hidden md:block"> 
+    <nav class="hidden lg:block"> 
         <div class="container mx-auto">
             <ul class="flex justify-center gap-[100px] py-3">
                 <li><a href="/" class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Inicio</a>
@@ -114,7 +114,7 @@
         </div>
     </nav>
 
-    <nav id="mobile-menu" class="hidden fixed top-0 left-0 w-screen h-screen bg-[#434343] z-50 shadow-lg p-6">
+    <nav id="mobile-menu" class="hidden fixed top-0 left-0 w-screen h-screen bg-[#434343] z-50 shadow-lg p-6 overflow-y-scroll">
         <button id="close-menu" class="absolute top-4 left-6 text-2xl">✖</button>
         <ul class="space-y-6 mt-14 ml-[1%] text-lg font-semibold text-white">
             <li><a href="/" class="text-white">Inicio</a></li>
@@ -160,6 +160,21 @@
         </button>
     </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <script>

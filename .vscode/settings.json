@@ -1,0 +1,5 @@
+{
+    "python.analysis.extraPaths": [
+        "./Crafted3D/app/forms"
+    ]
+}
