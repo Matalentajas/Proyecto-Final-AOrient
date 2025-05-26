@@ -1,39 +1,121 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Hace que el diseño sea responsive, adaptándose a pantallas móviles -->
+
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Importa Tailwind CSS desde CDN para usar sus utilidades -->
 </head>
 <body class="bg-[#D4D4D4] min-h-screen flex items-center justify-center px-4">
+    <!--
+      Cuerpo con fondo gris claro,
+      altura mínima de pantalla completa,
+      usa flexbox para centrar contenido tanto vertical como horizontalmente,
+      padding horizontal para que no toque bordes en móvil.
+    -->
+
     <div class="w-full max-w-[95%] sm:max-w-md md:max-w-lg h-auto flex items-center justify-center">
+        <!--
+          Contenedor que adapta su ancho:
+          95% en móvil para dar margen,
+          hasta tamaño medio (md) en pantallas mayores,
+          con altura automática,
+          y flexbox centrado para el contenido (el form).
+        -->
+
         <form method="POST" class="w-full border-[2px] border-black bg-white rounded-b-lg shadow-xl p-6">
+            <!--
+              Formulario que ocupa todo el ancho del contenedor,
+              con borde negro de 2px,
+              fondo blanco,
+              bordes redondeados en la parte inferior,
+              sombra fuerte para elevar visualmente,
+              padding amplio para el contenido interno.
+            -->
 
             <!-- Logo -->
             <div class="border-b-[2px] border-black flex items-center justify-center pb-4">
+                <!--
+                  Sección superior con borde negro abajo,
+                  flexbox centrado para alinear logo horizontalmente,
+                  padding bottom para espacio debajo del logo.
+                -->
                 <a href="{{ url_for('index') }}">
+                    <!-- Enlace a la página principal -->
                     <img src="{{ url_for('static', filename='css/images/Logo.webp') }}" alt="Logo Crafted3D"
                         class="h-[50px] sm:h-[60px]">
+                    <!--
+                      Imagen del logo,
+                      con altura fija que aumenta en pantallas sm y mayores,
+                      mantiene proporción y calidad webp.
+                    -->
                 </a>
             </div>
 
-            
             <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-center mt-3 mb-4">Modificar Contraseña</h2>
+            <!--
+              Título del formulario,
+              tamaño de fuente creciente según pantalla,
+              negrita,
+              centrado,
+              márgenes arriba y abajo para separación.
+            -->
+
             {{ form.hidden_tag() }}
+            <!--
+              Campo oculto CSRF o datos ocultos del formulario generados por Flask-WTF.
+            -->
 
             <div class="space-y-3">
+                <!--
+                  Espacio vertical entre elementos hijos, para separar los inputs.
+                -->
+
                 <!-- Nueva Contraseña -->
                 <div>
                     {{ form.nueva_contraseña.label(class="block text-gray-700 text-xs sm:text-sm") }}
+                    <!--
+                      Etiqueta para el campo nueva contraseña,
+                      bloque para que tome toda la línea,
+                      texto gris oscuro,
+                      tamaño pequeño en móvil, un poco más grande en sm+.
+                    -->
+
                     {{ form.nueva_contraseña(class="w-full border-b-2 border-gray-300 focus:border-black focus:outline-none py-1 sm:py-2 text-xs sm:text-sm") }}
+                    <!--
+                      Campo de entrada de texto,
+                      ancho completo,
+                      borde inferior gris claro,
+                      al hacer foco cambia borde a negro y quita outline predeterminado,
+                      padding vertical pequeño,
+                      texto pequeño ajustado para pantalla móvil y sm+.
+                    -->
+
                     {% for error in form.nueva_contraseña.errors %}
                         <p class="text-red-500 text-xs mt-1">{{ error }}</p>
+                        <!-- Mensajes de error debajo del input en rojo, tamaño muy pequeño -->
                     {% endfor %}
                 </div>
             </div>
 
             <!-- Botón para cambiar contraseña -->
             <div class="flex justify-center mt-4">
+                <!--
+                  Contenedor para centrar el botón horizontalmente,
+                  margen arriba para separación.
+                -->
+
                 <button type="submit" class="w-[80%] text-xs sm:text-sm bg-green-500 text-white font-semibold px-3 sm:px-4 py-2 rounded-lg hover:bg-green-600 transition-all">
                     Cambiar Contraseña
                 </button>
+                <!--
+                  Botón que ocupa el 80% del ancho del contenedor,
+                  tamaño de texto pequeño,
+                  fondo verde con cambio a un tono más oscuro en hover,
+                  texto blanco y negrita media,
+                  padding para tamaño adecuado,
+                  bordes redondeados,
+                  transición suave para el hover.
+                -->
             </div>
         </form>
     </div>

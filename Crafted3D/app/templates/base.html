@@ -2,14 +2,32 @@
 <html lang="en">
 <head>
 
+  <!-- Favicon -->
   <link rel="icon" href="{{ url_for('static', filename='css/images/Logo_fav.ico') }}" type="image/x-icon" />
+  <!--
+    Icono pequeño que aparece en la pestaña del navegador.
+    Se carga desde la carpeta estática con Flask url_for.
+  -->
 
   <meta charset="UTF-8">
+  <!-- Codificación de caracteres estándar -->
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Configuración para hacer el diseño responsive en dispositivos móviles -->
+
   <meta name="csrf-token" content="{{ csrf_token() }}">
+  <!--
+    Token CSRF para proteger contra ataques CSRF.
+    Se inyecta desde Flask-WTF o alguna extensión.
+  -->
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <!--
+    Carga de Tailwind CSS vía CDN usando la versión "browser".
+    Esto permite usar clases Tailwind sin configurar un build.
+  -->
+
   <script>
     tailwind.config = {
       theme: {
@@ -21,33 +39,64 @@
       }
     }
   </script>
+  <!--
+    Personalización de la configuración Tailwind:
+    Se añade la familia de fuentes 'Nunito' para usar en la página.
+  -->
+
   <!-- FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
         integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!--
+    Carga de la biblioteca de iconos FontAwesome para usar íconos vectoriales.
+  -->
 
   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <!--
+    Campo oculto con el token CSRF.
+    Es un poco raro que esté aquí en el head (normalmente va en formularios).
+  -->
 
   <title>{% block title %}Crafted 3D{% endblock %}</title>
+  <!--
+    Título de la página.
+    Usamos un bloque para que cada página hija pueda personalizarlo.
+  -->
 </head>
+
 <body class="font-nunito">
+<!--
+  Aplicamos la fuente Nunito a todo el body usando Tailwind.
+-->
 
   <!-- Header -->
   {% include "header.html" %}
+  <!--
+    Incluimos la plantilla "header.html" con la barra de navegación o cabecera común.
+  -->
   
   <!-- Contenido Específico -->
   <main>
     {% block content %}
-
-    <!-- Aquí se insertará el contenido único de cada página -->
+    <!--
+      Bloque "content" donde se insertará el contenido propio de cada página.
+    -->
     {% endblock %}
   </main>
   
   <!-- Footer  -->
   {% include "footer.html" %}
+  <!--
+    Incluimos la plantilla "footer.html" con el pie de página común.
+  -->
   
   <!-- Scripts -->
-{% if mensaje is defined and tipo is defined and mensaje and tipo %}
-{% endif %}
+  {% if mensaje is defined and tipo is defined and mensaje and tipo %}
+  <!--
+    Condicional para mostrar mensajes (probablemente alertas o notificaciones).
+    No hay contenido dentro, imagino que faltó ponerlo o se gestiona en otra parte.
+  -->
+  {% endif %}
 </body>
 </html>

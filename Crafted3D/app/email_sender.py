@@ -5,13 +5,17 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from flask import url_for
 
+# Carga las variables de entorno desde un archivo .env
 load_dotenv()
-SMTP_SERVER = os.getenv("SMTP_SERVER")
-SMTP_PORT = int(os.getenv("SMTP_PORT"))
-EMAIL_SENDER = os.getenv("MAIL_USERNAME")
-EMAIL_PASSWORD = os.getenv("MAIL_PASSWORD")
+SMTP_SERVER = os.getenv("SMTP_SERVER")  # Servidor SMTP para enviar correos
+SMTP_PORT = int(os.getenv("SMTP_PORT"))  # Puerto del servidor SMTP
+EMAIL_SENDER = os.getenv("MAIL_USERNAME")  # Correo electrónico del remitente
+EMAIL_PASSWORD = os.getenv("MAIL_PASSWORD")  # Contraseña del remitente
 
 def enviar_correo_bienvenida(destinatario, nombre):
+    """
+    Envía un correo de bienvenida al usuario recién registrado.
+    """
     asunto = "¡Bienvenido a Crafted3D!"
     mensaje_html = f"""
     <html>
@@ -22,15 +26,17 @@ def enviar_correo_bienvenida(destinatario, nombre):
     </html>
     """
 
+    # Crea el mensaje de correo electrónico
     msg = MIMEMultipart()
     msg["From"] = EMAIL_SENDER
     msg["To"] = destinatario
     msg["Subject"] = asunto
     msg.attach(MIMEText(mensaje_html, "html"))
 
+    # Intenta enviar el correo usando SMTP
     try:
         server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
-        server.starttls()
+        server.starttls()  # Inicia conexión segura
         server.login(EMAIL_SENDER, EMAIL_PASSWORD)
         server.sendmail(EMAIL_SENDER, destinatario, msg.as_string())
         server.quit()
@@ -39,6 +45,9 @@ def enviar_correo_bienvenida(destinatario, nombre):
         print("Error al enviar correo:", e)
 
 def enviar_correo_cambios_perfil(destinatario, nombre):
+    """
+    Envía un correo notificando cambios en el perfil del usuario.
+    """
     asunto = "¡Bienvenido a Crafted3D!"
     mensaje_html = f"""
     <html>
@@ -65,8 +74,10 @@ def enviar_correo_cambios_perfil(destinatario, nombre):
     except Exception as e:
         print("Error al enviar correo:", e)
 
-
 def enviar_correo_actualizacion(destinatario, nombre):
+    """
+    Envía un correo notificando que los datos de la cuenta han sido actualizados.
+    """
     asunto = "¡Tus datos han sido actualizados!"
     mensaje_html = f"""
     <html>
@@ -96,6 +107,9 @@ def enviar_correo_actualizacion(destinatario, nombre):
         print("Error al enviar correo:", e)
 
 def enviar_correo_actualizacion_direccion(destinatario, direccion, ciudad, codigo_postal):
+    """
+    Envía un correo notificando que la dirección del usuario ha sido actualizada.
+    """
     asunto = "¡Tu dirección ha sido actualizada!"
     mensaje_html = f"""
     <html>
@@ -126,9 +140,12 @@ def enviar_correo_actualizacion_direccion(destinatario, direccion, ciudad, codig
     except Exception as e:
         print("❌ Error al enviar correo:", e)
 
-    
 def enviar_correo_recuperacion(destinatario, nombre, token):
+    """
+    Envía un correo con un enlace para restablecer la contraseña del usuario.
+    """
     asunto = "Recuperación de Contraseña"
+    # Genera el enlace de recuperación usando Flask url_for
     enlace_recuperacion = url_for("usuario.cambiar_contraseña", token=token, _external=True)
 
     mensaje_html = f"""
@@ -160,6 +177,9 @@ def enviar_correo_recuperacion(destinatario, nombre, token):
         print("❌ Error al enviar correo de recuperación:", e)
 
 def enviar_correo_confirmacion(destinatario, nombre):
+    """
+    Envía un correo confirmando que la contraseña ha sido cambiada exitosamente.
+    """
     asunto = "Tu contraseña ha sido actualizada"
     
     mensaje_html = f"""
@@ -189,14 +209,13 @@ def enviar_correo_confirmacion(destinatario, nombre):
     except Exception as e:
         print("❌ Error al enviar el correo de confirmación:", e)
 
-
-
-
-
 def enviar_correo_confirmacion_pedido(destinatario, nombre, numero_pedido, pedido, direccion_completa, ciudad, codigo_postal):
+    """
+    Envía un correo de confirmación de pedido con los detalles de la compra.
+    """
     asunto = f"Confirmación de Pedido: {numero_pedido}"
 
-    
+    # Construye el cuerpo del correo con los detalles del pedido
     mensaje_html = f"""
     <html>
     <body style="font-family: Arial, sans-serif; color: #333;">
@@ -209,6 +228,7 @@ def enviar_correo_confirmacion_pedido(destinatario, nombre, numero_pedido, pedid
         <ul>
     """
     print("DEBUG - pedido:", pedido)
+    # Agrega cada producto comprado a la lista en el correo
     for producto in pedido["productos"]:
         mensaje_html += f"<li>{producto['nombre']} | Cantidad: {producto['cantidad']} | Total: {producto['precio_total']} €</li>"
 
@@ -226,7 +246,7 @@ def enviar_correo_confirmacion_pedido(destinatario, nombre, numero_pedido, pedid
     </html>
     """
 
-    #Configurar y enviar el correo
+    # Configura y envía el correo de confirmación de pedido
     msg = MIMEMultipart()
     msg["From"] = EMAIL_SENDER
     msg["To"] = destinatario
@@ -242,5 +262,3 @@ def enviar_correo_confirmacion_pedido(destinatario, nombre, numero_pedido, pedid
         print(f"✅ Correo de confirmación de pedido ({numero_pedido}) enviado correctamente!")
     except Exception as e:
         print(f"❌ Error al enviar el correo de confirmación de pedido: {e}")
-
-        

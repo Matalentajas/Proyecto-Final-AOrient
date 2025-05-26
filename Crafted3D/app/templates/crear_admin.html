@@ -1,31 +1,40 @@
 {% extends "base.html" %}
 {% block content %}
-    <h2 style="text-align:center; margin-bottom: 24px;">Crear nuevo Administrador</h2>
-    <form method="POST" novalidate style="max-width: 400px; margin: 0 auto; padding: 24px; background: #f9f9f9; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.07);">
-        {{ form.hidden_tag() }}
-        <div style="margin-bottom: 18px;">
-            <label style="font-weight: bold;">{{ form.email.label }}</label><br>
-            {{ form.email(size=40, style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;") }}
-            {% for error in form.email.errors %}
-                <p style="color: #d32f2f; margin: 4px 0 0 0; font-size: 0.95em;">{{ error }}</p>
-            {% endfor %}
-        </div>
-        <div style="margin-bottom: 18px;">
-            <label style="font-weight: bold;">{{ form.contraseña.label }}</label><br>
-            {{ form.contraseña(size=40, style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;") }}
-            {% for error in form.contraseña.errors %}
-                <p style="color: #d32f2f; margin: 4px 0 0 0; font-size: 0.95em;">{{ error }}</p>
-            {% endfor %}
-        </div>
-        <div style="margin-bottom: 24px;">
-            <label style="font-weight: bold;">{{ form.confirmar_contraseña.label }}</label><br>
-            {{ form.confirmar_contraseña(size=40, style="width:100%; padding:8px; border:1px solid #ccc; border-radius:4px;") }}
-            {% for error in form.confirmar_contraseña.errors %}
-                <p style="color: #d32f2f; margin: 4px 0 0 0; font-size: 0.95em;">{{ error }}</p>
-            {% endfor %}
-        </div>
-        <button type="submit" style="width:100%; background: #1976d2; color: #fff; border: none; padding: 12px; border-radius: 4px; font-size: 1em; font-weight: bold; cursor: pointer; transition: background 0.2s;">
-            Crear Administrador
-        </button>
-    </form>
+<h2 class="text-center text-2xl font-semibold mb-6">Crear nuevo Administrador</h2>
+
+<form method="POST" novalidate class="max-w-md mx-auto p-6 bg-gray-100 rounded-lg shadow-md">
+    {{ form.hidden_tag() }}
+
+    <!-- Campo Email -->
+    <div class="mb-5">
+        <label class="font-semibold">{{ form.email.label }}</label>
+        {{ form.email(class="w-full p-2 border border-gray-300 rounded mt-1") }}
+        {% for error in form.email.errors %}
+            <p class="text-red-600 mt-1 text-sm">{{ error }}</p>
+        {% endfor %}
+    </div>
+
+    <!-- Campo Contraseña -->
+    <div class="mb-5">
+        <label class="font-semibold">{{ form.contraseña.label }}</label>
+        {{ form.contraseña(class="w-full p-2 border border-gray-300 rounded mt-1") }}
+        {% for error in form.contraseña.errors %}
+            <p class="text-red-600 mt-1 text-sm">{{ error }}</p>
+        {% endfor %}
+    </div>
+
+    <!-- Campo Confirmar Contraseña -->
+    <div class="mb-6">
+        <label class="font-semibold">{{ form.confirmar_contraseña.label }}</label>
+        {{ form.confirmar_contraseña(class="w-full p-2 border border-gray-300 rounded mt-1") }}
+        {% for error in form.confirmar_contraseña.errors %}
+            <p class="text-red-600 mt-1 text-sm">{{ error }}</p>
+        {% endfor %}
+    </div>
+
+    <!-- Botón de envío -->
+    <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded font-bold hover:bg-blue-700 transition-colors">
+        Crear Administrador
+    </button>
+</form>
 {% endblock %}

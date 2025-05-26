@@ -1,21 +1,30 @@
 <!-- Footer -->
 <footer>
+    <!-- Contenedor principal con espaciado horizontal (px-4) y vertical (py-8) -->
     <div class="container mx-auto px-4 py-8">
-        <!-- Logo -->
+
+        <!-- Logo centrado -->
         <div class="flex flex-col items-center mb-8">
+            <!-- Imagen del logo -->
             <img src="{{ url_for('static', filename='css/images/Logo.webp') }}" alt="Logo Crafted3D" class="h-16">
         </div>
         
-        <!-- Contact and Social Media -->
+        <!-- Sección de contacto y redes sociales -->
         <div class="flex flex-col md:flex-row justify-between">
-            <!-- Contact -->
+            
+            <!-- Información de contacto -->
             <div class="mb-8 md:mb-0">
                 <h3 class="text-xl font-bold mb-2">¿Alguna Duda? Contacta con nosotros</h3>
+                
+                <!-- Lista de medios de contacto -->
                 <div class="flex flex-col space-y-2">
+                    <!-- WhatsApp -->
                     <div class="flex items-center">
                         <i class="fab fa-whatsapp text-2xl text-green-500 mr-2"></i>
                         <span class="text-lg">+34 601 000 000</span>
                     </div>
+
+                    <!-- Email -->
                     <div class="flex items-center">
                         <i class="fas fa-envelope text-2xl text-red-500 mr-2"></i>
                         <span class="text-lg">infocrafted3d@gmail.com</span>
@@ -23,20 +32,35 @@
                 </div>
             </div>
             
-            <!-- Social Media -->
+            <!-- Redes sociales -->
             <div>
                 <h3 class="text-xl font-bold mb-2">Síguenos en nuestras redes sociales</h3>
                 <div class="flex items-center space-x-4">
-                    <a href="#" class="hover:text-pink-500"><i class="fab fa-instagram text-2xl"></i></a>
-                    <a href="#" class="hover:text-blue-600"><i class="fab fa-facebook-square text-2xl"></i></a>
-                    <a href="#" class="hover:text-black"><i class="fab fa-tiktok text-2xl"></i></a>
-                    <a href="#" class="hover:text-[#1DA1F2]"><i class="fab fa-x-twitter text-2xl"></i></a>
+                    <!-- Instagram -->
+                    <a href="#" class="hover:text-pink-500">
+                        <i class="fab fa-instagram text-2xl"></i>
+                    </a>
+
+                    <!-- Facebook -->
+                    <a href="#" class="hover:text-blue-600">
+                        <i class="fab fa-facebook-square text-2xl"></i>
+                    </a>
+
+                    <!-- TikTok -->
+                    <a href="#" class="hover:text-black">
+                        <i class="fab fa-tiktok text-2xl"></i>
+                    </a>
+
+                    <!-- X (Twitter) -->
+                    <a href="#" class="hover:text-[#1DA1F2]">
+                        <i class="fab fa-x-twitter text-2xl"></i>
+                    </a>
                 </div>
             </div>
         </div>
     </div>
     
-    <!-- Copyright -->
+    <!-- Pie final con derechos de autor -->
     <div class="py-4">
         <div class="container mx-auto text-center text-sm">
             &copy; CRAFTED3D 2025

@@ -1,12 +1,15 @@
 <head>
+    <!-- Configuración de la vista para dispositivos móviles y carga de Tailwind CSS desde CDN -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-[#D4D4D4] min-h-screen flex items-center justify-center px-4">
+    <!-- Contenedor principal centrado y responsivo -->
     <div class="w-full max-w-[95%] sm:max-w-md md:max-w-lg h-auto flex items-center justify-center">
+        <!-- Formulario para modificar la contraseña -->
         <form method="POST" class="w-full border-[2px] border-black bg-white rounded-b-lg shadow-xl p-6">
 
-            <!-- Logo -->
+            <!-- Logo de la aplicación con enlace a la página principal -->
             <div class="border-b-[2px] border-black flex items-center justify-center pb-4">
                 <a href="{{ url_for('index') }}">
                     <img src="{{ url_for('static', filename='css/images/Logo.webp') }}" alt="Logo Crafted3D"
@@ -14,31 +17,39 @@
                 </a>
             </div>
 
+            <!-- Botón para volver a la página anterior usando el historial del navegador -->
             <div class="flex justify-center mt-4">
                 <button onclick="window.history.back()" class="bg-gray-500 w-12 h-6 text-sm text-center text-white font-semibold  rounded-lg hover:bg-gray-600 transition-all">
                     Volver
                 </button>
             </div>
+
+            <!-- Título del formulario -->
             <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-center mt-3 mb-4">Modificar Contraseña</h2>
+            
+            <!-- Campo oculto para CSRF y otros datos de Flask-WTF -->
             {{ form.hidden_tag() }}
 
             <div class="space-y-3">
-                <!-- Email -->
+                <!-- Campo de entrada para el email -->
                 <div>
+                    <!-- Etiqueta del campo email -->
                     {{ form.email.label(class="block text-gray-700 text-xs sm:text-sm") }}
+                    <!-- Input para el email -->
                     {{ form.email(class="w-full border-b-2 border-gray-300 focus:border-black focus:outline-none py-1 sm:py-2 text-xs sm:text-sm") }}
+                    <!-- Mensaje de error para el campo email -->
                     {% for error in form.email.errors %}
                         <p class="text-red-500 text-xs mt-1">{{ error }}</p>
                     {% endfor %}
                 </div>
 
-                <!-- Mensaje informativo -->
+                <!-- Mensaje informativo sobre el envío del correo -->
                 <p class="text-gray-500 text-xs sm:text-sm">
                     Al darle al botón se le enviará un correo a la dirección indicada.
                 </p>
             </div>
 
-            <!-- Botón para enviar correo -->
+            <!-- Botón para enviar el formulario y solicitar el cambio de contraseña -->
             <div class="flex justify-center mt-4">
                 <button type="submit" class="w-[80%] text-xs sm:text-sm bg-green-500 text-white font-semibold px-3 sm:px-4 py-2 rounded-lg hover:bg-green-600 transition-all">
                     Enviar Correo

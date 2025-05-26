@@ -1,24 +1,76 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es"><!-- Definimos el idioma del documento como español -->
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>404 - ¡Error de Impresión!</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8"><!-- Codificación de caracteres para soportar todos los caracteres especiales -->
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Responsive para que la página se adapte a diferentes dispositivos -->
+  <title>404 - ¡Error de Impresión!</title><!-- Título que aparece en la pestaña del navegador -->
+  <script src="https://cdn.tailwindcss.com"></script><!-- Carga TailwindCSS desde CDN para estilos rápidos y modernos -->
 </head>
 <body class="bg-gradient-to-br from-green-100 via-white to-lime-100 text-gray-800 flex items-center justify-center min-h-screen p-6">
+  <!--
+    - Fondo con degradado diagonal (de verde claro a blanco a lima claro).
+    - Texto gris oscuro.
+    - Flexbox para centrar el contenido vertical y horizontalmente.
+    - Altura mínima de pantalla completa.
+    - Padding general de 1.5rem (p-6).
+  -->
   <div class="bg-white/80 shadow-2xl rounded-3xl p-6 sm:p-8 md:p-10 max-w-md sm:max-w-lg w-full text-center border border-green-200">
+    <!--
+      - Caja blanca con opacidad al 80% para dejar ver el fondo ligeramente.
+      - Sombra muy marcada para dar profundidad.
+      - Bordes redondeados grandes (3xl).
+      - Padding variable según tamaño de pantalla: base 1.5rem, sm 2rem, md 2.5rem.
+      - Máximo ancho medio para móviles (max-w-md), y un poco más ancho en sm (max-w-lg).
+      - Ancho completo disponible (w-full).
+      - Texto centrado.
+      - Borde verde claro.
+    -->
     <img src="https://i.postimg.cc/X77CfJ6K/imagen-2025-05-19-165202854.png"
          alt="Impresora fallando"
          class="mx-auto w-32 sm:w-36 md:w-40 drop-shadow-lg mb-6 transition-transform duration-300 hover:scale-105">
+    <!--
+      - Imagen centrada horizontalmente (mx-auto).
+      - Anchos variables: 8rem (w-32), 9rem (sm), 10rem (md).
+      - Sombra ligera bajo la imagen.
+      - Margen inferior de 1.5rem para separar del texto.
+      - Transición suave para transformar la imagen (animación al hacer hover).
+      - Efecto hover: escala al 105%, haciendo zoom suave al pasar el cursor.
+    -->
     
     <p class="text-xl sm:text-2xl font-semibold text-green-900 mb-2">¡Ups! Parece que esta página no terminó de imprimirse...</p>
+    <!--
+      - Párrafo principal con texto grande (1.25rem base, 1.5rem en sm).
+      - Texto semi-negrita.
+      - Color verde oscuro para el texto.
+      - Margen inferior pequeño para separación.
+    -->
+
     <p class="text-sm sm:text-base text-gray-600 italic mb-6">Como una capa mal pegada, algo salió mal.</p>
+    <!--
+      - Párrafo secundario con texto pequeño (0.875rem base, 1rem en sm).
+      - Color gris medio.
+      - Texto en cursiva para darle estilo informal.
+      - Margen inferior más amplio para separar del botón.
+    -->
     
     <a href="/"
        class="inline-block bg-gradient-to-r from-green-600 to-lime-500 text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-full shadow-lg hover:scale-105 hover:from-green-700 hover:to-lime-600 transition-all font-bold text-base sm:text-lg">
        Volver al inicio
     </a>
+    <!--
+      - Enlace con apariencia de botón:
+        * Display inline-block para poder usar padding y tamaños.
+        * Fondo con degradado horizontal de verde oscuro a lima.
+        * Texto blanco.
+        * Padding horizontal y vertical adaptable (más grande en sm).
+        * Bordes completamente redondeados (pill shape).
+        * Sombra suave para resaltar el botón.
+        * Efectos hover:
+          - Escala al 105% (zoom suave).
+          - Cambia los colores del degradado a tonos más oscuros.
+        * Transición suave para todas las propiedades (transición global).
+        * Texto en negrita y tamaño legible.
+    -->
   </div>
 </body>
 </html>

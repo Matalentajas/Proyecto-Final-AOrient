@@ -1,105 +1,125 @@
 <head>
+    <!-- Ajuste de escala para diseño responsive -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Inclusión de Tailwind CSS desde CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-[#D4D4D4] min-h-screen flex items-center justify-center px-4">
-    <div class="w-full max-w-[95%] sm:max-w-md md:max-w-lg h-auto flex items-center justify-center">
-        <form method="POST" class="w-full border-[2px] border-black bg-white rounded-b-lg shadow-xl p-6">
 
-            <!-- Logo -->
+<body class="bg-[#D4D4D4] min-h-screen flex items-center justify-center px-4">
+    <!-- Contenedor principal centrado, con ancho responsive -->
+    <div class="w-full max-w-[95%] sm:max-w-md md:max-w-lg h-auto flex items-center justify-center">
+        <!-- Formulario con estilos: borde, fondo blanco, sombra y padding -->
+        <form method="POST" class="w-full border-[2px] border-black bg-white rounded-b-lg shadow-xl p-6">
+            
+            <!-- Logo de la tienda, alineado al centro con un borde inferior -->
             <div class="border-b-[2px] border-black flex items-center justify-center pb-4">
                 <a href="{{ url_for('index') }}">
-                    <img src="{{ url_for('static', filename='css/images/Logo.webp') }}" alt="Logo Crafted3D"
-                        class="h-[50px] sm:h-[60px]">
+                    <img src="{{ url_for('static', filename='css/images/Logo.webp') }}" 
+                         alt="Logo Crafted3D"
+                         class="h-[50px] sm:h-[60px]">
                 </a>
             </div>
 
-            
+            <!-- Botón de volver a la página anterior -->
             <div class="flex justify-center mt-4">
-                <button onclick="window.history.back()" class="bg-gray-500 w-12 h-6 text-sm text-center text-white font-semibold  rounded-lg hover:bg-gray-600 transition-all">
+                <button onclick="window.history.back()" 
+                        class="bg-gray-500 w-12 h-6 text-sm text-center text-white font-semibold rounded-lg hover:bg-gray-600 transition-all">
                     Volver
                 </button>
             </div>
+
+            <!-- Título del formulario -->
             <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-center mt-3 mb-4">Editar Dirección</h2>
+
+            <!-- Token CSRF de Flask-WTF -->
             {{ form.hidden_tag() }}
 
+            <!-- Contenedor para campos del formulario -->
             <div class="space-y-3">
-                <!-- Dirección -->
-            <div>
-                {{ form.direccion_completa.label(class="block text-gray-700 text-xs sm:text-sm") }}
-                {{ form.direccion_completa(class="w-full border-b-2 border-gray-300 focus:border-black focus:outline-none py-1 sm:py-2 text-xs sm:text-sm") }}
-                {% for error in form.direccion_completa.errors %}
-                    <p class="text-red-500 text-xs mt-1">{{ error }}</p>
-                {% endfor %}
+                
+                <!-- Campo: Dirección completa -->
+                <div>
+                    {{ form.direccion_completa.label(class="block text-gray-700 text-xs sm:text-sm") }}
+                    {{ form.direccion_completa(class="w-full border-b-2 border-gray-300 focus:border-black focus:outline-none py-1 sm:py-2 text-xs sm:text-sm") }}
+                    {% for error in form.direccion_completa.errors %}
+                        <p class="text-red-500 text-xs mt-1">{{ error }}</p>
+                    {% endfor %}
+                </div>
+
+                <!-- Campo: Código Postal -->
+                <div>
+                    {{ form.codigo_postal.label(class="block text-gray-700 text-xs sm:text-sm") }}
+                    {{ form.codigo_postal(class="w-full border-b-2 border-gray-300 focus:border-black focus:outline-none py-1 sm:py-2 text-xs sm:text-sm") }}
+                    {% for error in form.codigo_postal.errors %}
+                        <p class="text-red-500 text-xs mt-1">{{ error }}</p>
+                    {% endfor %}
+                </div>
+
+                <!-- Campo: Ciudad -->
+                <div>
+                    {{ form.ciudad.label(class="block text-gray-700 text-xs sm:text-sm") }}
+                    {{ form.ciudad(class="w-full border-b-2 border-gray-300 focus:border-black focus:outline-none py-1 sm:py-2 text-xs sm:text-sm") }}
+                    {% for error in form.ciudad.errors %}
+                        <p class="text-red-500 text-xs mt-1">{{ error }}</p>
+                    {% endfor %}
+                </div>
             </div>
 
-            <!-- Código Postal -->
-            <div>
-                {{ form.codigo_postal.label(class="block text-gray-700 text-xs sm:text-sm") }}
-                {{ form.codigo_postal(class="w-full border-b-2 border-gray-300 focus:border-black focus:outline-none py-1 sm:py-2 text-xs sm:text-sm") }}
-                {% for error in form.codigo_postal.errors %}
-                    <p class="text-red-500 text-xs mt-1">{{ error }}</p>
-                {% endfor %}
-            </div>
-
-            <!-- Ciudad -->
-            <div>
-                {{ form.ciudad.label(class="block text-gray-700 text-xs sm:text-sm") }}
-                {{ form.ciudad(class="w-full border-b-2 border-gray-300 focus:border-black focus:outline-none py-1 sm:py-2 text-xs sm:text-sm") }}
-                {% for error in form.ciudad.errors %}
-                    <p class="text-red-500 text-xs mt-1">{{ error }}</p>
-                {% endfor %}
-            </div>
-
-
-            </div>
-
-            <!-- Botón para cambiar dirección -->
+            <!-- Botón para enviar el formulario -->
             <div class="flex justify-center mt-4">
-                <button type="submit" class="w-[80%] text-xs sm:text-sm bg-green-500 text-white font-semibold px-3 sm:px-4 py-2 rounded-lg hover:bg-green-600 transition-all">
+                <button type="submit" 
+                        class="w-[80%] text-xs sm:text-sm bg-green-500 text-white font-semibold px-3 sm:px-4 py-2 rounded-lg hover:bg-green-600 transition-all">
                     Cambiar Dirección
                 </button>
             </div>
         </form>
     </div>
+
+    <!-- Script para activar el botón solo si hay cambios -->
     <script>
     document.addEventListener("DOMContentLoaded", function () {
+        // Obtener los campos del formulario
         const direccionInput = document.querySelector("[name='direccion_completa']");
         const codigoPostalInput = document.querySelector("[name='codigo_postal']");
         const ciudadInput = document.querySelector("[name='ciudad']");
         const confirmarBtn = document.querySelector("button[type='submit']");
         
+        // Guardar los valores originales al cargar la página
         const valoresOriginales = {
             direccion: direccionInput.value,
             codigo_postal: codigoPostalInput.value,
             ciudad: ciudadInput.value
         };
 
+        // Verifica si alguno de los campos ha cambiado
         function verificarCambios() {
             if (
                 direccionInput.value !== valoresOriginales.direccion || 
                 codigoPostalInput.value !== valoresOriginales.codigo_postal || 
                 ciudadInput.value !== valoresOriginales.ciudad
             ) {
+                // Activar el botón si hay cambios
                 confirmarBtn.disabled = false;
                 confirmarBtn.classList.remove("bg-gray-400");
                 confirmarBtn.classList.add("bg-green-500", "hover:bg-green-600");
             } else {
+                // Desactivar el botón si no hay cambios
                 confirmarBtn.disabled = true;
                 confirmarBtn.classList.remove("bg-green-500", "hover:bg-green-600");
                 confirmarBtn.classList.add("bg-gray-400");
             }
         }
 
+        // Asigna el evento de cambio a los inputs
         direccionInput.addEventListener("input", verificarCambios);
         codigoPostalInput.addEventListener("input", verificarCambios);
         ciudadInput.addEventListener("input", verificarCambios);
 
-        // 🚀 Desactivar el botón al cargar la página
+        // 🚀 Desactivar el botón al cargar la página (sin cambios)
         confirmarBtn.disabled = true;
         confirmarBtn.classList.remove("bg-green-500", "hover:bg-green-600");
         confirmarBtn.classList.add("bg-gray-400");
     });
-</script>
-
+    </script>
 </body>
