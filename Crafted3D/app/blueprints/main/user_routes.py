@@ -1,26 +1,26 @@
 from flask import Blueprint, render_template, request, redirect, session, url_for, flash, current_app
 from app.utils.token import guardar_token
-from app.forms.user_forms import RegistroUsuarioForm, LoginForm, ModificarContraseñaForm, CambiarContraseñaForm, EditarDireccionForm, EditarPerfilForm  
-from app.email_sender import enviar_correo_bienvenida, enviar_correo_actualizacion, enviar_correo_actualizacion_direccion, enviar_correo_confirmacion, enviar_correo_recuperacion
+from app.forms.user_forms import (
+    RegistroUsuarioForm, LoginForm, ModificarContraseñaForm,
+    CambiarContraseñaForm, EditarDireccionForm, EditarPerfilForm
+)
+from app.email_sender import (
+    enviar_correo_bienvenida, enviar_correo_actualizacion,
+    enviar_correo_actualizacion_direccion, enviar_correo_confirmacion,
+    enviar_correo_recuperacion
+)
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 from app.models import Usuario
 
+# Creamos un Blueprint para organizar rutas relacionadas con usuarios
 usuario_bp = Blueprint("usuario", __name__)
 
-# Lista de pedidos de ejemplo
-pedidos = [
-    {"numero": "PED12345", "fecha": "2025-05-01", "estado_pago": "Pagado", "estado": "Completado", "total": 150.00},
-    {"numero": "PED12346", "fecha": "2025-05-03", "estado_pago": "Procesando", "estado": "Enviado", "total": 75.50},
-    {"numero": "PED12347", "fecha": "2025-05-05", "estado_pago": "Pendiente", "estado": "Cancelado", "total": 200.00}
-]
-
-
-# Vista del perfil del usuario
+# --- Vista perfil ---
 @usuario_bp.route("/perfil")
-@login_required
+@login_required  # Solo usuarios logueados pueden acceder
 def perfil():
-    # Si hay sesión de admin, redirige al panel admin
+    # Si existe sesión admin, redirige al panel admin
     if "admin" in session:
         return redirect(url_for("admin.admin_dashboard"))
 
@@ -41,15 +41,16 @@ def perfil():
         "codigo_postal": user_data[4],
     } if user_data else None
 
+    # Obtener pedidos reales desde la base de datos
     cursor.execute("""
         SELECT numero_pedido, fecha_pedido, estado_pago, estado, total 
         FROM pedidos 
         WHERE usuario_id = %s 
         ORDER BY fecha_pedido DESC
     """, (current_user.id,))
-
     pedidos_raw = cursor.fetchall()
 
+    # Formatear pedidos para pasarlos al template
     pedidos = []
     for pedido in pedidos_raw:
         if pedido[0]:
@@ -66,38 +67,44 @@ def perfil():
     return render_template("perfil.html", usuario=usuario_info, pedidos=pedidos)
 
 
+# --- Registro de usuario ---
 @usuario_bp.route("/registro", methods=["GET", "POST"])
 def registro():
     # Si hay sesión de admin, redirige al panel admin
     if "admin" in session:
         return redirect(url_for("admin.admin_dashboard"))
-    
+
+    # Si usuario ya está autenticado, va a su perfil
     if current_user.is_authenticated:
         return redirect(url_for("usuario.perfil"))
 
     form = RegistroUsuarioForm()
-    
+
+    # Cuando se envía el formulario
     if request.method == "POST":
         print("Formulario recibido")
 
     if form.validate_on_submit():
         print("Formulario validado correctamente")
 
+        # Extraemos datos del formulario
         nombre_completo = form.nombre_completo.data
         email = form.email.data
         contraseña = generate_password_hash(form.contraseña.data)
         direccion_completa = form.direccion_completa.data
         ciudad = form.ciudad.data
         codigo_postal = form.codigo_postal.data
-        
+
         cursor = current_app.mysql.connection.cursor()
+
+        # Insertamos usuario en la base de datos
         cursor.execute("""
             INSERT INTO usuarios (nombre_completo, email, contraseña, direccion_completa, ciudad, codigo_postal) 
             VALUES (%s, %s, %s, %s, %s, %s)
         """, (nombre_completo, email, contraseña, direccion_completa, ciudad, codigo_postal))
         current_app.mysql.connection.commit()
-        
-        # Obtener el usuario recién registrado
+
+        # Obtenemos id del usuario registrado
         cursor.execute("SELECT id FROM usuarios WHERE email = %s", (email,))
         user_data = cursor.fetchone()
         cursor.close()
@@ -105,7 +112,7 @@ def registro():
         if user_data:
             user_id = user_data[0]
             user = Usuario(user_id, nombre_completo, email)
-            login_user(user)
+            login_user(user)  # Logueamos al usuario automáticamente
 
             print(f"📩 Intentando enviar correo de bienvenida a: {email}")
             enviar_correo_bienvenida(email, nombre_completo)
@@ -119,37 +126,33 @@ def registro():
     return render_template("registro.html", form=form)
 
 
-
-# Vista del login
+# --- Login ---
 @usuario_bp.route("/login", methods=["GET", "POST"])
 def login():
-    # Si hay sesión de admin, redirige al panel admin
+    # Admin redirige a su panel
     if "admin" in session:
         return redirect(url_for("admin.admin_dashboard"))
-    
+
+    # Si ya está autenticado
     if current_user.is_authenticated:
         return redirect(url_for("usuario.perfil"))
-    
+
     form = LoginForm()
 
     if request.method == "POST" and form.validate_on_submit():
         email = form.email.data
         contraseña = form.contraseña.data
 
-        # Consultar el usuario en la base de datos
         cursor = current_app.mysql.connection.cursor()
         cursor.execute("SELECT id, nombre_completo, email, contraseña FROM usuarios WHERE email = %s", (email,))
         user_data = cursor.fetchone()
         cursor.close()
 
         if user_data is None:
-            # Si no se encuentra el usuario con ese correo
             form.email.errors.append("❌ El correo electrónico no está registrado.")
         elif not check_password_hash(user_data[3], contraseña):
-            # Si la contraseña no es correcta
             form.contraseña.errors.append("❌ La contraseña es incorrecta.")
         else:
-            # Si las credenciales son correctas
             user = Usuario(user_data[0], user_data[1], user_data[2])
             login_user(user)
             flash("Inicio de sesión exitoso!", "success")
@@ -158,19 +161,17 @@ def login():
     return render_template("login.html", form=form)
 
 
-
-# Vista para modificar contraseña
+# --- Modificar contraseña (paso 1: enviar correo) ---
 @usuario_bp.route("/modificar_contraseña_1", methods=["GET", "POST"])
 def modificar_contraseña():
-    # Si hay sesión de admin, redirige al panel admin
     if "admin" in session:
         return redirect(url_for("admin.admin_dashboard"))
+
     form = ModificarContraseñaForm()
 
     if request.method == "POST" and form.validate_on_submit():
         email = form.email.data
 
-        # Verificar si el usuario existe
         cursor = current_app.mysql.connection.cursor()
         cursor.execute("SELECT nombre_completo FROM usuarios WHERE email = %s", (email,))
         resultado = cursor.fetchone()
@@ -178,9 +179,9 @@ def modificar_contraseña():
 
         if resultado:
             nombre = resultado[0]
-            token = guardar_token(email)
+            token = guardar_token(email)  # Crear token de recuperación
             enviar_correo_recuperacion(email, nombre, token)
-            
+
             flash("Correo de recuperación enviado!", "success")
             return redirect(url_for("usuario.login"))
         else:
@@ -189,12 +190,12 @@ def modificar_contraseña():
     return render_template("modificar_contraseña.html", form=form)
 
 
-# Vista para cambiar contraseña
+# --- Cambiar contraseña (paso 2: con token) ---
 @usuario_bp.route("/cambiar_contraseña/<token>", methods=["GET", "POST"])
 def cambiar_contraseña(token):
-    # Si hay sesión de admin, redirige al panel admin
     if "admin" in session:
         return redirect(url_for("admin.admin_dashboard"))
+
     form = CambiarContraseñaForm()
 
     cursor = current_app.mysql.connection.cursor()
@@ -202,37 +203,37 @@ def cambiar_contraseña(token):
     resultado = cursor.fetchone()
     cursor.close()
 
-
     if not resultado:
         return render_template("error.html", mensaje="❌ Token inválido o expirado.")
 
     email = resultado[0]
     nombre = resultado[1]
 
-
     if request.method == "POST" and form.validate_on_submit():
         nueva_contraseña = form.nueva_contraseña.data
 
-        # Guardar la nueva contraseña y eliminar el token
         cursor = current_app.mysql.connection.cursor()
         nueva_contraseña_hash = generate_password_hash(nueva_contraseña)
-        cursor.execute("UPDATE usuarios SET contraseña = %s, reset_token = NULL WHERE email = %s", 
-                       (nueva_contraseña_hash, email))
+        cursor.execute(
+            "UPDATE usuarios SET contraseña = %s, reset_token = NULL WHERE email = %s",
+            (nueva_contraseña_hash, email)
+        )
         current_app.mysql.connection.commit()
         cursor.close()
+
         enviar_correo_confirmacion(email, nombre)
         return redirect(url_for("usuario.login", mensaje="✅ Contraseña actualizada exitosamente."))
 
     return render_template("cambiar_contraseña.html", form=form)
 
 
-# Vista para editar dirección del usuario
+# --- Editar dirección ---
 @usuario_bp.route("/editar_direccion", methods=["GET", "POST"])
 @login_required
 def editar_direccion():
-    # Si hay sesión de admin, redirige al panel admin
     if "admin" in session:
         return redirect(url_for("admin.admin_dashboard"))
+
     form = EditarDireccionForm(obj=current_user)
     next_url = request.args.get("next", url_for("usuario.perfil"))
 
@@ -251,47 +252,44 @@ def editar_direccion():
         cursor.close()
 
         enviar_correo_actualizacion_direccion(current_user.email, direccion_completa, ciudad, codigo_postal)
-        return redirect(next_url)  # ✅ Redirige a la página correcta
+        return redirect(next_url)
 
     return render_template("editar_direccion.html", form=form, next_url=next_url)
 
 
-# Vista para editar los datos del usuario
+# --- Editar perfil (nombre y email) ---
 @usuario_bp.route("/editar_perfil", methods=["GET", "POST"])
 @login_required
 def editar_perfil():
-    # Si hay sesión de admin, redirige al panel admin
     if "admin" in session:
         return redirect(url_for("admin.admin_dashboard"))
+
     form = EditarPerfilForm(obj=current_user)
     next_url = request.args.get("next", url_for("usuario.perfil"))
 
     if request.method == "POST" and form.validate_on_submit():
-        nombre_completo = form.nombre.data
+        nombre_completo = form.nombre_completo.data
         email = form.email.data
 
         cursor = current_app.mysql.connection.cursor()
         cursor.execute("""
             UPDATE usuarios 
             SET nombre_completo = %s, email = %s 
-            WHERE id = %s   
+            WHERE id = %s
         """, (nombre_completo, email, current_user.id))
         current_app.mysql.connection.commit()
         cursor.close()
 
-        enviar_correo_actualizacion(current_user.email, nombre_completo)
-        return redirect(next_url)  # ✅ Redirige a la página correcta
+        enviar_correo_actualizacion(email, nombre_completo)
+        return redirect(next_url)
 
     return render_template("editar_perfil.html", form=form, next_url=next_url)
 
 
-#Cerrar la sesión del usuario
+# --- Logout ---
 @usuario_bp.route("/logout")
 @login_required
 def logout():
-    # Si hay sesión de admin, redirige al panel admin
-    if "admin" in session:
-        return redirect(url_for("admin.admin_dashboard"))
-    logout_user() 
+    logout_user()
     flash("Has cerrado sesión correctamente.", "info")
     return redirect(url_for("usuario.login"))
