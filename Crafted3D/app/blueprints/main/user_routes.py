@@ -12,6 +12,7 @@ from app.email_sender import (
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, login_required, logout_user, current_user
 from app.models import Usuario
+from datetime import timedelta
 
 # Creamos un Blueprint para organizar rutas relacionadas con usuarios
 usuario_bp = Blueprint("usuario", __name__)
@@ -51,12 +52,14 @@ def perfil():
     pedidos_raw = cursor.fetchall()
 
     # Formatear pedidos para pasarlos al template
+
     pedidos = []
     for pedido in pedidos_raw:
         if pedido[0]:
+            fecha_ajustada = pedido[1] + timedelta(hours=2) if pedido[1] else None
             pedidos.append({
                 "numero": pedido[0],
-                "fecha": pedido[1].strftime("%Y-%m-%d %H:%M:%S"),
+                "fecha": fecha_ajustada.strftime("%Y-%m-%d %H:%M:%S") if fecha_ajustada else "",
                 "estado_pago": pedido[2],
                 "estado": pedido[3],
                 "total": float(pedido[4])

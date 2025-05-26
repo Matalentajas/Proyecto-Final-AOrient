@@ -34,7 +34,7 @@
             <!-- Nombre Completo -->
             <div>
                 {{ form.nombre.label(class="block text-gray-700 text-xs sm:text-sm") }}
-                {{ form.nombre(value=current_user.nombre_completo, class="w-full border-b-2 border-gray-300 focus:border-black focus:outline-none py-1 sm:py-2 text-xs sm:text-sm") }}
+                {{ form.nombre(value=current_user.nombre, class="w-full border-b-2 border-gray-300 focus:border-black focus:outline-none py-1 sm:py-2 text-xs sm:text-sm") }}
                 {% for error in form.nombre.errors %}
                     <p class="text-red-500 text-xs mt-1">{{ error }}</p>
                 {% endfor %}

@@ -67,13 +67,6 @@ class RegistroUsuarioForm(FlaskForm):
 
         return valid and not self.email.errors
 
-
-
-
-
-
-
-
 # Formulario de Inicio de Sesión
 class LoginForm(FlaskForm):
     email = EmailField('Correo Electrónico', validators=[DataRequired()])

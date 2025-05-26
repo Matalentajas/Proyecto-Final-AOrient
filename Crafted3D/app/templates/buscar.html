@@ -1,33 +1,74 @@
 {% extends "base.html" %}
+<!--
+  Extiende la plantilla base.html para mantener la estructura común.
+-->
 
 {% block title %}Resultados de búsqueda{% endblock %}
+<!--
+  Sobrescribe el título de la página para que muestre "Resultados de búsqueda".
+-->
 
 {% block content %}
 <div class="container mx-auto px-4 py-8">
+    <!--
+      Contenedor centralizado con padding horizontal y vertical.
+    -->
+
     <h2 class="text-3xl font-bold text-center mb-6">Resultados para "{{ query }}"</h2>
+    <!--
+      Título con la query que se ha buscado, centrado y con tamaño grande.
+    -->
 
     {% if resultados %}
+    <!--
+      Si hay resultados de búsqueda...
+    -->
+
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <!--
+          Grid responsivo que adapta el número de columnas según el tamaño de pantalla:
+          1 columna en móvil, 2 en tablet, 3 en escritorio.
+        -->
+
         {% for producto in resultados %}
         <div class="overflow-hidden rounded-t-lg border border-black shadow-sm hover:shadow-md transition-shadow duration-300">
+            <!--
+              Cada producto está en una tarjeta con bordes, sombra y efecto hover suave.
+            -->
+
             {% if "http" in producto.imagen %}
                 <img src="{{ producto.imagen }}" alt="{{ producto.nombre }}" class="w-full aspect-square object-cover transition-transform duration-300 hover:scale-105">
             {% else %}
                 <img src="{{ url_for('static', filename='css/images/' + producto.imagen) }}" alt="{{ producto.nombre }}" class="w-full aspect-square object-cover transition-transform duration-300 hover:scale-105">
             {% endif %}
+            <!--
+              Se comprueba si la imagen es una URL absoluta (contiene "http").
+              Si es así, se usa directamente.
+              Si no, se carga desde la carpeta estática del proyecto.
+              La imagen es cuadrada y se aplica un efecto hover de zoom.
+            -->
 
             <div class="p-4">
                 <h3 class="text-xl font-bold mb-2">{{ producto['nombre'] }}</h3>
+                <!-- Nombre del producto destacado -->
+
                 <p class="text-gray-700 mb-4">{{ producto['precio'] }}€</p>
+                <!-- Precio con estilo gris -->
+
                 <a href="{{ url_for('product.producto', producto_id=producto['id']) }}" class="bg-[#39CB60] text-white px-4 py-2 rounded hover:bg-green-600 block text-center">
                     Ver Producto
                 </a>
+                <!-- Botón verde para ver detalles del producto -->
             </div>
         </div>
         {% endfor %}
     </div>
+
     {% else %}
     <p class="text-center text-gray-600 mt-6">No se encontraron productos para "{{ query }}".</p>
+    <!--
+      Mensaje centrado si no hay resultados.
+    -->
     {% endif %}
 </div>
 {% endblock %}

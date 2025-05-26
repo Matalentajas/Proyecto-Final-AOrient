@@ -1,49 +1,83 @@
 {% block content %}
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Viewport para hacer la página responsive -->
+
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Importa Tailwind CSS desde CDN -->
 </head>
+
 <div class="flex flex-col md:flex-row w-full min-h-screen">
-    
+    <!--
+      Contenedor principal con flexbox:
+      En móvil es columna (vertical),
+      en md+ es fila (horizontal),
+      ocupa ancho completo y al menos altura de pantalla.
+    -->
+
     <!-- 🔹 Parte Izquierda: Datos del Cliente y Pago -->
     <div class="order-2 md:order-1 w-full md:w-1/2 bg-white p-6 md:p-10 flex flex-col justify-between min-h-screen">
-        
+        <!--
+          Contenedor izquierdo:
+          En móvil aparece después (order-2), en md+ primero (order-1),
+          ocupa todo el ancho en móvil y mitad en md+,
+          fondo blanco, padding variable según pantalla,
+          flex vertical para ordenar elementos,
+          espacio entre elementos para que el footer quede abajo,
+          altura mínima pantalla para que ocupe toda altura.
+        -->
+
         <!-- Logo -->
         <div class="flex justify-center mb-6">
+            <!-- Flex centrado horizontalmente con margen abajo -->
             <a href="{{ url_for('index') }}">
                 <img src="{{ url_for('static', filename='css/images/Logo.webp') }}" alt="Logo Crafted3D"
                     class="h-[120px]">
+                <!-- Logo con altura fija -->
             </a>
         </div>
+
         <div class="mt-4 md:mt-6">
             <a href="{{ url_for('usuario.perfil') }}" class="font-semibold rounded hover:text-blue-700">
                 ← Volver
             </a>
+            <!-- Link para volver con estilo hover azul -->
         </div>
 
         <!-- Información del Cliente -->
         <div class="border border-black p-4 rounded-lg mt-6">
+            <!-- Caja con borde negro, padding, bordes redondeados y margen arriba -->
             <h2 class="text-2xl font-semibold mb-4">Datos del Cliente</h2>
+            <!-- Título con tamaño y negrita -->
+
             <table class="table-auto w-full text-left text-gray-700">
+                <!-- Tabla automática, ancho completo, texto alineado a la izquierda, gris oscuro -->
                 <tbody>
                     <tr class="border-b">
+                        <!-- Fila con borde abajo -->
                         <td class="py-2 font-semibold">Correo de contacto:</td>
                         <td class="py-2">{{ usuario.email }}</td>
                         <td class="py-2 text-right">
                             <a href="{{ url_for('usuario.editar_perfil', next=request.path) }}" 
-                            class="text-green-500 hover:text-green-700 text-sm font-medium">Cambiar</a>
+                               class="text-green-500 hover:text-green-700 text-sm font-medium">
+                               Cambiar
+                            </a>
                         </td>
                     </tr>
+
                     <tr class="border-b">
                         <td class="py-2 font-semibold">Dirección de envío:</td>
                         <td class="py-2">
-                            {{ usuario.direccion_completa }}, {{ usuario.codigo_postal }}, {{ usuario.ciudad }} ({{ usuario.pais }})
+                            {{ usuario.direccion_completa }}, {{ usuario.codigo_postal }}, {{ usuario.ciudad }}
                         </td>
                         <td class="py-2 text-right">
                             <a href="{{ url_for('usuario.editar_direccion', next=request.path) }}" 
-                            class="text-green-500 hover:text-green-700 text-sm font-medium">Cambiar</a>
+                               class="text-green-500 hover:text-green-700 text-sm font-medium">
+                               Cambiar
+                            </a>
                         </td>
                     </tr>
+
                     <tr>
                         <td class="py-2 font-semibold">Método de envío:</td>
                         <td class="py-2 text-green-600">Método Gratuito</td>
@@ -62,6 +96,7 @@
             <!-- Botón para realizar pedido -->
             <form method="POST" action="{{ url_for('order.procesar_pedido') }}" class="mt-6">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <!-- Token CSRF para seguridad -->
                 <button type="submit" class="w-full bg-green-500 text-white font-semibold px-8 py-4 rounded-lg hover:bg-green-600 transition-all text-center text-lg">
                     Realizar Pedido
                 </button>
@@ -71,10 +106,29 @@
 
     <!-- 🔹 Parte Derecha: Lista de Productos -->
     <div class="order-1 md:order-2 w-full md:w-1/2 bg-[#D4D4D4] p-6 md:p-10 flex flex-col justify-center min-h-screen">
+        <!--
+          Contenedor derecho:
+          En móvil aparece primero (order-1), en md+ después (order-2),
+          ancho completo en móvil, mitad en md+,
+          fondo gris claro,
+          padding ajustado,
+          flex columna centrado verticalmente,
+          altura mínima pantalla.
+        -->
+
         <div class="space-y-6 max-h-[70vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 pr-2">
+            <!--
+              Contenedor con espacio vertical entre productos,
+              altura máxima 70% viewport para scroll,
+              scroll vertical con barras personalizadas,
+              padding a la derecha para no tapar scroll.
+            -->
+
             {% for producto in pedido.productos %}
             <div class="flex items-center border-b border-gray-300 pb-4">
+                <!-- Cada producto en fila con borde inferior gris y padding abajo -->
                 <img src="{{ producto.imagen }}" alt="{{ producto.nombre }}" class="h-16 w-16 object-cover rounded">
+                <!-- Imagen pequeña cuadrada con bordes redondeados -->
 
                 <div class="ml-6">
                     <p class="text-gray-700 text-lg"><strong>{{ producto.nombre }}</strong></p>
@@ -88,6 +142,12 @@
 
         <!-- Total del Pedido -->
         <div class="mt-auto text-left p-6 bg-gray-100 rounded-lg shadow-md">
+            <!--
+              Caja en la parte inferior del contenedor (mt-auto),
+              con padding, fondo gris claro,
+              bordes redondeados y sombra.
+            -->
+
             <p class="text-gray-700 text-lg font-semibold">Subtotal: {{ pedido.total }} €</p>
             <p class="text-gray-600 text-sm">Gastos de envío: <span class="font-medium text-green-600">0 €</span></p>
             <p class="text-gray-600 text-sm">IVA (21%): <span class="font-medium">{{ (pedido.total | float * 0.21) | round(2) }} €</span></p>

@@ -1,41 +1,49 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <!-- Botón de volver -->
+    <!-- Botón de volver: Permite al usuario regresar a su perfil -->
     <div class="mt-6 mb-6 ml-4 md:ml-[10rem]">
         <a href="{{ url_for('usuario.perfil') }}" class="font-semibold rounded hover:text-green-500">
             ← Volver
         </a>
     </div>
 
+    <!-- Contenedor principal de la información del pedido -->
     <div class="w-full ml-4 max-w-md mx-auto md:w-[30%] md:mt-[50px] md:ml-[10rem]">
-        <!-- Información del Pedido -->
+        <!-- Información general del pedido -->
         <div class="text-lg">
             <h1 class="text-4xl font-bold mb-6 text-[#39CB60]">Detalles del Pedido</h1>
+            <!-- Número de pedido -->
             <p><strong>Número de Pedido:</strong> {{ pedido.numero }}</p>
+            <!-- Fecha del pedido -->
             <p><strong>Fecha:</strong> {{ pedido.fecha }}</p>
+            <!-- Estado de pago con color dinámico según el estado -->
             <p><strong>Estado de Pago:</strong> 
                 <span class="{% if pedido.estado_pago == 'Pagado' %}text-green-600{% elif pedido.estado_pago == 'Procesando' %}text-gray-600{% else %}text-red-600{% endif %}">
                     {{ pedido.estado_pago }}
                 </span>
             </p>
+            <!-- Estado del pedido con color dinámico según el estado -->
             <p><strong>Estado del Pedido:</strong> 
                 <span class="{% if pedido.estado == 'Enviado' %}text-blue-600{% elif pedido.estado == 'Completado' %}text-green-600{% elif pedido.estado == 'Cancelado' %}text-red-600{% else %}text-gray-600{% endif %}">
                     {{ pedido.estado }}
                 </span>
             </p>
         </div>
+        <!-- Dirección de envío del pedido -->
         <h2 class="text-2xl font-semibold mb-4 mt-10">Dirección de Envío</h2>
         <p>{{ pedido.direccion.calle }}</p>
         <p>{{ pedido.direccion.codigo_postal }}, {{ pedido.direccion.ciudad }}</p>
     </div>
 
+    <!-- Sección de productos y resumen de costos -->
     <div class="grid ml-4 mr-4 grid-cols-1 md:grid-cols-2 gap-8 mt-16 mb-16">
-        <!-- Productos en el Pedido -->
+        <!-- Lista de productos comprados en el pedido -->
         <div class="w-full mx-auto md:w-[100%] md:ml-[10rem]">
             <h2 class="text-2xl font-semibold mb-4">Productos Comprados</h2>
             <div class="space-y-4">
                 {% for producto in pedido.productos %}
+                <!-- Información de cada producto: imagen, nombre, cantidad y precio -->
                 <div class="flex items-center border-b pb-2">
                     <img src="{{ producto.imagen }}" alt="{{ producto.nombre }}" class="h-16 w-16 object-cover rounded">
                     <div class="ml-4">
@@ -48,14 +56,18 @@
             </div>
         </div>
 
-        <!-- Resumen de Costos y Dirección -->
+        <!-- Resumen de costos del pedido -->
         <div class="p-6 md:w-[50%] md:ml-auto">
             <h2 class="text-2xl font-semibold mb-4">Resumen del Pedido</h2>
             <hr class="ml-5 border-gray-300 my-4 w-[60%] mx-auto md:mx-0">
             <ul class="space-y-4">
+                <!-- Subtotal del pedido -->
                 <li><p><strong>Subtotal:</strong> {{ pedido.subtotal }}€</p></li>
+                <!-- Coste de envío -->
                 <li><p><strong>Envío:</strong> {{ pedido.envio }}€</p></li>
+                <!-- IVA aplicado -->
                 <li><p><strong>IVA:</strong> {{ pedido.iva }}€</p></li>
+                <!-- Total a pagar, resaltado -->
                 <li class="text-lg font-bold text-[#39CB60]"><strong>Total:</strong> {{ pedido.total }}€</li>
             </ul>
         </div>

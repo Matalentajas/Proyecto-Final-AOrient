@@ -1,15 +1,18 @@
-{% extends "base.html" %}
+{% extends "base.html" %}  {# Hereda la plantilla base.html #}
 
 {% block content %}
 <div class="max-w-5xl mx-auto mt-10">
-    <h1 class="text-3xl font-bold mb-6">
+    <!-- Título principal con el nombre y correo del usuario -->
+    <h1 class="text-3xl font-bold mb-6"></h1>
         Pedidos de <span class="text-green-600">{{ usuario[0] }}</span> ({{ usuario[1] }})
     </h1>
 
     {% if pedidos %}
+    <!-- Tabla de pedidos si existen pedidos para el usuario -->
     <table class="w-full table-auto border-collapse border border-gray-300 text-center">
         <thead>
             <tr class="bg-gray-100">
+                <!-- Encabezados de la tabla -->
                 <th class="border border-gray-300 px-4 py-2">Número de Pedido</th>
                 <th class="border border-gray-300 px-4 py-2">Fecha</th>
                 <th class="border border-gray-300 px-4 py-2">Estado Pago</th>
@@ -20,6 +23,7 @@
         <tbody>
             {% for pedido in pedidos %}
             <tr>
+                <!-- Muestra los datos de cada pedido en una fila -->
                 <td class="border border-gray-300 px-4 py-2">{{ pedido[0] }}</td>
                 <td class="border border-gray-300 px-4 py-2">{{ pedido[1].strftime("%Y-%m-%d %H:%M:%S") }}</td>
                 <td class="border border-gray-300 px-4 py-2">{{ pedido[2] }}</td>
@@ -30,9 +34,11 @@
         </tbody>
     </table>
     {% else %}
+    <!-- Mensaje si el usuario no tiene pedidos -->
     <p>Este usuario no tiene pedidos registrados.</p>
     {% endif %}
 
+    <!-- Botón para volver a la lista de usuarios -->
     <a href="{{ url_for('admin.lista_usuarios') }}" class="mt-6 inline-block bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Volver a Usuarios</a>
 </div>
 {% endblock %}

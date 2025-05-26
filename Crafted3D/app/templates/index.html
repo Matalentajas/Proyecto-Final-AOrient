@@ -4,22 +4,26 @@
 
 {% block content %}
 
+<!-- Banner principal con video de fondo -->
 <section class="relative h-[600px] overflow-hidden">
+  <!-- Video de fondo -->
   <video autoplay muted loop playsinline class="absolute top-0 left-0 w-full h-full object-cover">
     <source src="/static/css/images/Banner.mp4" type="video/mp4">
   </video>
-  
+  <!-- Capa de superposición con color y opacidad -->
   <div class="absolute top-0 left-0 w-full h-full bg-green-600 opacity-40"></div>
-
+  <!-- Título centrado sobre el video -->
   <div class="relative flex items-center justify-center h-full">
     <h1 class="text-5xl font-bold text-white text-center">Bienvenido a Crafted 3D</h1>
   </div>
 </section>
 
-<!-- Sección Categorías -->
+<!-- Sección de Categorías principales -->
 <section class="container mx-auto py-12">
+  <!-- Título y descripción de la sección -->
   <h2 class="text-5xl font-bold text-center mb-8 text-[#39CB60]">Explora Nuestras Categorías</h2>
   <p class="text-center text-3xl mb-[30px]">Encuentra lo que necesitas para tu próximo proyecto creativo.</p>
+  <!-- Grid de tarjetas de categorías -->
   <div class="grid mx-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
     <!-- Tarjeta 1: Escayolas 3D -->
     <a href="/productos/escayolas3D">
@@ -28,8 +32,8 @@
           <h3 class="text-4xl font-bold mt-4 mb-2">Escayolas 3D</h3>
           <p class="text-xl">El futuro de la salud</p>
         </div>
+        <!-- Imagen de la categoría -->
         <img src="{{ url_for('static', filename='css/images/Esc.png') }}" alt="Escayolas 3D" class="w-full h-48 object-cover mt-[20px]">
-
       </div>
     </a>
     <!-- Tarjeta 2: Almacenaje -->
@@ -92,24 +96,27 @@
         </div>
       </div>
     </a>
+  </div>
 </section>
 
-
-
-<!-- Sección Productos Destacados -->
+<!-- Sección de Productos Destacados, se muestran productos destacados pasados desde el backend -->
 <section class="container mx-auto py-12 px-4">
   <h2 class="text-3xl font-bold text-center mb-8">Productos Destacados</h2>
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
     {% for producto in productos_destacados %}
     <div class="border rounded-lg overflow-hidden hover:shadow-lg transition-shadow flex flex-col h-full bg-white">
+      <!-- Imagen del producto -->
       <img src="{{ producto.imagen }}" alt="{{ producto.nombre }}" class="w-full aspect-square object-cover transition-transform duration-300 hover:scale-105">
       <div class="p-4 flex flex-col flex-1">
+        <!-- Nombre del producto -->
         <h3 class="text-xl font-bold mb-2">{{ producto['nombre'] }}</h3>
+        <!-- Visualización de la valoración media con estrellas -->
         <div class="rating-display mb-4">
           {% for i in range(5) %}
             <span class="star {% if i < producto['media_valoracion'] %}selected{% endif %}">★</span>
           {% endfor %}
         </div>
+        <!-- Botón para ver el producto -->
         <a href="{{ url_for('product.producto', producto_id=producto['id']) }}" class="mt-auto inline-block bg-[#39CB60] text-white px-4 py-2 rounded hover:bg-green-600 text-center w-full">
           Ver Producto
         </a>
@@ -119,13 +126,12 @@
   </div>
 </section>
 
-
-<!-- Sección ¿Por qué comprar en Crafted3D? -->
+<!-- Sección de ventajas de comprar en Crafted3D -->
 <section class="bg-gray-100 py-12">
   <div class="container mx-auto">
     <h2 class="text-3xl font-bold text-center mb-8">¿Por qué comprar en Crafted3D?</h2>
     <div class="flex flex-col md:flex-row items-center justify-around">
-      <!-- Ventaja 1 -->
+      <!-- Ventaja 1: Pago seguro -->
       <div class="text-center p-4">
         <div class="flex justify-center">
           <img src="{{ url_for('static', filename='css/images/logo_pago 1.png') }}" class="w-[70%] object-cover">
@@ -133,7 +139,7 @@
         <h3 class="font-bold text-xl mt-2">100% Pago Seguro</h3>
         <p class="mt-2">Tu seguridad es prioritaria.</p>
       </div>
-      <!-- Ventaja 2 -->
+      <!-- Ventaja 2: Devolución -->
       <div class="text-center p-4">
         <div class="flex justify-center">
           <img src="{{ url_for('static', filename='css/images/logo_pago 2.png') }}" class="w-[70%] object-cover">
@@ -141,7 +147,7 @@
         <h3 class="font-bold text-xl mt-2">14 Días de Devolución</h3>
         <p class="mt-2">Si algo no encaja, lo solucionamos.</p>
       </div>
-      <!-- Ventaja 3 -->
+      <!-- Ventaja 3: Atención 24/7 -->
       <div class="text-center p-4">
         <div class="flex justify-center">
           <img src="{{ url_for('static', filename='css/images/logo_pago 3.png') }}" class="w-[70%] object-cover">
@@ -153,16 +159,17 @@
   </div>
 </section>
 
+<!-- Estilos para las estrellas de valoración -->
 <style>
   .star {
     cursor: pointer;
     font-size: 24px;
     color: gray;
-}
+  }
 
-.star.selected {
+  .star.selected {
     color: gold;
-}
+  }
 </style>
 
 {% endblock %}

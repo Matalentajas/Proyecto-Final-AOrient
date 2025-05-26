@@ -1,12 +1,15 @@
 <head>
+    <!-- Configuración de la vista para dispositivos móviles y carga de Tailwind CSS -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-[#D4D4D4] min-h-screen flex items-center justify-center px-4">
+    <!-- Contenedor principal centrado -->
     <div class="w-full max-w-[95%] sm:max-w-md md:max-w-lg h-auto flex items-center justify-center">
+        <!-- Formulario de inicio de sesión para administrador -->
         <form method="POST" class="w-full border-[2px] border-black bg-white rounded-b-lg shadow-xl p-6">
 
-            <!-- Logo -->
+            <!-- Logo de la aplicación, enlazado a la página principal -->
             <div class="border-b-[2px] border-black flex items-center justify-center pb-4">
                 <a href="{{ url_for('index') }}">
                     <img src="{{ url_for('static', filename='css/images/Logo.webp') }}" alt="Logo Crafted3D"
@@ -14,36 +17,41 @@
                 </a>
             </div>
 
+            <!-- Botón para volver a la página anterior -->
             <div class="flex justify-center mt-4">
                 <button onclick="window.history.back()" class="bg-gray-500 w-12 h-6 text-sm text-center text-white font-semibold rounded-lg hover:bg-gray-600 transition-all">
                     Volver
                 </button>
             </div>
 
+            <!-- Título del formulario -->
             <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-center mt-3 mb-4">Acceso de Administrador</h2>
+            <!-- Campo oculto para CSRF y otros datos ocultos del formulario -->
             {{ form.hidden_tag() }}
 
             <div class="space-y-3">
-                <!-- Email -->
+                <!-- Campo de correo electrónico -->
                 <div>
                     {{ form.email.label(class="block text-gray-700 text-xs sm:text-sm") }}
                     {{ form.email(class="w-full border-b-2 border-gray-300 focus:border-black focus:outline-none py-1 sm:py-2 text-xs sm:text-sm") }}
                     {% for error in form.email.errors %}
+                        <!-- Mensaje de error para el campo de correo -->
                         <p class="text-red-500 text-xs mt-1">{{ error }}</p>
                     {% endfor %}
                 </div>
 
-                <!-- Contraseña -->
+                <!-- Campo de contraseña -->
                 <div>
                     {{ form.contraseña.label(class="block text-gray-700 text-xs sm:text-sm") }}
                     {{ form.contraseña(class="w-full border-b-2 border-gray-300 focus:border-black focus:outline-none py-1 sm:py-2 text-xs sm:text-sm") }}
                     {% for error in form.contraseña.errors %}
+                        <!-- Mensaje de error para el campo de contraseña -->
                         <p class="text-red-500 text-xs mt-1">{{ error }}</p>
                     {% endfor %}
                 </div>
             </div>
 
-            <!-- Botón de inicio de sesión -->
+            <!-- Botón para enviar el formulario e iniciar sesión -->
             <div class="flex justify-center mt-4">
                 <button type="submit" class="w-[80%] text-xs sm:text-sm bg-red-500 text-white font-semibold px-3 sm:px-4 py-2 rounded-lg hover:bg-red-600 transition-all">
                     {{ form.submit }}

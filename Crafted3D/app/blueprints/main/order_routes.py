@@ -3,6 +3,7 @@ from flask_login import current_user, login_required
 from app.email_sender import enviar_correo_confirmacion_pedido
 from app.db import conectar
 from MySQLdb.cursors import DictCursor
+from datetime import timedelta
 
 order_bp = Blueprint("order", __name__)
 
@@ -203,9 +204,12 @@ def pedido_info(numero):
     subtotal = round(total - iva - envio, 2)  # Subtotal sin IVA y envío
 
     # Construir diccionario con toda la información para la plantilla
+    # Ajustar la hora a la zona horaria de España (UTC+2 en horario de verano, UTC+1 en invierno)
+    # Aquí sumamos 2 horas como ejemplo (ajusta según corresponda)
+    fecha_pedido = pedido_data[2] + timedelta(hours=2)
     pedido_info = {
         "numero": pedido_data[1],
-        "fecha": pedido_data[2].strftime("%Y-%m-%d %H:%M:%S"),
+        "fecha": fecha_pedido.strftime("%Y-%m-%d %H:%M:%S"),
         "estado_pago": pedido_data[3],
         "estado": pedido_data[4],
         "total": total,
