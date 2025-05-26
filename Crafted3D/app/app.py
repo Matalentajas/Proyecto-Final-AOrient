@@ -82,4 +82,4 @@ def error_404(error):
 app.register_error_handler(404,error_404)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
