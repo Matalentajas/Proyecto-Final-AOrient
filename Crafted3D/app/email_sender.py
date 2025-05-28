@@ -235,7 +235,7 @@ def enviar_correo_confirmacion_pedido(destinatario, nombre, numero_pedido, pedid
     mensaje_html += f"""
         </ul>
 
-        <p><strong>Total con IVA:</strong> {float(pedido['total']) * 1.21:.2f} €</p>
+        <p><strong>Total:</strong> {pedido['total']} €</p>
 
         <h3>Seguimiento de Pedido:</h3>
         <p><a href="https://seguimiento-falso.com/{numero_pedido}" style="color: #007bff; font-weight: bold;">

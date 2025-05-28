@@ -1,268 +1,435 @@
 <header>
-    <section class="flex items-center justify-between p-4">
-        <!-- Currency Selector -->
-        <div class="relative flex items-center flex-1 hidden lg:block" style="z-index: 50;">
-            <button id="dropdownButton"
-                class="cursor-pointer flex items-center text-gray-600 hover:text-gray-800 px-6 py-3 text-lg">
-                <img src="{{ url_for('static', filename='css/images/Banderas/BANDERA - EU.png') }}" alt="Bandera UE"
-                    class="h-[40px] w-[70px] mr-3">
-                <span>EU</span>
-                <i class="fa-solid fa-square-caret-down ml-3 text-xl"></i>
-            </button>
-            <div id="dropdownMenu" class="absolute left-0 top-full w-40 bg-white hidden" style="z-index: 100;">
-                <a href="#" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg">
-                    <img src="{{ url_for('static', filename='css/images/Banderas/BANDERA - USA.png') }}"
-                        alt="Bandera USA" class="h-[40px] w-[70px] mr-3"> US
-                </a>
-                <a href="#" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg">
-                    <img src="{{ url_for('static', filename='css/images/Banderas/BANDERA - EU.png') }}" alt="Bandera EU"
-                        class="h-[40px] w-[70px] mr-3"> EU
-                </a>
-                <a href="#" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg">
-                    <img src="{{ url_for('static', filename='css/images/Banderas/BANDERA - CH.png') }}"
-                        alt="Bandera China" class="h-[40px] w-[70px] mr-3"> CH
-                </a>
-                <a href="#" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg">
-                    <img src="{{ url_for('static', filename='css/images/Banderas/BANDERA - JP.png') }}"
-                        alt="Bandera Japón" class="h-[40px] w-[70px] mr-3"> JP
-                </a>
-                <a href="#" class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg">
-                    <img src="{{ url_for('static', filename='css/images/Banderas/BANDERA - UK.png') }}"
-                        alt="Bandera UK" class="h-[40px] w-[70px] mr-3"> UK
-                </a>
-            </div>
-        </div>
+  <section class="flex items-center justify-between p-4">
+    <!-- Currency Selector -->
+    <div
+      class="relative flex items-center flex-1 hidden lg:block"
+      style="z-index: 50"
+    >
+      <button
+        id="dropdownButton"
+        class="cursor-pointer flex items-center text-gray-600 hover:text-gray-800 px-6 py-3 text-lg"
+      >
+        <img
+          src="{{ url_for('static', filename='css/images/Banderas/BANDERA - EU.png') }}"
+          alt="Bandera UE"
+          class="h-[40px] w-[70px] mr-3"
+        />
+        <span>EU</span>
+        <i class="fa-solid fa-square-caret-down ml-3 text-xl"></i>
+      </button>
+      <div
+        id="dropdownMenu"
+        class="absolute left-0 top-full w-40 bg-white hidden"
+        style="z-index: 100"
+      >
+        <a
+          href="#"
+          class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg"
+        >
+          <img
+            src="{{ url_for('static', filename='css/images/Banderas/BANDERA - USA.png') }}"
+            alt="Bandera USA"
+            class="h-[40px] w-[70px] mr-3"
+          />
+          US
+        </a>
+        <a
+          href="#"
+          class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg"
+        >
+          <img
+            src="{{ url_for('static', filename='css/images/Banderas/BANDERA - EU.png') }}"
+            alt="Bandera EU"
+            class="h-[40px] w-[70px] mr-3"
+          />
+          EU
+        </a>
+        <a
+          href="#"
+          class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg"
+        >
+          <img
+            src="{{ url_for('static', filename='css/images/Banderas/BANDERA - CH.png') }}"
+            alt="Bandera China"
+            class="h-[40px] w-[70px] mr-3"
+          />
+          CH
+        </a>
+        <a
+          href="#"
+          class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg"
+        >
+          <img
+            src="{{ url_for('static', filename='css/images/Banderas/BANDERA - JP.png') }}"
+            alt="Bandera Japón"
+            class="h-[40px] w-[70px] mr-3"
+          />
+          JP
+        </a>
+        <a
+          href="#"
+          class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg"
+        >
+          <img
+            src="{{ url_for('static', filename='css/images/Banderas/BANDERA - UK.png') }}"
+            alt="Bandera UK"
+            class="h-[40px] w-[70px] mr-3"
+          />
+          UK
+        </a>
+      </div>
+    </div>
 
-        <button id="menu-btn" class="lg:hidden text-2xl text-gray-700 focus:outline-none">
-            ☰
+    <button
+      id="menu-btn"
+      class="lg:hidden text-2xl text-gray-700 focus:outline-none"
+    >
+      ☰
+    </button>
+
+    <!-- Logo -->
+    <div class="flex ml-[25%] lg:ml-[0%] items-center justify-center flex-1">
+      <a href="{{ url_for('index') }}">
+        <img
+          src="{{ url_for('static', filename='css/images/Logo.webp') }}"
+          alt="Logo Crafted3D"
+          class="mx-auto h-[60px] lg:h-[100px] block"
+        />
+      </a>
+    </div>
+
+    <!-- User, Search, and Cart -->
+    <div class="flex items-center justify-end flex-1 gap-5 mr-[20px]">
+      {% if current_user.is_authenticated %}
+      <a
+        href="{{ url_for('usuario.perfil') }}"
+        class="text-2xl text-bold text-[#39CB60] hidden lg:inline"
+        >{{ current_user.nombre_completo }}</a
+      >
+      {% else %}
+      <a
+        href="{{ url_for('usuario.login') }}"
+        class="text-2xl hover:text-[#39CB60] hidden lg:inline"
+        >Iniciar Sesión</a
+      >
+      {% endif %}
+      <button id="searchToggleButton">
+        <i
+          class="fa-solid fa-magnifying-glass hover:text-[#39CB60] text-2xl cursor-pointer"
+        ></i>
+      </button>
+
+      <!-- Carrito de Compras -->
+      <div class="relative">
+        <button id="cartButton" onclick="toggleCart()" class="relative">
+          <i
+            class="fa-solid fa-cart-shopping hover:text-[#39CB60] text-2xl cursor-pointer"
+          ></i>
+          <span
+            id="cart-count"
+            class="bg-red-500 text-white rounded-full px-2 py-1 text-sm hidden"
+            >0</span
+          >
         </button>
-
-
-        <!-- Logo -->
-        <div class="flex ml-[25%] lg:ml-[0%] items-center justify-center flex-1">
-            <a href="{{ url_for('index') }}">
-                <img src="{{ url_for('static', filename='css/images/Logo.webp') }}" alt="Logo Crafted3D"
-                    class="mx-auto h-[60px] lg:h-[100px] block">
-            </a>
-        </div>
-
-        <!-- User, Search, and Cart -->
-        <div class="flex items-center justify-end flex-1 gap-5 mr-[20px]">
-            {% if current_user.is_authenticated %}
-                <a href="{{ url_for('usuario.perfil') }}" class="text-2xl text-bold text-[#39CB60] hidden lg:inline">{{ current_user.nombre_completo }}</a>
-            {% else %}
-                <a href="{{ url_for('usuario.login') }}" class="text-2xl hover:text-[#39CB60] hidden lg:inline">Iniciar Sesión</a>
-            {% endif %}
-            <button id="searchToggleButton">
-                <i class="fa-solid fa-magnifying-glass hover:text-[#39CB60] text-2xl cursor-pointer"></i>
+        <!-- Dropdown del carrito con tamaño ajustado -->
+        <div
+          id="cart-dropdown"
+          class="hidden fixed top-16 right-0 w-80 max-w-xs h-[90vh] bg-white shadow-2xl rounded-xl overflow-y-auto p-6 z-50 border border-gray-200 flex flex-col"
+        >
+          <!-- Cabecera del carrito -->
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-extrabold text-[#39CB60] tracking-wide">
+              Tu Carrito
+            </h3>
+            <button
+              onclick="toggleCart()"
+              class="text-gray-400 hover:text-[#39CB60] transition"
+            >
+              <i class="fa-solid fa-x text-2xl"></i>
             </button>
+          </div>
+          <hr class="mb-4 border-gray-200" />
 
-            <!-- Carrito de Compras -->
-            <div class="relative">
-                <button id="cartButton" onclick="toggleCart()" class="relative">
-                    <i class="fa-solid fa-cart-shopping hover:text-[#39CB60] text-2xl cursor-pointer"></i>
-                    <span id="cart-count" class="bg-red-500 text-white rounded-full px-2 py-1 text-sm hidden">0</span>
-                </button>
-                <!-- Dropdown del carrito con tamaño ajustado -->
-                <div id="cart-dropdown" class="hidden fixed top-16 right-0 w-64 h-screen bg-white shadow-lg rounded overflow-y-auto p-4 z-50 sm:absolute sm:top-16 sm:right-0 sm:w-[60vh] sm:max-w-xs sm:h-[90vh]">
-                    <div class="flex justify-between items-center">
-                        <h3 class="text-lg font-bold">Carrito</h3>
-                        <button onclick="toggleCart()" class="text-gray-500 hover:text-gray-800">
-                            <i class="fa-solid fa-x text-xl cursor-pointer hover:text-[#39CB60]"></i>
-                        </button>
-                    </div>
-                    <hr class="my-2">
-                    <div id="cart-empty" class="flex items-center justify-center text-gray-500 text-center mt-4 h-full">
-                        Tu carrito está vacío
-                    </div>
-                    <ul id="cart-items" class="hidden"></ul>
-                    
-                    <!-- Botón Realizar Pedido -->
-                    <button id="realizar-pedido-btn" class="mb-[50px] mt-[20px] cursor-pointer bg-green-500 text-white px-8 py-4 rounded-lg shadow-lg hover:shadow-xl w-full font-semibold text-lg"onclick="window.location.href='{{ url_for('order.confirmar_pedido_vista') }}'">
-                        🛒 Realizar Pedido
-                    </button>
-                    </div>
-                </div>
+          <!-- Carrito vacío -->
+          <div
+            id="cart-empty"
+            class="flex flex-col items-center justify-center text-gray-400 text-center mt-8 h-full"
+          >
+            <i class="fa-solid fa-cart-shopping text-5xl mb-3"></i>
+            <span class="text-lg font-semibold">Tu carrito está vacío</span>
+          </div>
+
+          <!-- Lista de productos -->
+          <ul id="cart-items" class="hidden flex-1 flex-col gap-4"></ul>
+
+          <!-- Total y botón de pedido -->
+          <div id="realizar-pedido-container" class="mt-6 hidden">
+            <div class="flex justify-between items-center mb-4">
+              <span class="text-lg font-semibold text-gray-700">Total:</span>
+              <span id="cart-total" class="text-2xl font-bold text-[#39CB60]"
+                >0,00 €</span
+              >
             </div>
-
-
+            <button
+              id="realizar-pedido-btn"
+              class="w-full bg-[#39CB60] text-white py-3 rounded-lg font-bold text-lg shadow-md hover:bg-green-600 transition cursor-pointer"
+              onclick="window.location.href='{{ url_for('order.confirmar_pedido_vista') }}'"
+            >
+              🛒 Realizar Pedido
+            </button>
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <!-- Navigation Bar -->
-    <nav class="hidden lg:block"> 
-        <div class="container mx-auto">
-            <ul class="flex justify-center gap-[100px] py-3">
-                <li><a href="/" class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Inicio</a>
-                </li>
-                <li><a href="/productos/escayolas3D"
-                        class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Escayolas3D</a></li>
-                <li><a href="/productos/almacenaje"
-                        class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Almacenaje</a></li>
-                <li><a href="/productos/herramientas"
-                        class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Herramientas</a>
-                </li>
-                <li><a href="/productos/gadgets"
-                        class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Gadgets</a></li>
-                <li><a href="/productos/juguetes"
-                        class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Juguetes</a></li>
-                <li><a href="/productos/decoracion"
-                        class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer">Decoración</a></li>
-            </ul>
-        </div>
-    </nav>
+  <!-- Navigation Bar -->
+  <nav class="hidden lg:block">
+    <div class="container mx-auto">
+      <ul class="flex justify-center gap-[100px] py-3">
+        <li>
+          <a
+            href="/"
+            class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer"
+            >Inicio</a
+          >
+        </li>
+        <li>
+          <a
+            href="/productos/escayolas3D"
+            class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer"
+            >Escayolas3D</a
+          >
+        </li>
+        <li>
+          <a
+            href="/productos/almacenaje"
+            class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer"
+            >Almacenaje</a
+          >
+        </li>
+        <li>
+          <a
+            href="/productos/herramientas"
+            class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer"
+            >Herramientas</a
+          >
+        </li>
+        <li>
+          <a
+            href="/productos/gadgets"
+            class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer"
+            >Gadgets</a
+          >
+        </li>
+        <li>
+          <a
+            href="/productos/juguetes"
+            class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer"
+            >Juguetes</a
+          >
+        </li>
+        <li>
+          <a
+            href="/productos/decoracion"
+            class="text-gray-700 hover:text-[#39CB60] text-lg font-bold cursor-pointer"
+            >Decoración</a
+          >
+        </li>
+      </ul>
+    </div>
+  </nav>
 
-    <nav id="mobile-menu" class="hidden fixed top-0 left-0 w-screen h-screen bg-[#434343] z-50 shadow-lg p-6 overflow-y-scroll">
-        <button id="close-menu" class="absolute top-4 left-6 text-2xl">✖</button>
-        <ul class="space-y-6 mt-14 ml-[1%] text-lg font-semibold text-white">
-            <li><a href="/" class="text-white">Inicio</a></li>
-            <hr class="border-white opacity-50">
-            <li><a href="/productos/escayolas3D" class="text-white">Escayolas3D</a></li>
-            <hr class="border-white opacity-50">
-            <li><a href="/productos/almacenaje" class="text-white">Almacenaje</a></li>
-            <hr class="border-white opacity-50">
-            <li><a href="/productos/herramientas" class="text-white">Herramientas</a></li>
-            <hr class="border-white opacity-50">
-            <li><a href="/productos/gadgets" class="text-white">Gadgets</a></li>
-            <hr class="border-white opacity-50">
-            <li><a href="/productos/juguetes" class="text-white">Juguetes</a></li>
-            <hr class="border-white opacity-50">
-            <li><a href="/productos/decoracion" class="text-white">Decoración</a></li>
-        </ul>
-        <div> 
-            <hr class="border-white opacity-50 w-full my-4">
-            {% if current_user.is_authenticated %}
-                <a href="{{ url_for('usuario.perfil') }}" class="text-2xl text-bold text-[#39CB60] inline">{{ current_user.nombre_completo }}</a>
-            {% else %}
-                <div class="flex justify-between w-full">
-                    <a href="{{ url_for('usuario.registro') }}" class="text-2xl hover:text-[#39CB60] inline text-white">Registrarse</a>
-                    <a href="{{ url_for('usuario.login') }}" class="text-2xl hover:text-[#39CB60] inline text-white">Iniciar Sesión</a>
-                </div>
-            {% endif %}
-        </div>
-    </nav>
-
-
+  <nav
+    id="mobile-menu"
+    class="hidden fixed top-0 left-0 w-screen h-screen bg-[#434343] z-50 shadow-lg p-6 overflow-y-scroll"
+  >
+    <button id="close-menu" class="absolute top-4 left-6 text-2xl">✖</button>
+    <ul class="space-y-6 mt-14 ml-[1%] text-lg font-semibold text-white">
+      <li><a href="/" class="text-white">Inicio</a></li>
+      <hr class="border-white opacity-50" />
+      <li>
+        <a href="/productos/escayolas3D" class="text-white">Escayolas3D</a>
+      </li>
+      <hr class="border-white opacity-50" />
+      <li><a href="/productos/almacenaje" class="text-white">Almacenaje</a></li>
+      <hr class="border-white opacity-50" />
+      <li>
+        <a href="/productos/herramientas" class="text-white">Herramientas</a>
+      </li>
+      <hr class="border-white opacity-50" />
+      <li><a href="/productos/gadgets" class="text-white">Gadgets</a></li>
+      <hr class="border-white opacity-50" />
+      <li><a href="/productos/juguetes" class="text-white">Juguetes</a></li>
+      <hr class="border-white opacity-50" />
+      <li><a href="/productos/decoracion" class="text-white">Decoración</a></li>
+    </ul>
+    <div>
+      <hr class="border-white opacity-50 w-full my-4" />
+      {% if current_user.is_authenticated %}
+      <a
+        href="{{ url_for('usuario.perfil') }}"
+        class="text-2xl text-bold text-[#39CB60] inline"
+        >{{ current_user.nombre_completo }}</a
+      >
+      {% else %}
+      <div class="flex justify-between w-full">
+        <a
+          href="{{ url_for('usuario.registro') }}"
+          class="text-2xl hover:text-[#39CB60] inline text-white"
+          >Registrarse</a
+        >
+        <a
+          href="{{ url_for('usuario.login') }}"
+          class="text-2xl hover:text-[#39CB60] inline text-white"
+          >Iniciar Sesión</a
+        >
+      </div>
+      {% endif %}
+    </div>
+  </nav>
 </header>
 
 <!-- Search Section -->
 <div id="searchContainer" class="container mx-auto mt-2 px-4 hidden">
-    <div class="flex justify-between items-center border-t border-gray-200 p-4">
-        <form action="{{ url_for('product.buscar') }}" method="GET" class="flex items-center gap-4 w-full">
-            <i class="fa-solid fa-magnifying-glass text-2xl"></i>
-            <input type="text" name="q" placeholder="Búsqueda..." class="w-[150vh] px-3 py-2">
-            <button type="submit" class="bg-[#39CB60] text-white px-4 py-2 rounded hover:bg-green-600">Buscar</button>
-        </form>
-        <button id="closeSearchButton">
-            <i class="fa-solid ml-[40px] fa-x hover:text-[#39CB60] text-2xl cursor-pointer"></i>
-        </button>
-    </div>
+  <div class="flex justify-between items-center border-t border-gray-200 p-4">
+    <form
+      action="{{ url_for('product.buscar') }}"
+      method="GET"
+      class="flex items-center gap-4 w-full"
+    >
+      <i class="fa-solid fa-magnifying-glass text-2xl"></i>
+      <input
+        type="text"
+        name="q"
+        placeholder="Búsqueda..."
+        class="w-[150vh] px-3 py-2"
+      />
+      <button
+        type="submit"
+        class="bg-[#39CB60] text-white px-4 py-2 rounded hover:bg-green-600"
+      >
+        Buscar
+      </button>
+    </form>
+    <button id="closeSearchButton">
+      <i
+        class="fa-solid ml-[40px] fa-x hover:text-[#39CB60] text-2xl cursor-pointer"
+      ></i>
+    </button>
+  </div>
 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <script>
-            function addToCart(productId) {
-            const cantidad = parseInt(document.getElementById("quantity").value);
-            if (isNaN(cantidad) || cantidad < 1) {
-                alert("❌ Introduce una cantidad válida.");
-                return;
-            }
+  function addToCart(productId, cantidad) {
+    cantidad = parseInt(cantidad);
+    if (isNaN(cantidad) || cantidad < 1) {
+      alert("❌ Introduce una cantidad válida.");
+      return;
+    }
 
-            const csrfToken = document.querySelector("[name=csrf_token]").value;
-            const url = `/agregar_carrito/${parseInt(productId)}`;
+    const csrfToken = document.querySelector("[name=csrf_token]").value;
+    const url = `/agregar_carrito/${parseInt(productId)}`;
 
-            fetch(url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRFToken": csrfToken
-                },
-                body: JSON.stringify({ cantidad })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log("📌 Producto añadido:", data);
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrfToken,
+      },
+      body: JSON.stringify({ cantidad }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("📌 Producto añadido:", data);
 
-                const carrito = document.getElementById("cart-dropdown");
+        const carrito = document.getElementById("cart-dropdown");
 
-                if (carrito.classList.contains("hidden")) {
-                    toggleCart();
-                } else {
-                    cargarCarrito();
-                }
-            })
-            .catch(error => {
-                console.error("❌ Error al añadir al carrito:", error);
-            });
+        if (carrito.classList.contains("hidden")) {
+          toggleCart();
+        } else {
+          cargarCarrito();
         }
+      })
+      .catch((error) => {
+        console.error("❌ Error al añadir al carrito:", error);
+      });
+  }
 
+  // 🛒 Función para mostrar/ocultar el carrito
+  function toggleCart() {
+    const carrito = document.getElementById("cart-dropdown");
 
-         // 🛒 Función para mostrar/ocultar el carrito
-        function toggleCart() {
-            const carrito = document.getElementById("cart-dropdown");
+    if (carrito.classList.contains("hidden")) {
+      cargarCarrito();
+    }
 
-            if (carrito.classList.contains("hidden")) {
-                cargarCarrito();
-            }
+    carrito.classList.toggle("hidden");
+  }
 
-            carrito.classList.toggle("hidden");
+  // Cierra el carrito si se hace clic fuera de él
+  document.addEventListener("click", function (event) {
+    const carrito = document.getElementById("cart-dropdown");
+    const cartButton = document.getElementById("cartButton");
+    if (!carrito.classList.contains("hidden")) {
+      // Si el clic NO es dentro del carrito ni en el botón del carrito
+      if (
+        !carrito.contains(event.target) &&
+        !cartButton.contains(event.target)
+      ) {
+        carrito.classList.add("hidden");
+      }
+    }
+  });
+
+  // 🛒 Función para cargar el carrito desde el servidor
+  function cargarCarrito() {
+    fetch("/ver_carrito")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("📌 Datos recibidos del servidor:", data);
+
+        if (data.success) {
+          mostrarCarrito(data.productos);
+        } else {
+          console.error("❌ Error al obtener el carrito:", data.error);
         }
+      })
+      .catch((error) => {
+        console.error("❌ Error en la solicitud:", error);
+      });
+  }
 
-        // 🛒 Función para cargar el carrito desde el servidor
-        function cargarCarrito() {
-            fetch("/ver_carrito")
-            .then(response => response.json())
-            .then(data => {
-                console.log("📌 Datos recibidos del servidor:", data);
+  // 🛒 Función para mostrar los productos del carrito
+  function mostrarCarrito(productos) {
+    const carritoContenedor = document.getElementById("cart-items");
+    carritoContenedor.innerHTML = "";
 
-                if (data.success) {
-                    mostrarCarrito(data.productos);
-                } else {
-                    console.error("❌ Error al obtener el carrito:", data.error);
-                }
-            })
-            .catch(error => {
-                console.error("❌ Error en la solicitud:", error);
-            });
-        }
+    if (productos.length === 0) {
+      document.getElementById("cart-empty").classList.remove("hidden");
+      carritoContenedor.classList.add("hidden");
+      document
+        .getElementById("realizar-pedido-container")
+        .classList.add("hidden");
+      // También poner el total a 0
+      document.getElementById("cart-total").textContent = "0,00 €";
+      return;
+    }
 
-        // 🛒 Función para mostrar los productos del carrito
-        function mostrarCarrito(productos) {
-            const carritoContenedor = document.getElementById("cart-items");
-            carritoContenedor.innerHTML = "";
+    document.getElementById("cart-empty").classList.add("hidden");
+    carritoContenedor.classList.remove("hidden");
 
-            if (productos.length === 0) {
-                document.getElementById("cart-empty").classList.remove("hidden");
-                carritoContenedor.classList.add("hidden");
-                document.getElementById("realizar-pedido-container").classList.add("hidden");
-                return;
-            }
+    // Calcular el total
+    let total = 0;
 
-            document.getElementById("cart-empty").classList.add("hidden");
-            carritoContenedor.classList.remove("hidden");
+    // Mostrar los productos del carrito
+    productos.forEach((producto) => {
+      const precioTotal = (producto.precio * producto.cantidad).toFixed(2);
+      total += producto.precio * producto.cantidad;
 
-            // Mostrar los productos del carrito
-            productos.forEach(producto => {
-                const precioTotal = (producto.precio * producto.cantidad).toFixed(2);
-
-                const item = document.createElement("li");
-                item.classList.add("flex", "items-center", "gap-4", "p-2", "border-b");
-                item.innerHTML = `
+      const item = document.createElement("li");
+      item.classList.add("flex", "items-center", "gap-4", "p-2", "border-b");
+      item.innerHTML = `
                     <img src="${producto.imagen}" alt="${producto.nombre}" class="w-[20%]">
                     <div>
                         <h4 class="text-lg font-bold">${producto.nombre}</h4>
@@ -277,137 +444,153 @@
                                 onclick="eliminarProducto(${producto.producto_id})">Eliminar</button>
                     </div>
                 `;
-                carritoContenedor.appendChild(item);
-            });
-
-// Mostrar el botón "Realizar Pedido"
-document.getElementById("realizar-pedido-container").classList.remove("hidden");
-}
-
-        // 🛒 Función para eliminar un producto del carrito
-        function eliminarProducto(productoId) {
-            fetch(`/eliminar_carrito/${productoId}`, {
-                method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRFToken": document.querySelector("[name=csrf_token]").value
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    console.log("✅ Producto eliminado correctamente.");
-                    cargarCarrito();
-                } else {
-                    console.error("❌ Error al eliminar producto:", data.error);
-                }
-            })
-            .catch(error => {
-                console.error("❌ Error en la solicitud:", error);
-            });
-        }
-
-        // 🛒 Función para actualizar la cantidad de un producto en el carrito
-        function actualizarCantidad(productoId, nuevaCantidad) {
-            nuevaCantidad = parseInt(nuevaCantidad);
-
-            if (nuevaCantidad < 1) {
-                alert("❌ La cantidad no puede ser menor a 1. Se ha ajustado automáticamente.");
-                nuevaCantidad = 1;
-            }
-
-            fetch(`/actualizar_carrito/${productoId}`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRFToken": document.querySelector("[name=csrf_token]").value
-                },
-                body: JSON.stringify({ cantidad: nuevaCantidad })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    console.log("✅ Cantidad actualizada correctamente.");
-                    cargarCarrito();
-                } else {
-                    console.error("❌ Error al actualizar cantidad:", data.error);
-                }
-            })
-            .catch(error => {
-                console.error("❌ Error en la solicitud:", error);
-            });
-        }
-
-    // 🌍 Selector de País
-    const dropdownButton = document.getElementById('dropdownButton');
-    const dropdownMenu = document.getElementById('dropdownMenu');
-    const options = dropdownMenu.querySelectorAll('a');
-
-    dropdownButton.addEventListener('click', (e) => {
-        e.stopPropagation();
-        dropdownMenu.classList.toggle('hidden');
+      carritoContenedor.appendChild(item);
     });
 
-    options.forEach(option => {
-        option.addEventListener('click', (e) => {
-            e.preventDefault();
-            const newImgSrc = option.querySelector('img').getAttribute('src');
-            const newAlt = option.querySelector('img').getAttribute('alt');
-            const newText = option.textContent.trim();
+    // Mostrar el total
+    document.getElementById("cart-total").textContent = total.toFixed(2) + " €";
 
-            // Actualizar el botón principal con la nueva bandera y texto
-            const mainImg = dropdownButton.querySelector('img');
-            mainImg.setAttribute('src', newImgSrc);
-            mainImg.setAttribute('alt', newAlt);
-            dropdownButton.querySelector('span').textContent = newText;
+    // Mostrar el botón "Realizar Pedido"
+    document
+      .getElementById("realizar-pedido-container")
+      .classList.remove("hidden");
+  }
 
-            dropdownMenu.classList.add('hidden'); // Cerrar el menú después de seleccionar
-        });
-    });
-
-    // Cerrar el menú si el usuario hace clic fuera
-    document.addEventListener('click', (e) => {
-        if (!dropdownButton.contains(e.target) && !dropdownMenu.contains(e.target)) {
-            dropdownMenu.classList.add('hidden');
+  // 🛒 Función para eliminar un producto del carrito
+  function eliminarProducto(productoId) {
+    fetch(`/eliminar_carrito/${productoId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": document.querySelector("[name=csrf_token]").value,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          console.log("✅ Producto eliminado correctamente.");
+          cargarCarrito();
+        } else {
+          console.error("❌ Error al eliminar producto:", data.error);
         }
-    });
+      })
+      .catch((error) => {
+        console.error("❌ Error en la solicitud:", error);
+      });
+  }
 
-    // 🔍 Buscador
-    const searchToggleButton = document.getElementById('searchToggleButton');
-    const searchContainer = document.getElementById('searchContainer');
-    const closeSearchButton = document.getElementById('closeSearchButton');
+  // 🛒 Función para actualizar la cantidad de un producto en el carrito
+  function actualizarCantidad(productoId, nuevaCantidad) {
+    nuevaCantidad = parseInt(nuevaCantidad);
 
-    document.addEventListener('click', (e) => {
-    if (!searchToggleButton.contains(e.target) && !searchContainer.contains(e.target) && e.target.tagName !== "INPUT") {
-        searchContainer.classList.add("hidden");
+    if (nuevaCantidad < 1) {
+      alert(
+        "❌ La cantidad no puede ser menor a 1. Se ha ajustado automáticamente."
+      );
+      nuevaCantidad = 1;
     }
-});
 
-    searchToggleButton.addEventListener('click', (e) => {
-        e.stopPropagation();
-        searchContainer.classList.toggle("hidden");
-    });
-
-    closeSearchButton.addEventListener('click', (e) => {
-        e.stopPropagation();
-        searchContainer.classList.add("hidden");
-    });
-
-    // Cerrar el buscador si el usuario hace clic fuera
-    document.addEventListener('click', (e) => {
-        if (!searchToggleButton.contains(e.target) && !searchContainer.contains(e.target)) {
-            searchContainer.classList.add("hidden");
+    fetch(`/actualizar_carrito/${productoId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": document.querySelector("[name=csrf_token]").value,
+      },
+      body: JSON.stringify({ cantidad: nuevaCantidad }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          console.log("✅ Cantidad actualizada correctamente.");
+          cargarCarrito();
+        } else {
+          console.error("❌ Error al actualizar cantidad:", data.error);
         }
-    });
+      })
+      .catch((error) => {
+        console.error("❌ Error en la solicitud:", error);
+      });
+  }
 
-    // Abrir el menú móvil
-    document.getElementById("menu-btn").addEventListener("click", function () {
-        document.getElementById("mobile-menu").classList.remove("hidden");
-    });
+  // 🌍 Selector de País
+  const dropdownButton = document.getElementById("dropdownButton");
+  const dropdownMenu = document.getElementById("dropdownMenu");
+  const options = dropdownMenu.querySelectorAll("a");
 
-    // Cerrar el menú móvil
-    document.getElementById("close-menu").addEventListener("click", function () {
-        document.getElementById("mobile-menu").classList.add("hidden");
+  dropdownButton.addEventListener("click", (e) => {
+    e.stopPropagation();
+    dropdownMenu.classList.toggle("hidden");
+  });
+
+  options.forEach((option) => {
+    option.addEventListener("click", (e) => {
+      e.preventDefault();
+      const newImgSrc = option.querySelector("img").getAttribute("src");
+      const newAlt = option.querySelector("img").getAttribute("alt");
+      const newText = option.textContent.trim();
+
+      // Actualizar el botón principal con la nueva bandera y texto
+      const mainImg = dropdownButton.querySelector("img");
+      mainImg.setAttribute("src", newImgSrc);
+      mainImg.setAttribute("alt", newAlt);
+      dropdownButton.querySelector("span").textContent = newText;
+
+      dropdownMenu.classList.add("hidden"); // Cerrar el menú después de seleccionar
     });
+  });
+
+  // Cerrar el menú si el usuario hace clic fuera
+  document.addEventListener("click", (e) => {
+    if (
+      !dropdownButton.contains(e.target) &&
+      !dropdownMenu.contains(e.target)
+    ) {
+      dropdownMenu.classList.add("hidden");
+    }
+  });
+
+  // 🔍 Buscador
+  const searchToggleButton = document.getElementById("searchToggleButton");
+  const searchContainer = document.getElementById("searchContainer");
+  const closeSearchButton = document.getElementById("closeSearchButton");
+
+  document.addEventListener("click", (e) => {
+    if (
+      !searchToggleButton.contains(e.target) &&
+      !searchContainer.contains(e.target) &&
+      e.target.tagName !== "INPUT"
+    ) {
+      searchContainer.classList.add("hidden");
+    }
+  });
+
+  searchToggleButton.addEventListener("click", (e) => {
+    e.stopPropagation();
+    searchContainer.classList.toggle("hidden");
+  });
+
+  closeSearchButton.addEventListener("click", (e) => {
+    e.stopPropagation();
+    searchContainer.classList.add("hidden");
+  });
+
+  // Cerrar el buscador si el usuario hace clic fuera
+  document.addEventListener("click", (e) => {
+    if (
+      !searchToggleButton.contains(e.target) &&
+      !searchContainer.contains(e.target)
+    ) {
+      searchContainer.classList.add("hidden");
+    }
+  });
+
+  // Abrir el menú móvil
+  document.getElementById("menu-btn").addEventListener("click", function () {
+    document.getElementById("mobile-menu").classList.remove("hidden");
+  });
+
+  // Cerrar el menú móvil
+  document.getElementById("close-menu").addEventListener("click", function () {
+    document.getElementById("mobile-menu").classList.add("hidden");
+  });
 </script>
-

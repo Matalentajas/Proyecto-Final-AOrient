@@ -1,244 +1,357 @@
-{% extends "base.html" %}
-
-{% block title %}
-    {# Título dinámico: muestra la categoría o el nombre del producto #}
-    {% if categoria %}Productos - {{ categoria|capitalize }}{% else %}{{ producto.nombre }}{% endif %}
-{% endblock %}
-
+{% extends "base.html" %} {% block title %} {# Título dinámico: muestra la
+categoría o el nombre del producto #} {% if categoria %}Productos - {{
+categoria|capitalize }}{% else %}{{ producto.nombre }}{% endif %} {% endblock %}
 {% block content %}
 <div class="container mx-auto py-8">
+  {% if categoria %} {# Vista de listado de productos por categoría #}
+  <h1 class="text-3xl font-bold text-center mb-8">
+    {{ categoria|capitalize }}
+  </h1>
+  <div
+    class="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 mb-6 justify-center items-center text-center"
+  >
+    {# Filtros de productos: mejor valorados, más baratos, más caros #}
+    <a
+      href="{{ url_for('product.productos_categoria', categoria_nombre=categoria, filtro='mejor-valorados') }}"
+      class="px-4 py-2 w-[50%] mx-auto rounded shadow font-semibold transition text-center {% if filtro == 'mejor-valorados' %} bg-green-700 text-white {% else %} bg-white text-gray-700 border border-gray-300 hover:bg-gray-100 {% endif %}"
+    >
+      Mejor Valorados
+    </a>
+    <a
+      href="{{ url_for('product.productos_categoria', categoria_nombre=categoria, filtro='mas-baratos') }}"
+      class="px-4 py-2 w-[50%] mx-auto rounded shadow font-semibold transition text-center {% if filtro == 'mas-baratos' %} bg-green-700 text-white {% else %} bg-white text-gray-700 border border-gray-300 hover:bg-gray-100 {% endif %}"
+    >
+      Más Economico
+    </a>
+    <a
+      href="{{ url_for('product.productos_categoria', categoria_nombre=categoria, filtro='mas-caros') }}"
+      class="px-4 py-2 w-[50%] mx-auto rounded shadow font-semibold transition text-center {% if filtro == 'mas-caros' %} bg-green-700 text-white {% else %} bg-white text-gray-700 border border-gray-300 hover:bg-gray-100 {% endif %}"
+    >
+      Menos Economico
+    </a>
+  </div>
 
-  {% if categoria %}
-    {# Vista de listado de productos por categoría #}
-    <h1 class="text-3xl font-bold text-center mb-8">{{ categoria|capitalize }}</h1>
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 mb-6 justify-center items-center text-center">
-        {# Filtros de productos: mejor valorados, más baratos, más caros #}
-        <a href="{{ url_for('product.productos_categoria', categoria_nombre=categoria, filtro='mejor-valorados') }}"
-            class="px-4 py-2 w-[50%] mx-auto rounded shadow font-semibold transition text-center
-            {% if filtro == 'mejor-valorados' %}
-                bg-green-700 text-white
-            {% else %}
-                bg-white text-gray-700 border border-gray-300 hover:bg-gray-100
-            {% endif %}">
-             Mejor Valorados
+  {% if productos|length > 0 %} {# Grid de productos de la categoría #}
+  <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-8">
+    {% for producto in productos %}
+    <div class="border m-1 rounded-lg shadow hover:shadow-lg transition-shadow">
+      <div class="overflow-hidden rounded-t-lg">
+        {# Muestra la imagen del producto, desde URL externa o local #} {% if
+        "http" in producto.imagen %}
+        <a href="{{ url_for('product.producto', producto_id=producto['id']) }}">
+          <img
+            src="{{ producto.imagen }}"
+            alt="{{ producto.nombre }}"
+            class="w-full aspect-square object-cover transition-transform duration-300 hover:scale-105"
+          />
         </a>
-        <a href="{{ url_for('product.productos_categoria', categoria_nombre=categoria, filtro='mas-baratos') }}"
-            class="px-4 py-2 w-[50%] mx-auto rounded shadow font-semibold transition text-center
-            {% if filtro == 'mas-baratos' %}
-                bg-green-700 text-white
-            {% else %}
-                bg-white text-gray-700 border border-gray-300 hover:bg-gray-100
-            {% endif %}">
-             Más Baratos
-        </a>
-        <a href="{{ url_for('product.productos_categoria', categoria_nombre=categoria, filtro='mas-caros') }}"
-            class="px-4 py-2 w-[50%] mx-auto rounded shadow font-semibold transition text-center
-            {% if filtro == 'mas-caros' %}
-                bg-green-700 text-white
-            {% else %}
-                bg-white text-gray-700 border border-gray-300 hover:bg-gray-100
-            {% endif %}">
-             Más Caros
-        </a>
-    </div>
-
-    {% if productos|length > 0 %}
-    {# Grid de productos de la categoría #}
-    <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-8">
-        {% for producto in productos %}
-        <div class="border m-1 rounded-lg shadow hover:shadow-lg transition-shadow">
-                <div class="overflow-hidden rounded-t-lg">
-                    {# Muestra la imagen del producto, desde URL externa o local #}
-                    {% if "http" in producto.imagen %}
-                            <img src="{{ producto.imagen }}" alt="{{ producto.nombre }}" class="w-full aspect-square object-cover transition-transform duration-300 hover:scale-105">
-                    {% else %}
-                            <img src="{{ url_for('static', filename='css/images/' + producto.imagen) }}" alt="{{ producto.nombre }}" class="w-full aspect-square object-cover transition-transform duration-300 hover:scale-105">
-                    {% endif %}
-                </div>
-                <div class="p-4">
-                        <h3 class="text-xl font-bold">{{ producto.nombre }}</h3>
-                        {# Muestra la valoración media con estrellas #}
-                        <div class="rating-display">
-                                {% for i in range(5) %}
-                                        <span class="star {% if i < producto.media_valoracion | default(0) %}selected{% endif %}">★</span>
-                                {% endfor %}
-                        </div>
-                        {# Muestra el precio del producto #}
-                        <p id="priceDisplay" class="text-xl text-gray-700 mb-4" data-price="{{ producto.precio|replace('€', '')|replace(',', '.') }}">{{ producto.precio }}€</p>
-                        {# Botón para ver el detalle del producto #}
-                        <a href="{{ url_for('product.producto', producto_id=producto['id']) }}" class="mt-4 bg-[#39CB60] text-white px-4 py-2 rounded hover:bg-green-600 block text-center">
-                                Ver Producto
-                        </a>
-                </div>
-        </div>
-        {% endfor %}
-    </div>
-    {% else %}
-    {# Mensaje si no hay productos en la categoría #}
-    <p class="text-center text-gray-600 mt-6">Actualmente no hay productos disponibles en esta categoría.</p>
-    {% endif %}
-
-  {% else %}
-
-    {# Vista de detalle de producto #}
-    <div class="mt-4 mb-4 ml-4 sm:ml-0">
-        <a href="javascript:window.history.back();" class="font-semibold rounded hover:text-blue-700">← Volver</a>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 justify-center">
-        <div class="text-center overflow-hidden rounded-lg">
-        {# Imagen del producto (URL externa o local) #}
-        {% if "http" in producto.imagen %}
-            <img src="{{ producto.imagen }}" alt="{{ producto.nombre }}" class="w-full max-w-md mx-auto aspect-square object-cover transition-transform duration-300 hover:scale-105 sm:max-w-md max-w-xs">
         {% else %}
-            <img src="{{ url_for('static', filename='css/images/' + producto.imagen) }}" alt="{{ producto.nombre }}" class="w-full max-w-md mx-auto aspect-square object-cover transition-transform duration-300 hover:scale-105 sm:max-w-md max-w-xs">
+        <img
+          src="{{ url_for('static', filename='css/images/' + producto.imagen) }}"
+          alt="{{ producto.nombre }}"
+          class="w-full aspect-square object-cover transition-transform duration-300 hover:scale-105"
+        />
         {% endif %}
+      </div>
+      <div class="p-4">
+        <h3 class="text-xl font-bold">{{ producto.nombre }}</h3>
+        {# Muestra la valoración media con estrellas #}
+        <div class="rating-display">
+          {% for i in range(5) %}
+          <span
+            class="star {% if i < producto.media_valoracion | default(0) %}selected{% endif %}"
+            >★</span
+          >
+          {% endfor %}
         </div>
-
-        <div class="mx-6">
-            {# Valoración media del producto (solo visual) #}
-            <div class="rating-display flex justify-center sm:justify-start" style="pointer-events: none;">
-                {% for i in range(5) %}
-                    <span class="star {% if i < media_valoracion %}selected{% endif %}">★</span>
-                {% endfor %}
-            </div>
-
-            <h1 class="text-3xl font-bold mb-4 text-center sm:text-left">{{ producto.nombre }}</h1>
-            {# Precio del producto, se actualiza según cantidad #}
-            <p id="priceDisplay" class="text-xl text-gray-700 mb-4 text-center sm:text-left" data-price="{{ producto.precio|replace('€', '')|replace(',', '.') }}">{{ producto.precio }}€</p>
-            <p class="text-lg text-gray-600 mb-6 text-center sm:text-left">{{ producto.descripcion }}</p>
-
-            {# Selector de cantidad para añadir al carrito #}
-            <div class="flex items-center gap-4 mb-6 justify-center sm:justify-start">
-                <button onclick="updateQuantity(-1)" class="bg-gray-300 px-3 py-2 rounded cursor-pointer hover:bg-gray-400">-</button>
-                <input id="quantity" type="number" value="1" min="1" class="w-16 text-center border rounded py-2" onchange="updatePrice()">
-                <button onclick="updateQuantity(1)" class="bg-gray-300 px-3 py-2 rounded cursor-pointer hover:bg-gray-400">+</button>
-            </div>
-
-            {# Token CSRF para seguridad en formularios #}
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-            <div class="flex justify-center sm:justify-start">
-                {# Botón para añadir al carrito, solo si el usuario está autenticado #}
-                {% if current_user.is_authenticated %}
-                        <button onclick="addToCart('{{ producto.id }}', document.getElementById('quantity').value)" class="bg-[#39CB60] text-white font-bold px-6 py-3 rounded hover:bg-green-600 cursor-pointer w-full sm:w-auto">
-                                Añadir a la cesta
-                        </button>
-                {% else %}
-                        <button onclick="alert('Debes iniciar sesión para añadir productos a la cesta.')" class="bg-[#39CB60] text-white font-bold px-6 py-3 rounded hover:bg-green-600 cursor-pointer w-full sm:w-auto">
-                                Añadir a la cesta
-                        </button>
-                {% endif %}
-        </div>
-        </div>
-        
-        <div class="md:w-[200%] mx-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8 justify-center">
-                <!-- Valoraciones a la izquierda -->
-                <div>
-                    <h2 class="text-2xl font-bold mb-4">Valoraciones del producto</h2>
-                    {% if valoraciones %}
-                        {# Muestra cada valoración del producto #}
-                        {% for valoracion in valoraciones %}
-                        <div class="border p-4 rounded-lg shadow mt-4">
-                            <p class="text-lg font-bold">⭐ {{ valoracion.valor }} / 5</p>
-                            <p class="text-gray-600">{{ valoracion.comentario }}</p>
-                            <p class="text-sm text-gray-500">Publicado por <strong>{{ valoracion.usuario }}</strong> el {{ valoracion.fecha.strftime('%d/%m/%Y') }}</p>
-                        </div>
-                        {% endfor %}
-                    {% else %}
-                        {# Mensaje si no hay valoraciones #}
-                        <p class="text-gray-600 mt-4">Este producto aún no tiene valoraciones. <strong>¡Sé el primero en escribir una opinión!</strong></p>
-                    {% endif %}
-                </div>
-
-                <!-- Añadir valoración a la derecha -->
-                <div>
-                    <h2 class="text-2xl font-bold mb-4">Deja tu valoración</h2>
-                    {# Selector de estrellas para valorar #}
-                    <div class="rating mb-4" style="font-size: 2rem;">
-                        <span class="star" data-value="1">★</span>
-                        <span class="star" data-value="2">★</span>
-                        <span class="star" data-value="3">★</span>
-                        <span class="star" data-value="4">★</span>
-                        <span class="star" data-value="5">★</span>
-                    </div>
-                    {# Formulario para enviar valoración #}
-                    <form id="formValoracion" method="POST" action="{{ url_for('product.valorar', producto_id=producto.id) }}">
-                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                        <textarea name="comentario" placeholder="Escribe tu opinión aquí..." required style="resize: none; width: 100%; height: 120px; border: 2px solid black; border-radius: 8px;"></textarea>
-                        <input type="hidden" name="valor" id="valoracion">
-                        <button type="submit" class="cursor-pointer bg-[#39CB60] text-white px-4 py-2 rounded hover:bg-green-600 mt-2 block mx-auto sm:mx-0">Enviar Valoración</button>
-                    </form>
-                </div>
-            </div>
-        </div>
+        {# Muestra el precio del producto #}
+        <p
+          id="priceDisplay"
+          class="text-xl text-gray-700 mb-4"
+          data-price="{{ producto.precio|replace('€', '')|replace(',', '.') }}"
+        >
+          {{ producto.precio }}€
+        </p>
+        {# Botón para ver el detalle del producto #}
+        <a
+          href="{{ url_for('product.producto', producto_id=producto['id']) }}"
+          class="mt-4 bg-[#39CB60] text-white px-4 py-2 rounded hover:bg-green-600 block text-center"
+        >
+          Ver Producto
+        </a>
+      </div>
     </div>
+    {% endfor %}
+  </div>
+  {% else %} {# Mensaje si no hay productos en la categoría #}
+  <p class="text-center text-gray-600 mt-6">
+    Actualmente no hay productos disponibles en esta categoría.
+  </p>
+  {% endif %} {% else %} {# Vista de detalle de producto #}
+  <div class="mt-4 mb-4 ml-4 sm:ml-0">
+    <a
+      href="javascript:window.history.back();"
+      class="font-semibold rounded hover:text-blue-700"
+      >← Volver</a
+    >
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 justify-center">
+    <div class="text-center overflow-hidden rounded-lg">
+      {# Imagen del producto (URL externa o local) #}
+      <div class="zoom-container mx-auto">
+        {% if "http" in producto.imagen %}
+        <img
+          src="{{ producto.imagen }}"
+          alt="{{ producto.nombre }}"
+          class="zoom-img"
+          id="zoomImg"
+        />
+        {% else %}
+        <img
+          src="{{ url_for('static', filename='css/images/' + producto.imagen) }}"
+          alt="{{ producto.nombre }}"
+          class="zoom-img"
+          id="zoomImg"
+        />
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="mx-6">
+      {# Valoración media del producto (solo visual) #}
+      <div
+        class="rating-display flex justify-center sm:justify-start"
+        style="pointer-events: none"
+      >
+        {% for i in range(5) %}
+        <span class="star {% if i < media_valoracion %}selected{% endif %}"
+          >★</span
+        >
+        {% endfor %}
+      </div>
+
+      <h1 class="text-3xl font-bold mb-4 text-center sm:text-left">
+        {{ producto.nombre }}
+      </h1>
+      {# Precio del producto, se actualiza según cantidad #}
+      <p
+        id="priceDisplay"
+        class="text-xl text-gray-700 mb-4 text-center sm:text-left"
+        data-price="{{ producto.precio|replace('€', '')|replace(',', '.') }}"
+      >
+        {{ producto.precio }}€
+      </p>
+      <p class="text-lg text-gray-600 mb-6 text-center sm:text-left">
+        {{ producto.descripcion }}
+      </p>
+
+      {# Selector de cantidad para añadir al carrito #}
+      <div class="flex items-center gap-4 mb-6 justify-center sm:justify-start">
+        <button
+          onclick="updateQuantity(-1)"
+          class="bg-gray-300 px-3 py-2 rounded cursor-pointer hover:bg-gray-400"
+        >
+          -
+        </button>
+        <input
+          id="quantity"
+          type="number"
+          value="1"
+          min="1"
+          class="w-16 text-center border rounded py-2"
+          onchange="updatePrice()"
+        />
+        <button
+          onclick="updateQuantity(1)"
+          class="bg-gray-300 px-3 py-2 rounded cursor-pointer hover:bg-gray-400"
+        >
+          +
+        </button>
+      </div>
+
+      {# Token CSRF para seguridad en formularios #}
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+      <div class="flex justify-center sm:justify-start">
+        {# Botón para añadir al carrito, solo si el usuario está autenticado #}
+        {% if current_user.is_authenticated %}
+        <button
+          onclick="addToCart('{{ producto.id }}', document.getElementById('quantity').value)"
+          class="bg-[#39CB60] text-white font-bold px-6 py-3 rounded hover:bg-green-600 cursor-pointer w-full sm:w-auto"
+        >
+          Añadir a la cesta
+        </button>
+        {% else %}
+        <button
+          onclick="alert('Debes iniciar sesión para añadir productos a la cesta.')"
+          class="bg-[#39CB60] text-white font-bold px-6 py-3 rounded hover:bg-green-600 cursor-pointer w-full sm:w-auto"
+        >
+          Añadir a la cesta
+        </button>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="md:w-[200%] mx-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8 justify-center">
+        <!-- Valoraciones a la izquierda -->
+        <div>
+          <h2 class="text-2xl font-bold mb-4">Valoraciones del producto</h2>
+          {% if valoraciones %} {# Muestra cada valoración del producto #} {%
+          for valoracion in valoraciones %}
+          <div class="border p-4 rounded-lg shadow mt-4">
+            <p class="text-lg font-bold">⭐ {{ valoracion.valor }} / 5</p>
+            <p class="text-gray-600">{{ valoracion.comentario }}</p>
+            <p class="text-sm text-gray-500">
+              Publicado por <strong>{{ valoracion.usuario }}</strong> el {{
+              valoracion.fecha.strftime('%d/%m/%Y') }}
+            </p>
+          </div>
+          {% endfor %} {% else %} {# Mensaje si no hay valoraciones #}
+          <p class="text-gray-600 mt-4">
+            Este producto aún no tiene valoraciones.
+            <strong>¡Sé el primero en escribir una opinión!</strong>
+          </p>
+          {% endif %}
+        </div>
+
+        <!-- Añadir valoración a la derecha -->
+        <div>
+          <h2 class="text-2xl font-bold mb-4">Deja tu valoración</h2>
+          {# Selector de estrellas para valorar #}
+          <div class="rating mb-4" style="font-size: 2rem">
+            <span class="star" data-value="1">★</span>
+            <span class="star" data-value="2">★</span>
+            <span class="star" data-value="3">★</span>
+            <span class="star" data-value="4">★</span>
+            <span class="star" data-value="5">★</span>
+          </div>
+          {# Formulario para enviar valoración #}
+          <form
+            id="formValoracion"
+            method="POST"
+            action="{{ url_for('product.valorar', producto_id=producto.id) }}"
+          >
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <textarea
+              name="comentario"
+              placeholder="Escribe tu opinión aquí..."
+              required
+              style="
+                resize: none;
+                width: 100%;
+                height: 120px;
+                border: 2px solid black;
+                border-radius: 8px;
+              "
+            ></textarea>
+            <input type="hidden" name="valor" id="valoracion" />
+            <button
+              type="submit"
+              class="cursor-pointer bg-[#39CB60] text-white px-4 py-2 rounded hover:bg-green-600 mt-2 block mx-auto sm:mx-0"
+            >
+              Enviar Valoración
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
   {% endif %}
 </div>
 
 <script>
-    // Actualiza la cantidad seleccionada para el producto
-    function updateQuantity(change) {
-        const quantityInput = document.getElementById('quantity');
-        let currentValue = parseInt(quantityInput.value);
-        currentValue = isNaN(currentValue) ? 1 : currentValue;
-        const newValue = currentValue + change;
+  // Actualiza la cantidad seleccionada para el producto
+  function updateQuantity(change) {
+    const quantityInput = document.getElementById("quantity");
+    let currentValue = parseInt(quantityInput.value);
+    currentValue = isNaN(currentValue) ? 1 : currentValue;
+    const newValue = currentValue + change;
 
-        if (newValue >= 1) {
-            quantityInput.value = newValue;
-            updatePrice();
-        }
+    if (newValue >= 1) {
+      quantityInput.value = newValue;
+      updatePrice();
     }
+  }
 
-    // Actualiza el precio mostrado según la cantidad seleccionada
-    function updatePrice() {
-        const quantity = parseInt(document.getElementById('quantity').value);
-        const priceElement = document.getElementById('priceDisplay');
-        const unitPrice = parseFloat(priceElement.dataset.price);
+  // Actualiza el precio mostrado según la cantidad seleccionada
+  function updatePrice() {
+    const quantity = parseInt(document.getElementById("quantity").value);
+    const priceElement = document.getElementById("priceDisplay");
+    const unitPrice = parseFloat(priceElement.dataset.price);
 
-        if (!isNaN(unitPrice)) {
-            const totalPrice = (unitPrice * quantity).toFixed(2);
-            priceElement.textContent = `${totalPrice} €`;
-        }
+    if (!isNaN(unitPrice)) {
+      const totalPrice = (unitPrice * quantity).toFixed(2);
+      priceElement.textContent = `${totalPrice} €`;
     }
+  }
 
-    // Maneja la selección de estrellas para la valoración
-    document.querySelectorAll('.star').forEach((star, index, stars) => {
-        star.addEventListener('click', function() {
-            let valor = this.getAttribute('data-value');
-            document.getElementById('valoracion').value = valor;
+  // Maneja la selección de estrellas para la valoración
+  document.querySelectorAll(".star").forEach((star, index, stars) => {
+    star.addEventListener("click", function () {
+      let valor = this.getAttribute("data-value");
+      document.getElementById("valoracion").value = valor;
 
-            stars.forEach(s => s.classList.remove('selected'));
-            for (let i = 0; i <= index; i++) {
-                stars[i].classList.add('selected');
-            }
+      stars.forEach((s) => s.classList.remove("selected"));
+      for (let i = 0; i <= index; i++) {
+        stars[i].classList.add("selected");
+      }
+    });
+  });
+
+  // Envía el formulario de valoración por AJAX y recarga la página al terminar
+  document
+    .getElementById("formValoracion")
+    .addEventListener("submit", function (event) {
+      event.preventDefault();
+      let valoracion = document.getElementById("valoracion").value;
+
+      if (!valoracion || valoracion === "0") {
+        alert(
+          "Por favor, selecciona una puntuación antes de enviar tu valoración."
+        );
+        return;
+      }
+
+      let formData = new FormData(this);
+      fetch(this.action, {
+        method: "POST",
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.error) {
+            alert(data.error);
+          } else {
+            alert(data.mensaje);
+            location.reload();
+          }
         });
     });
 
-    // Envía el formulario de valoración por AJAX y recarga la página al terminar
-    document.getElementById("formValoracion").addEventListener("submit", function(event) {
-        event.preventDefault();
-        let valoracion = document.getElementById("valoracion").value;
+    //Funcion para realizar Zoom a la imagen del producto
+    const zoomContainer = document.querySelector(".zoom-container");
+    const zoomImg = document.getElementById("zoomImg");
 
-        if (!valoracion || valoracion === "0") {
-            alert("Por favor, selecciona una puntuación antes de enviar tu valoración.");
-            return;
-        }
+    if (zoomContainer && zoomImg) {
+    zoomContainer.addEventListener("mousemove", function (e) {
+        const rect = zoomContainer.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
 
-        let formData = new FormData(this);
-        fetch(this.action, {
-            method: "POST",
-            body: formData
-        }).then(response => response.json())
-        .then(data => {
-            if (data.error) {
-                alert(data.error);
-            } else {
-                alert(data.mensaje);
-                location.reload();
-            }
-        });
+        const percentX = (x / rect.width) * 100;
+        const percentY = (y / rect.height) * 100;
+
+        zoomImg.style.transformOrigin = `${percentX}% ${percentY}%`;
+        zoomImg.style.transform = "scale(2)";
     });
+
+    zoomContainer.addEventListener("mouseleave", function () {
+        zoomImg.style.transformOrigin = "center center";
+        zoomImg.style.transform = "scale(1)";
+    });
+    }
+
 </script>
 
 <style>
@@ -252,5 +365,25 @@
   .star.selected {
     color: gold;
   }
+
+/* Estilos para el zoom */
+.zoom-container {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  cursor: zoom-in;
+  width: 100%;
+  max-width: 400px;
+  aspect-ratio: 1 / 1;
+}
+
+.zoom-img {
+  transition: transform 0.3s ease, transform-origin 0.3s ease;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 </style>
 {% endblock %}
