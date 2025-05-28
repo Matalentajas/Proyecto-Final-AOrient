@@ -152,7 +152,7 @@
             <p class="text-gray-600 text-sm">Gastos de envío: <span class="font-medium text-green-600">0 €</span></p>
             <p class="text-gray-600 text-sm">IVA (21%): <span class="font-medium">{{ (pedido.total | float * 0.21) | round(2) }} €</span></p>
             <p class="text-gray-700 text-2xl font-bold mt-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-md">
-                Total con IVA: {{ (pedido.total | float * 1.21) | round(2) }} €
+                Total con IVA: {{ (pedido.total | round(2)) }} €
             </p>
         </div>
     </div>
