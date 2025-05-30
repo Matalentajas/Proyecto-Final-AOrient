@@ -1,0 +1,85 @@
+{% block content %}
+<!-- Banner de cookies -->
+<div id="cookie-banner" class="fixed bottom-0 w-full bg-gray-800 text-white px-4 py-3 z-50 hidden">
+  <div class="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+    <p class="text-sm">
+      Esta web utiliza cookies para mejorar tu experiencia. Puedes aceptarlas todas o configurar tus preferencias.
+      <a href="/politica-cookies" class="underline hover:text-green-400">Más información</a>
+    </p>
+    <div class="flex gap-2">
+      <button onclick="abrirConfigCookies()" class="bg-gray-600 hover:bg-gray-700 px-4 py-2 rounded text-sm">Configurar</button>
+      <button onclick="aceptarTodasCookies()" class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded text-sm">Aceptar todas</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal configuración de cookies -->
+<div id="cookie-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+  <div class="bg-white text-black w-[90%] max-w-md rounded-lg p-6 space-y-4">
+    <h2 class="text-xl font-bold">Configuración de Cookies</h2>
+    <div class="space-y-2 text-sm">
+      <div>
+        <input type="checkbox" id="cookies-necesarias" checked disabled class="mr-2">
+        <label for="cookies-necesarias"><strong>Cookies necesarias</strong> (siempre activas)</label>
+        <p class="text-gray-500">Son esenciales para el funcionamiento del sitio.</p>
+      </div>
+      <div>
+        <input type="checkbox" id="cookies-analiticas" class="mr-2">
+        <label for="cookies-analiticas"><strong>Cookies analíticas</strong></label>
+        <p class="text-gray-500">Nos ayudan a entender cómo navegas por nuestra web.</p>
+      </div>
+    </div>
+    <div class="flex justify-end gap-2 mt-4">
+      <button onclick="cerrarModalCookies()" class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded">Cancelar</button>
+      <button onclick="guardarPreferenciasCookies()" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Mostrar banner si no hay decisión previa
+  document.addEventListener("DOMContentLoaded", function () {
+    if (!localStorage.getItem("cookies_consent")) {
+      document.getElementById("cookie-banner").classList.remove("hidden");
+    }
+  });
+
+  function aceptarTodasCookies() {
+    localStorage.setItem("cookies_consent", JSON.stringify({
+      necesarias: true,
+      analiticas: true
+    }));
+    cerrarBannerCookies();
+  }
+
+  function abrirConfigCookies() {
+    document.getElementById("cookie-modal").classList.remove("hidden");
+  }
+
+  function cerrarModalCookies() {
+    document.getElementById("cookie-modal").classList.add("hidden");
+  }
+
+  function cerrarBannerCookies() {
+    document.getElementById("cookie-banner").classList.add("hidden");
+    cerrarModalCookies();
+  }
+
+  function guardarPreferenciasCookies() {
+    const analiticas = document.getElementById("cookies-analiticas").checked;
+
+    localStorage.setItem("cookies_consent", JSON.stringify({
+      necesarias: true,
+      analiticas: analiticas
+    }));
+
+    cerrarBannerCookies();
+
+    if (analiticas) {
+      console.log("✅ Activando Google Analytics...");
+      // activarAnalytics();
+    }
+  }
+</script>
+
+{% endblock %}
