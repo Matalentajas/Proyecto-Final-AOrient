@@ -6,77 +6,89 @@
       style="z-index: 50"
     >
       <button
-        id="dropdownButton"
-        class="cursor-pointer flex items-center text-gray-600 hover:text-gray-800 px-6 py-3 text-lg"
+      id="dropdownButton"
+      class="cursor-pointer flex items-center text-gray-600 hover:text-gray-800 px-6 py-3 text-lg"
       >
-        <img
-          src="{{ url_for('static', filename='css/images/Banderas/BANDERA - EU.png') }}"
-          alt="Bandera UE"
-          class="h-[40px] w-[70px] mr-3"
-        />
-        <span>EU</span>
-        <i class="fa-solid fa-square-caret-down ml-3 text-xl"></i>
+      <img
+        src="{{ url_for('static', filename='css/images/Banderas/BANDERA - EU.png') }}"
+        alt="Bandera UE"
+        class="h-[40px] w-[70px] mr-3"
+      />
+      <span>EU</span>
+      <i class="fa-solid fa-square-caret-down ml-3 text-xl"></i>
       </button>
       <div
-        id="dropdownMenu"
-        class="absolute left-0 top-full w-40 bg-white hidden"
-        style="z-index: 100"
+      id="dropdownMenu"
+      class="absolute left-0 top-full w-40 bg-white hidden"
+      style="z-index: 100"
       >
-        <a
-          href="#"
-          class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg"
-        >
-          <img
-            src="{{ url_for('static', filename='css/images/Banderas/BANDERA - USA.png') }}"
-            alt="Bandera USA"
-            class="h-[40px] w-[70px] mr-3"
-          />
-          US
-        </a>
-        <a
-          href="#"
-          class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg"
-        >
-          <img
-            src="{{ url_for('static', filename='css/images/Banderas/BANDERA - EU.png') }}"
-            alt="Bandera EU"
-            class="h-[40px] w-[70px] mr-3"
-          />
-          EU
-        </a>
-        <a
-          href="#"
-          class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg"
-        >
-          <img
-            src="{{ url_for('static', filename='css/images/Banderas/BANDERA - CH.png') }}"
-            alt="Bandera China"
-            class="h-[40px] w-[70px] mr-3"
-          />
-          CH
-        </a>
-        <a
-          href="#"
-          class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg"
-        >
-          <img
-            src="{{ url_for('static', filename='css/images/Banderas/BANDERA - JP.png') }}"
-            alt="Bandera Japón"
-            class="h-[40px] w-[70px] mr-3"
-          />
-          JP
-        </a>
-        <a
-          href="#"
-          class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg"
-        >
-          <img
-            src="{{ url_for('static', filename='css/images/Banderas/BANDERA - UK.png') }}"
-            alt="Bandera UK"
-            class="h-[40px] w-[70px] mr-3"
-          />
-          UK
-        </a>
+      <a
+        href="#"
+        class="relative flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg"
+      >
+        <span class="absolute inset-0 opacity-30 pointer-events-none flex items-center justify-center">
+        <img
+          src="{{ url_for('static', filename='css/images/Banderas/BANDERA - USA.png') }}"
+          alt="Bandera USA"
+          class="h-[40px] w-[70px] object-cover blur-sm"
+        />
+        </span>
+        <span class="relative z-10 ml-0">Próximamente</span>
+        <span class="relative z-10 ml-auto">US</span>
+      </a>
+      <a
+        href="#"
+        class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg"
+      >
+        <img
+        src="{{ url_for('static', filename='css/images/Banderas/BANDERA - EU.png') }}"
+        alt="Bandera EU"
+        class="h-[40px] w-[70px] mr-3"
+        />
+        EU
+      </a>
+      <a
+        href="#"
+        class="relative flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg"
+      >
+        <span class="absolute inset-0 opacity-30 pointer-events-none flex items-center justify-center">
+        <img
+          src="{{ url_for('static', filename='css/images/Banderas/BANDERA - CH.png') }}"
+          alt="Bandera China"
+          class="h-[40px] w-[70px] object-cover blur-sm"
+        />
+        </span>
+        <span class="relative z-10 ml-0">Próximamente</span>
+        <span class="relative z-10 ml-auto">CH</span>
+      </a>
+      <a
+        href="#"
+        class="relative flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg"
+      >
+        <span class="absolute inset-0 opacity-30 pointer-events-none flex items-center justify-center">
+        <img
+          src="{{ url_for('static', filename='css/images/Banderas/BANDERA - JP.png') }}"
+          alt="Bandera Japón"
+          class="h-[40px] w-[70px] object-cover blur-sm"
+        />
+        </span>
+        <span class="relative z-10 ml-0">Próximamente</span>
+        <span class="relative z-10 ml-auto">JP</span>
+      </a>
+      <a
+        href="#"
+        class="relative flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 text-lg"
+      >
+        <span class="absolute inset-0 opacity-30 pointer-events-none flex items-center justify-center">
+        <img
+          src="{{ url_for('static', filename='css/images/Banderas/BANDERA - UK.png') }}"
+          alt="Bandera UK"
+          class="h-[40px] w-[70px] object-cover blur-sm"
+        />
+        </span>
+        <span class="relative z-10 ml-0">Próximamente</span>
+        <span class="relative z-10 ml-auto">UK</span>
+      </a>
       </div>
     </div>
 

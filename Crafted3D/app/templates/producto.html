@@ -34,53 +34,37 @@ categoria|capitalize }}{% else %}{{ producto.nombre }}{% endif %} {% endblock %}
   {% if productos|length > 0 %} {# Grid de productos de la categoría #}
   <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-8">
     {% for producto in productos %}
-    <div class="border m-1 rounded-lg shadow hover:shadow-lg transition-shadow">
-      <div class="overflow-hidden rounded-t-lg">
-        {# Muestra la imagen del producto, desde URL externa o local #} {% if
-        "http" in producto.imagen %}
-        <a href="{{ url_for('product.producto', producto_id=producto['id']) }}">
-          <img
-            src="{{ producto.imagen }}"
-            alt="{{ producto.nombre }}"
-            class="w-full aspect-square object-cover transition-transform duration-300 hover:scale-105"
-          />
-        </a>
-        {% else %}
-        <img
-          src="{{ url_for('static', filename='css/images/' + producto.imagen) }}"
-          alt="{{ producto.nombre }}"
-          class="w-full aspect-square object-cover transition-transform duration-300 hover:scale-105"
-        />
-        {% endif %}
-      </div>
-      <div class="p-4">
-        <h3 class="text-xl font-bold">{{ producto.nombre }}</h3>
-        {# Muestra la valoración media con estrellas #}
-        <div class="rating-display">
-          {% for i in range(5) %}
-          <span
-            class="star {% if i < producto.media_valoracion | default(0) %}selected{% endif %}"
-            >★</span
-          >
-          {% endfor %}
-        </div>
-        {# Muestra el precio del producto #}
-        <p
-          id="priceDisplay"
-          class="text-xl text-gray-700 mb-4"
-          data-price="{{ producto.precio|replace('€', '')|replace(',', '.') }}"
-        >
-          {{ producto.precio }}€
-        </p>
-        {# Botón para ver el detalle del producto #}
-        <a
-          href="{{ url_for('product.producto', producto_id=producto['id']) }}"
-          class="mt-4 bg-[#39CB60] text-white px-4 py-2 rounded hover:bg-green-600 block text-center"
-        >
-          Ver Producto
-        </a>
-      </div>
+    <a href="{{ url_for('product.producto', producto_id=producto['id']) }}"
+   class="block rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl border border-gray-200 transition transform hover:-translate-y-1 bg-white group">
+  
+  <!-- Imagen del producto -->
+  <div class="overflow-hidden">
+    <img
+      src="{{ producto.imagen if 'http' in producto.imagen else url_for('static', filename='css/images/' + producto.imagen) }}"
+      alt="{{ producto.nombre }}"
+      class="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
+    />
+  </div>
+
+  <!-- Contenido -->
+  <div class="p-4 space-y-2">
+    <h3 class="text-lg font-bold text-gray-800 group-hover:text-green-600 transition">
+      {{ producto.nombre }}
+    </h3>
+
+    <!-- Estrellas de valoración -->
+    <div class="flex gap-0.5 text-yellow-400">
+      {% for i in range(5) %}
+        <span class="{% if i < producto.media_valoracion | default(0) %}text-yellow-400{% else %}text-gray-300{% endif %}">★</span>
+      {% endfor %}
     </div>
+
+    <!-- Precio -->
+    <p class="text-xl font-semibold text-gray-700">{{ producto.precio }}€</p>
+  </div>
+</a>
+
+
     {% endfor %}
   </div>
   {% else %} {# Mensaje si no hay productos en la categoría #}
