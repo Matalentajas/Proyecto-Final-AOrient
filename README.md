@@ -82,6 +82,11 @@ Control de versiones: Git + GitHub
 ✨ Idea secundaria
 Este proyecto también funciona como plantilla minimalista para cualquier negocio pequeño que quiera vender online. Solo necesita adaptar los productos y estilos.
 
+Datos de acceso de administrados
+A continuación se proporcionan los datos de un administrados para poder entrar en el apartado de admin, para acceder a el hay que poner /admin y poner los siguientes datos.
+Usuario: bernacohd@gmail.com
+Contraseña: 123456
+
 🧑‍🏫 Créditos
 Desarrollado como proyecto final de DAW por Arturo Orient Romero.
 
