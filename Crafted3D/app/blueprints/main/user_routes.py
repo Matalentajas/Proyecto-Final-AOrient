@@ -271,7 +271,7 @@ def editar_perfil():
     next_url = request.args.get("next", url_for("usuario.perfil"))
 
     if request.method == "POST" and form.validate_on_submit():
-        nombre_completo = form.nombre_completo.data
+        nombre_completo = form.nombre.data  # corregido
         email = form.email.data
 
         cursor = current_app.mysql.connection.cursor()
@@ -287,6 +287,7 @@ def editar_perfil():
         return redirect(next_url)
 
     return render_template("editar_perfil.html", form=form, next_url=next_url)
+
 
 
 # --- Logout ---
