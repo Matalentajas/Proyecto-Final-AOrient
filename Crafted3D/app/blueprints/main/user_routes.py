@@ -275,6 +275,17 @@ def editar_perfil():
         email = form.email.data
 
         cursor = current_app.mysql.connection.cursor()
+        # Comprobar si el nuevo email ya existe para otro usuario
+        cursor.execute(
+            "SELECT id FROM usuarios WHERE email = %s AND id != %s",
+            (email, current_user.id)
+        )
+        existe = cursor.fetchone()
+        if existe:
+            cursor.close()
+            form.email.errors.append("❌ El correo electrónico ya está registrado por otro usuario.")
+            return render_template("editar_perfil.html", form=form, next_url=next_url)
+
         cursor.execute("""
             UPDATE usuarios 
             SET nombre_completo = %s, email = %s 

@@ -339,6 +339,10 @@
       alert("❌ Introduce una cantidad válida.");
       return;
     }
+    if (cantidad > 100) {
+      alert("❌ El límite de cantidad por producto es 100.");
+      return;
+    }
 
     const csrfToken = document.querySelector("[name=csrf_token]").value;
     const url = `/agregar_carrito/${parseInt(productId)}`;
@@ -500,6 +504,11 @@
         "❌ La cantidad no puede ser menor a 1. Se ha ajustado automáticamente."
       );
       nuevaCantidad = 1;
+    } else if (nuevaCantidad > 100) {
+      alert(
+        "❌ El límite de cantidad por producto es 100. Se ha ajustado automáticamente."
+      );
+      nuevaCantidad = 100;
     }
 
     fetch(`/actualizar_carrito/${productoId}`, {
